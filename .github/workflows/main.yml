@@ -1,0 +1,20 @@
+name: Mirror Repository
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+ 
+      - name: Push to Rishav Repository
+        run: |
+          git remote add mirror https://Rishav840:${{ secrets.MIRROR_TOKEN }}@github.com/Rishav840/thereflexhub.git
+          git push mirror main --force
