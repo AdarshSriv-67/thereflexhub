@@ -1,0 +1,348 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Right Click Test - Check Your CPS | The Reflex Hub';
+const description =
+  'Take the free right click test to measure your right click CPS. Play 5 to 60 second modes, beat the 5 CPS average, and outclick your left hand rivals.';
+const path = '/right-click-test';
+
+const schema = [
+  webAppSchema('Right Click Test', path, 'Free right click speed test with 5, 10, 30, and 60 second modes and a right click counter.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Right Click Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is a right click test?',
+    a: 'A right click test is a click speed test dedicated to the right mouse button. You right click inside the test area as fast as you can for a chosen duration, and the tool counts every press and reports your speed in clicks per second. It works exactly like a standard CPS test except that only right button presses count, and the browser context menu is suppressed inside the play area so the menu does not interrupt your run. It is the standard way to benchmark the finger most tests ignore: your middle finger.',
+  },
+  {
+    q: 'Is right clicking slower than left clicking?',
+    a: 'For almost everyone, yes. Most people right click with the middle finger, which has less practiced fine motor control than the index finger that spends all day left clicking. The right button on many mice also has a slightly different switch feel and keycap shape than the primary button. Typical players score 1 to 2 CPS lower on the right button, which is why the published right click average sits near 5 CPS while the left click average is about 6.5 CPS. With deliberate practice the gap narrows considerably.',
+  },
+  {
+    q: 'What is a good right click CPS?',
+    a: 'On a 10 second run, the average player lands around 5 clicks per second with the right button. Scores of 6 to 7 CPS are above average, 7 to 9 CPS is genuinely fast, and anything at 9 CPS or beyond is elite, usually requiring jitter technique adapted to the middle finger or a very light right switch. Because the right hand middle finger is undertrained in most people, beginners often improve faster on this test than on the left click version: early sessions routinely add a full click per second.',
+  },
+  {
+    q: 'Why test right click speed separately?',
+    a: 'Because the two buttons train different fingers and serve different in-game jobs. Left click CPS says nothing about how fast your middle finger can place blocks in Minecraft, block-hit with a sword, or issue rapid movement orders in a MOBA. Testing the buttons separately shows you the true gap between your fingers, and tracking both reveals whether practice on one transfers to the other. Serious PvP players want both numbers: attack speed lives on the left button, while blocking, bridging, and utility usually live on the right.',
+  },
+  {
+    q: 'Does mouse grip style affect right click speed?',
+    a: 'Noticeably. Claw grip arches the fingers so the middle fingertip strikes the right button from above, which most fast right clickers find quickest because the finger can rebound freely. Fingertip grip gives even more agility at the cost of stability. Palm grip lays the whole finger flat along the button, comfortable for long sessions but slower to cycle because more finger mass has to move. If your right click score lags far behind your left, experiment with arching your middle finger before you blame the hardware.',
+  },
+  {
+    q: 'Can I jitter click with the right button?',
+    a: 'Yes, the technique transfers. Jitter clicking works by tensing the forearm until the hand vibrates and letting that tremor drive the finger, and the tremor does not care which finger it exits through. In practice, most players find right button jittering harder at first because the middle finger is less used to channeling the vibration precisely, and keeping the tremor off the index finger takes some control. Expect a learning period of a week or two. Butterfly clicking is also possible using the middle and ring finger together on the right button.',
+  },
+  {
+    q: 'Which games use rapid right clicking?',
+    a: 'Minecraft is the headline case: placing blocks while bridging is pure right click spam, and classic 1.8 PvP block-hitting alternates fast right clicks with attacks. Godbridging and other advanced bridging methods demand precise high-frequency right clicks. MOBAs like League of Legends and Dota 2 route movement and attack orders through the right button, so fights become bursts of rapid clicking. Real time strategy games, ARPGs like Diablo, and even shooters with right-button ability casts all reward a quick middle finger.',
+  },
+  {
+    q: 'Does this work on trackpads?',
+    a: 'Yes, with caveats. A two-finger tap or a press in the lower right corner registers as a right click on most trackpads, and the test counts those normally. Expect lower scores though: trackpads add processing delay, two-finger taps are slower to repeat than a dedicated button, and palm rejection can eat rapid inputs. Trackpad users commonly score 2 to 4 CPS on the right click test. For a score that reflects your finger rather than your laptop, plug in an external mouse and rerun the same duration.',
+  },
+  {
+    q: 'How is right click CPS calculated?',
+    a: 'Exactly like any CPS score: total right clicks divided by the test duration in seconds. Register 54 right clicks in a 10 second run and your score is 5.4 CPS. The timer starts on your first right click, every press is timestamped with a high resolution timer, and left clicks inside the zone are simply ignored rather than penalized. Your personal best is stored in your browser separately for each duration, so a 10 second record and a 60 second record never overwrite each other.',
+  },
+  {
+    q: 'Can I compare right and left hand results?',
+    a: 'Yes, and it is the most interesting experiment this test enables. Run 10 seconds here, then run the same duration on our standard CPS test with the left button, and compare. Most people find a gap of 1 to 2 CPS in favor of the index finger. You can also mirror the whole test: move the mouse to your other hand and measure your non-dominant fingers. Tracking all four numbers over a few weeks shows how specific finger training is, and how quickly an undertrained finger catches up.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Right Click Test: How Fast Is Your Other Finger?</h1>
+    <p class="mt-1 text-sm text-muted">
+      Right click as fast as you can. The timer starts on your first right click.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Test duration">
+        {[5, 10, 30, 60].map((s) => (
+          <button
+            type="button"
+            class:list={[
+              'btn px-3 py-1.5 text-sm',
+              s === 10 ? 'btn-primary' : 'btn-ghost',
+            ]}
+            data-duration={s}
+          >
+            {s}s
+          </button>
+        ))}
+      </div>
+
+      <div class="score-nums mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">10.0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Clicks</p>
+          <p class="text-2xl font-bold" id="stat-clicks">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">CPS</p>
+          <p class="text-2xl font-bold text-accent" id="stat-cps">0.0</p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="click-zone"
+        class="press mt-4 flex min-h-[280px] w-full select-none flex-col items-center justify-center gap-2 rounded-xl border border-line bg-gradient-to-b from-surface2 to-surface font-display text-xl font-bold transition-shadow hover:shadow-glow sm:min-h-[320px]"
+      >
+        <span id="zone-label">Right click inside the area to start</span>
+        <span class="text-sm font-normal text-muted" id="zone-sub">Only right button presses count</span>
+      </button>
+
+      <p class="mt-3 text-xs text-muted">
+        Note: the right click context menu is disabled only inside the test area. Everywhere else on the page it works normally.
+      </p>
+    </div>
+
+    <ResultCard unit="CPS" />
+
+    <StatsPanel historyTitle="Last 20 runs: right click CPS" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Is a Right Click Test?</h2>
+    <p>
+      A right click test measures how many times you can press the right mouse button in a fixed window, reported as
+      clicks per second. It is the mirror image of the classic CPS test: same rules, same timer, but only the second
+      button counts. The run starts the instant you land your first right click inside the area, the browser context
+      menu is suppressed within the zone so nothing pops up mid-run, and your final right click CPS locks in when time
+      expires. Left clicks inside the zone are ignored, not punished, so a stray index finger twitch will not ruin an
+      attempt.
+    </p>
+    <p>
+      The right click counter keeps a separate personal best for every duration, from the 5 second sprint to the 60
+      second endurance run. The 10 second mode is the benchmark to start with, since that is the format the published
+      averages describe. And because right clicking is a genuinely different skill from left clicking, do not be
+      surprised if your first score here lands well below your usual CPS: that gap is exactly what this page exists to
+      measure and shrink.
+    </p>
+
+    <h2>Why Right Clicking Is Slower Than Left Clicking</h2>
+    <p>
+      The difference is anatomy plus habit. Most people rest the index finger on the left button and the middle finger
+      on the right, and the index finger is simply the most dexterous digit on the hand: it has the richest independent
+      muscle control and it rehearses fast, precise presses thousands of times a day. The middle finger is stronger in
+      absolute terms but far less practiced at rapid, isolated oscillation, and it shares tendon connections with its
+      neighbors that make fully independent movement harder. Fire the middle finger quickly and you can feel the ring
+      finger wanting to come along for the ride.
+    </p>
+    <p>
+      Hardware plays a smaller role: right buttons use the same switches as left buttons on most mice, but the keycap
+      contour and your finger's resting angle differ, and a middle finger approaching from a flatter angle wastes more
+      motion per press. Put together, a 1 to 2 CPS deficit versus your left click score is completely normal, and it is
+      also very trainable, precisely because the middle finger starts from an undertrained baseline.
+    </p>
+
+    <h2>What Is a Good Right Click CPS?</h2>
+    <p>
+      Aggregated results from right click speed tests put the average near 5 clicks per second on a 10 second run,
+      compared with about 6.5 CPS for left clicking. The typical distribution looks like this:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Right click CPS (10s)</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 3</td><td>Slow</td><td>Trackpad, unfamiliar grip, or a stiff right switch</td></tr>
+          <tr><td>3 to 5</td><td>Average</td><td>Untrained middle finger doing its honest best</td></tr>
+          <tr><td>5 to 7</td><td>Above average</td><td>Comfortable technique and a practiced finger</td></tr>
+          <tr><td>7 to 9</td><td>Fast</td><td>Deliberate training, good grip, light switch</td></tr>
+          <tr><td>9+</td><td>Elite</td><td>Jitter or butterfly technique adapted to the right button</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      As with every click test, endurance modes run lower: expect to shed 15 to 25 percent of your 10 second pace over
+      a full minute. Judge progress within a single duration.
+    </p>
+
+    <h2>Games Where Rapid Right Clicking Wins</h2>
+    <p>
+      Minecraft made the right click famous. Every block you place is a right click, so speed bridging is right click
+      spam under pressure: regular bridging wants a steady 4 to 6 CPS, while advanced techniques like godbridging
+      demand precisely timed bursts well beyond that. In legacy 1.8 PvP, block-hitting weaves right clicks between
+      attacks to reduce incoming damage, effectively doubling the clicking workload of a fight. If you practice
+      bridging, this test is your dry-land drill.
+    </p>
+    <p>
+      MOBAs are the other stronghold. League of Legends and Dota 2 issue movement and attack commands through the right
+      button, and high-level play involves near-constant orders: kiting, orb-walking, and dodging skill shots are all
+      streams of rapid, precise right clicks. Real time strategy players micromanaging units, ARPG players holding down
+      lanes in Diablo-style games, and anyone spamming a right-bound ability in a shooter all draw on the same finger.
+      A faster, more controlled right click translates to more actions per minute exactly where fights are decided.
+    </p>
+
+    <h2>Grip Styles and the Right Button</h2>
+    <p>
+      Your grip decides how the middle finger meets the button. Claw grip arches the fingers so the fingertip strikes
+      almost vertically, giving the shortest stroke and the fastest rebound: most elite right clickers use some form of
+      claw. Fingertip grip goes further, floating the palm entirely, maximizing agility but demanding more control to
+      keep the cursor steady. Palm grip rests the whole finger flat along the shell, superb for comfort but slow to
+      cycle because the entire finger, not just the tip, must lift for every press. If you palm grip and your right
+      click CPS disappoints, try arching just the middle finger into a claw position during tests: it is the single
+      cheapest speed upgrade available.
+    </p>
+
+    <h2>How to Improve Your Right Click Speed</h2>
+    <ol>
+      <li><strong>Train the finger directly.</strong> The middle finger improves fast from its low baseline. Three or four 10 second runs a day add measurable CPS within a week.</li>
+      <li><strong>Click from the first knuckle.</strong> Small, quick strokes from the fingertip beat big lifts of the whole finger. The tip should barely leave the button.</li>
+      <li><strong>Keep the ring finger relaxed.</strong> Tension bleeding into neighboring fingers slows the cycle. Let the ring finger rest loosely on the mouse edge.</li>
+      <li><strong>Borrow proven techniques.</strong> Jitter clicking and butterfly clicking (middle plus ring finger) both work on the right button once your base speed plateaus.</li>
+      <li><strong>Fix the hardware.</strong> Lower debounce time in your mouse software and test on light switches. Trackpad users should plug in a real mouse before judging themselves.</li>
+      <li><strong>Rest at the first sign of strain.</strong> The middle finger tendons are less conditioned than the index finger's, so ramp volume up gradually and stop if anything aches.</li>
+    </ol>
+
+    <h2>Hardware Notes for Right Click Records</h2>
+    <p>
+      Everything that matters for left click speed matters here too. Switch actuation force sets how much work each
+      press costs, debounce time (often 4 to 20 ms depending on the mouse) silently swallows ultra-fast presses, and
+      overall click latency shifts when a press registers. Two right-button specifics are worth knowing. First, some
+      mice ship with slightly heavier tuning or a different tactile feel on the secondary button, so a score gap
+      between your mice may be the hardware, not you. Second, on trackpads a right click is usually a synthesized
+      gesture (two-finger tap or corner press), which adds processing delay and repeat lag: expect trackpad scores of 2
+      to 4 CPS and treat them as their own category.
+    </p>
+
+    <h2>The Complete Picture: Compare Both Buttons</h2>
+    <p>
+      The most useful workflow is a paired benchmark. Run 10 seconds here, note your right click CPS, then take the
+      left-click CPS test at the same duration and compare. The gap, typically 1 to 2 CPS, is your finger imbalance,
+      and watching it shrink week by week is far more motivating than either number alone. Round out the profile with
+      the spacebar counter for your thumb and the tap speed test on your phone, and you have a full map of your fastest
+      and slowest digits. One final note for context: all of these are games and training tools that measure motor
+      performance for fun. This is not a medical or psychological diagnostic tool, and a slow middle finger today means
+      nothing beyond a finger that has not been trained yet.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['cps', 'spacebar', 'tap', 'aim']} />
+
+</BaseLayout>
+
+<script>
+  import { ClickEngine } from '../games/clickEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const zone = document.getElementById('click-zone') as HTMLElement;
+  const zoneLabel = document.getElementById('zone-label') as HTMLElement;
+  const zoneSub = document.getElementById('zone-sub') as HTMLElement;
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statClicks = document.getElementById('stat-clicks') as HTMLElement;
+  const statCps = document.getElementById('stat-cps') as HTMLElement;
+  const durationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-duration]'));
+
+  // Right clicking runs slower than left clicking; distribution calibrated for the 10 second test.
+  const TABLE: PercentilePoint[] = [
+    { value: 2.5, beats: 8 },
+    { value: 4, beats: 28 },
+    { value: 5, beats: 50 },
+    { value: 7, beats: 82 },
+    { value: 9, beats: 96 },
+    { value: 11, beats: 99 },
+  ];
+
+  const gameKey = (d: number) => (d === 10 ? 'rightclick' : `rightclick-${d}`);
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'rightclick',
+    valueLabel: 'CPS',
+    decimals: 1,
+    format: (v) => v.toFixed(1),
+    columns: [
+      { key: 'clicks', label: 'Clicks' },
+      { key: 'mode', label: 'Mode' },
+    ],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'rightclick',
+    higherIsBetter: true,
+    format: (v) => `${v.toFixed(1)} CPS`,
+    onRestart: () => engine.reset(),
+  });
+
+  const engine = new ClickEngine({
+    zone,
+    duration: readHashDuration() ?? 10,
+    mode: 'rightclick',
+    onStart: () => {
+      zoneLabel.textContent = 'Go!';
+      zoneSub.textContent = 'Keep right clicking!';
+    },
+    onTick: (remaining, clicks, cps) => {
+      statTime.textContent = remaining.toFixed(1);
+      statClicks.textContent = String(clicks);
+      statCps.textContent = cps.toFixed(1);
+      if (clicks === 0 && remaining === engine.getDuration()) {
+        zoneLabel.textContent = 'Right click inside the area to start';
+        zoneSub.textContent = 'Only right button presses count';
+      }
+    },
+    onFinish: ({ clicks, cps, duration }) => {
+      zoneLabel.textContent = 'Time!';
+      zoneSub.textContent = 'Check your result below';
+      const rounded = Math.round(cps * 10) / 10;
+      card.setGame(gameKey(duration));
+      card.show({
+        score: rounded,
+        display: rounded.toFixed(1),
+        detail: `${clicks} right clicks in ${duration} seconds`,
+        compare: 'The average player scores about 5 CPS with the right button on a 10 second test.',
+        percentileTable: TABLE,
+        shareText: `I hit ${rounded.toFixed(1)} right click CPS (${clicks} clicks in ${duration}s) on the Right Click Test. Beat me: https://thereflexhub.com/right-click-test`,
+      });
+      stats.record(rounded, { clicks: String(clicks), mode: `${duration}s` });
+    },
+  });
+
+  function readHashDuration(): number | null {
+    const n = parseInt(location.hash.slice(1), 10);
+    return [5, 10, 30, 60].includes(n) ? n : null;
+  }
+
+  function selectDuration(d: number): void {
+    engine.setDuration(d);
+    card.setGame(gameKey(d));
+    for (const b of durationBtns) {
+      const active = Number(b.dataset.duration) === d;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+    statTime.textContent = d.toFixed(1);
+    history.replaceState(null, '', d === 10 ? location.pathname : `#${d}`);
+  }
+
+  for (const b of durationBtns) {
+    b.addEventListener('click', () => selectDuration(Number(b.dataset.duration)));
+  }
+
+  const initial = readHashDuration();
+  if (initial && initial !== 10) selectDuration(initial);
+</script>

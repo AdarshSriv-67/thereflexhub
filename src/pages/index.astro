@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqSection from '../components/FaqSection.astro';
+import TestCard from '../components/TestCard.astro';
+import { tests, byId } from '../data/tests';
+import type { Faq } from '../data/seo';
+
+const title = 'Free Reflex, Reaction and Brain Tests | The Reflex Hub';
+const description =
+  'Take a free reaction time test, CPS test, or typing test. 13 browser games with instant scores and real benchmarks. No signup needed, play now.';
+const path = '/';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'The Reflex Hub',
+    url: 'https://thereflexhub.com',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'The Reflex Hub',
+    url: 'https://thereflexhub.com',
+    logo: 'https://thereflexhub.com/favicon.svg',
+  },
+];
+
+// Most popular tests with the published benchmark each one asks you to beat.
+const popular = [
+  { test: byId('reaction'), benchmark: 'avg 273 ms' },
+  { test: byId('cps'), benchmark: 'avg 6.5 CPS' },
+  { test: byId('typing'), benchmark: 'avg 40 WPM' },
+  { test: byId('aim'), benchmark: 'avg 30 hits' },
+  { test: byId('memory'), benchmark: 'avg level 9' },
+];
+
+// Catalog grouped by skill so the structure says what each test trains.
+const groups = [
+  { label: 'Reaction', blurb: 'Pure speed from stimulus to response.', ids: tests.filter((t) => t.category === 'reaction').map((t) => t.id) },
+  { label: 'Clicking Speed', blurb: 'How fast can your fingers fire?', ids: tests.filter((t) => t.category === 'clicking').map((t) => t.id) },
+  { label: 'Typing', blurb: 'Words per minute, measured honestly.', ids: tests.filter((t) => t.category === 'typing').map((t) => t.id) },
+  { label: 'Memory and Brain', blurb: 'Recall, focus, and interference.', ids: tests.filter((t) => t.category === 'brain').map((t) => t.id) },
+  { label: 'Aim and Arcade', blurb: 'Precision under pressure, plus a classic.', ids: tests.filter((t) => t.category === 'aim' || t.category === 'puzzle').map((t) => t.id) },
+];
+
+const whyCards = [
+  {
+    title: 'Instant, No Signup',
+    body: 'Every test loads in under a second and starts the moment you are ready. No account, no email, no install. Just open a page and play.',
+    icon: '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2Z"/>',
+  },
+  {
+    title: 'Scores Stay Private',
+    body: 'Your personal bests and history are saved in your own browser with localStorage. Nothing is uploaded, tracked, or tied to your identity.',
+    icon: '<rect fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" x="5" y="10.5" width="14" height="10" rx="2"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/>',
+  },
+  {
+    title: 'Real Benchmarks',
+    body: 'Compare against published averages: 273 ms reaction time, 40 WPM typing, and 6.5 CPS clicking. See exactly where you stand.',
+    icon: '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 20V10M10 20V4M16 20v-7M4 20h17"/>',
+  },
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is The Reflex Hub?',
+    a: 'The Reflex Hub is a free collection of browser games that measure human performance skills: reaction time, clicks per second, typing speed, aim precision, and short term memory. Each test gives you an instant score, compares it against published averages, and saves your personal best privately in your browser so you can track improvement over days and weeks. The site is built for gamers warming up before a session, typists checking their WPM, and anyone curious about how their reflexes stack up. Everything runs directly in your browser on desktop and mobile, with no downloads and no account required.',
+  },
+  {
+    q: 'Are these tests free?',
+    a: 'Yes, every test on The Reflex Hub is completely free, with no premium tiers, locked modes, or paywalled results. You can run any test as many times as you like, view your full score history, and see your percentile against published averages without paying anything or creating an account. The site is supported by a small number of clearly marked ads, which keep the tests free for everyone. We never gate a score behind a signup form or ask for payment details, and there is nothing to unlock: what you see is the whole product.',
+  },
+  {
+    q: 'Do I need an account to save my scores?',
+    a: 'No. Your scores are saved automatically using localStorage, a standard browser feature that stores data on your own device. When you finish a test, your result and personal best are written locally and appear the next time you visit from the same browser. Nothing is sent to a server, so there is no password to remember and no profile to manage. The tradeoff is that scores do not sync between devices or browsers, and clearing your browser data will erase your history. For most people that is a fair exchange for total privacy and zero friction.',
+  },
+  {
+    q: 'How accurate are browser reaction and typing tests?',
+    a: 'They are accurate enough for meaningful self comparison, with some honest caveats. Browser tests use high resolution timers that measure input to a fraction of a millisecond, but your total measured time also includes hardware latency: your monitor refresh rate, mouse or keyboard delay, and operating system overhead can add 10 to 50 ms. That overhead is fairly constant on a given setup, so your scores are highly comparable with each other. To track real progress, test on the same device under similar conditions, and treat small day to day differences as noise rather than signal.',
+  },
+  {
+    q: 'Which test should I start with?',
+    a: 'Start with the reaction time test. It takes under a minute, needs no technique, and gives you a single clear number to compare against the 273 ms human average. From there, pick the skill closest to what you care about: the CPS test if you play click intensive games, the typing test if you want your words per minute, the aim trainer if you play shooters, or the memory test if you want a brain workout. Most visitors end up rotating through three or four favorites, since each test exercises a genuinely different skill.',
+  },
+  {
+    q: 'Are these tests scientific or medical assessments?',
+    a: 'No. The tests here are built for fun, practice, and casual self measurement, not for research or health screening. While they use the same basic tasks that appear in psychology labs, a browser test cannot control for hardware latency, distractions, sleep, or caffeine the way a controlled study does. Your scores describe how you performed on this device at this moment, nothing more. The Reflex Hub is not a medical or psychological diagnostic tool, and no result here should be used to assess a health condition. If you have concerns about reflexes, attention, or memory, talk to a qualified professional.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute -top-24 left-[15%] size-[420px] rounded-full bg-accent/10 blur-3xl" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -top-16 right-[-5%] size-[380px] rounded-full bg-accent2/10 blur-3xl" aria-hidden="true"></div>
+
+    <div class="relative mx-auto grid max-w-6xl gap-8 px-4 pb-4 pt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-12 lg:pt-14">
+      <div>
+        <p class="font-display text-xs font-bold uppercase tracking-[0.22em] text-accent">13 free skill tests, zero signup</p>
+        <h1 class="mt-3 font-display text-4xl font-bold tracking-tight sm:text-5xl">
+          Free Reflex, Reaction and <span class="text-accent">Brain Tests</span>
+        </h1>
+        <p class="mt-4 max-w-xl leading-relaxed text-muted">
+          How fast are you today? Measure your reaction time, click speed, typing WPM, aim, and memory in seconds.
+          Instant scores, real published benchmarks, and your history saved privately on your device.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/reaction-time-test" class="btn btn-primary">Test your reaction time</a>
+          <a href="/cps-test" class="btn btn-ghost">Try the CPS test</a>
+        </div>
+        <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+          <li class="flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-ok" aria-hidden="true"></span>Works on desktop and mobile
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-ok" aria-hidden="true"></span>No account, no install
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-ok" aria-hidden="true"></span>Scores stay in your browser
+          </li>
+        </ul>
+      </div>
+
+      <div class="card p-4 sm:p-5">
+        <div class="flex items-baseline justify-between gap-3">
+          <p class="font-display text-sm font-bold uppercase tracking-widest text-muted">Instant reflex check</p>
+          <p class="score-nums text-xs text-muted">human avg: 273 ms</p>
+        </div>
+        <button
+          type="button"
+          id="hero-zone"
+          class="mt-3 flex min-h-[200px] w-full select-none flex-col items-center justify-center gap-1.5 rounded-xl bg-surface2 font-display transition-colors duration-100"
+        >
+          <span class="score-nums hidden text-5xl font-bold" id="hero-ms"></span>
+          <span class="text-lg font-bold" id="hero-title">Tap to try it</span>
+          <span class="px-6 text-xs font-normal text-muted" id="hero-sub">Wait for green, then tap as fast as you can</span>
+        </button>
+        <p class="mt-3 text-center text-xs text-muted">
+          One round is luck. <a href="/reaction-time-test" class="text-accent underline underline-offset-2">Take the full five round test</a> for your real average.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4" aria-labelledby="popular-heading">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="popular-heading" class="font-display text-2xl font-bold">Most Popular Tests</h2>
+      <p class="hidden text-sm text-muted sm:block">Each one comes with an average to beat.</p>
+    </div>
+    <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      {popular.map(({ test, benchmark }) => (
+        <a
+          href={test.href}
+          class="card press group flex items-center gap-3 p-4 transition-shadow hover:shadow-glow lg:flex-col lg:items-start lg:gap-2"
+        >
+          <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface2 text-accent transition-colors group-hover:bg-accent group-hover:text-bg">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" set:html={test.icon} />
+          </span>
+          <span class="min-w-0">
+            <span class="block truncate font-display font-bold">{test.title}</span>
+            <span class="score-nums block text-xs text-muted">{benchmark}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4" aria-labelledby="all-heading">
+    <h2 id="all-heading" class="font-display text-2xl font-bold">All Tests, by Skill</h2>
+    <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
+      Every test here trains a different part of the loop between your eyes, brain, and hands. Take the reaction time
+      test to see how quickly you respond to a color change, push your click speed to the limit in the CPS test, or
+      measure your typing test WPM against the global average of 40 words per minute. Sharpen your crosshair in the aim
+      trainer, stretch your short term recall with the memory test, or unwind with 2048 when you need a break. Your
+      personal bests and recent runs are saved privately on your device, so every score has a history behind it.
+    </p>
+    <div class="mt-8 flex flex-col gap-10">
+      {groups.map((group) => (
+        <div>
+          <div class="flex items-baseline gap-3 border-b border-line pb-2">
+            <h3 class="font-display text-lg font-bold">{group.label}</h3>
+            <p class="text-sm text-muted">{group.blurb}</p>
+          </div>
+          <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {group.ids.map((id) => <TestCard test={byId(id)} />)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4" aria-labelledby="why-heading">
+    <h2 id="why-heading" class="font-display text-2xl font-bold">Why The Reflex Hub</h2>
+    <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      {whyCards.map((card) => (
+        <div class="card flex flex-col gap-3 p-5">
+          <span class="inline-flex size-11 items-center justify-center rounded-xl bg-surface2 text-accent">
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" set:html={card.icon} />
+          </span>
+          <h3 class="font-display text-lg font-bold">{card.title}</h3>
+          <p class="text-sm leading-relaxed text-muted">{card.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FaqSection faqs={faqs} />
+</BaseLayout>
+
+<script>
+  import { ReactionEngine } from '../games/reactionEngine';
+
+  const zone = document.getElementById('hero-zone') as HTMLElement;
+  const heroTitle = document.getElementById('hero-title') as HTMLElement;
+  const heroSub = document.getElementById('hero-sub') as HTMLElement;
+  const heroMs = document.getElementById('hero-ms') as HTMLElement;
+
+  function paint(bg: string, title: string, sub: string, ms?: string): void {
+    zone.classList.remove('bg-surface2', 'bg-bad', 'bg-ok');
+    zone.classList.add(bg);
+    heroTitle.textContent = title;
+    heroSub.textContent = sub;
+    if (ms) {
+      heroMs.textContent = ms;
+      heroMs.classList.remove('hidden');
+    } else {
+      heroMs.classList.add('hidden');
+    }
+  }
+
+  new ReactionEngine({
+    zone,
+    rounds: 1,
+    minDelayMs: 1500,
+    maxDelayMs: 3500,
+    keyboard: false,
+    onStateChange: (state) => {
+      if (state === 'idle') {
+        paint('bg-surface2', 'Tap to try it', 'Wait for green, then tap as fast as you can');
+      } else if (state === 'waiting') {
+        paint('bg-bad', 'Wait for green...', 'Tap the moment it changes');
+      } else if (state === 'go') {
+        paint('bg-ok', 'Tap now!', '');
+      } else if (state === 'tooSoon') {
+        paint('bg-surface2', 'Too soon!', 'That was red. Tap to try again');
+      }
+    },
+    onRound: () => {},
+    onFalseStart: () => {},
+    onFinish: (avg) => {
+      const verdict =
+        avg < 273
+          ? `Faster than the 273 ms average. Tap to go again.`
+          : `The average is 273 ms. Tap to run it back.`;
+      paint('bg-surface2', '', verdict, `${avg} ms`);
+    },
+  });
+</script>

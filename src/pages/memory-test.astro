@@ -1,0 +1,400 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Memory Test - Free Visual Memory Game | The Reflex Hub';
+const description =
+  'Take this free visual memory test to measure your short term memory. Memorize the lit tiles, tap them back, and see if you can climb past level 10.';
+const path = '/memory-test';
+
+const schema = [
+  webAppSchema(
+    'Memory Test',
+    path,
+    'Free visual memory test where tiles light up on a growing grid and you tap them back from memory.'
+  ),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Memory Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What does a short term memory test measure?',
+    a: 'A short term memory test measures how much information you can hold in mind at once, for a few seconds, without writing anything down. This visual memory test shows you a pattern of lit tiles for about one second, then asks you to tap them back. Each level adds one more tile, so the game finds the exact point where your capacity runs out. It measures storage span, not long term memory: nothing here tests whether you can recall the pattern tomorrow, only how much you can grab and hold right now.',
+  },
+  {
+    q: 'How many items can the average person remember?',
+    a: 'The classic answer, from George Miller in 1956, is 7 plus or minus 2 items. Modern research led by Nelson Cowan revised that downward: for genuinely new material that you cannot rehearse or group, most adults hold about 4 chunks at once. On this tile test, most people top out between level 8 and level 10, which corresponds to roughly 10 to 12 tile positions. That sounds higher than 4 because tiles cluster into shapes, and each shape counts as one chunk rather than several separate items.',
+  },
+  {
+    q: 'What is the difference between short term and working memory?',
+    a: 'Short term memory is pure storage: holding a phone number in your head for ten seconds. Working memory is storage plus manipulation: holding that number while also reversing its digits or adding them up. Psychologists treat working memory as the active workspace of thinking, and short term memory as one shelf inside it. This test leans mostly on short term visual storage, though tapping tiles in any order while tracking which ones you already used adds a light working memory load. Tests like backward digit span push much harder on the manipulation side.',
+  },
+  {
+    q: 'Can I train my memory?',
+    a: 'You can improve meaningfully on specific memory tasks through practice, and strategy makes a bigger difference than raw capacity. Learning to chunk tile patterns into shapes, verbalizing positions, or anchoring tiles to grid corners can raise your level noticeably within days. What is less certain is far transfer: getting better at this game will not automatically improve your memory for names or shopping lists. The habits that reliably help memory across the board are less glamorous: consistent sleep, regular aerobic exercise, managed stress, and actually paying attention when you encode something.',
+  },
+  {
+    q: 'Why do I remember better with patterns or chunking?',
+    a: 'Your short term memory counts chunks, not raw items. A chunk is any group your brain treats as a single unit: a word instead of five letters, an L shape instead of three separate tiles. When lit tiles happen to form a line, a corner, or a familiar figure, you store one meaningful object instead of several coordinates, which frees capacity for the rest of the pattern. This is why random scattered patterns feel so much harder than tidy ones at the same level, and why deliberately looking for shapes is the single best strategy in this game.',
+  },
+  {
+    q: 'Does sleep affect memory test scores?',
+    a: 'Strongly, in both directions. Short term memory and attention degrade measurably after even one short night, because a tired brain encodes new information more weakly and lapses in focus erase patterns before you finish reading them. Sleep also matters after learning: during deep sleep the hippocampus replays the day and consolidates memories into longer term storage. If you test yourself sleep deprived, expect to land two or three levels below your rested baseline. For a fair personal benchmark, play at a consistent time of day after a normal night of sleep.',
+  },
+  {
+    q: 'What is a good score on a visual memory test?',
+    a: 'On this test, most people reach level 8 to 10 before running out of lives. Reaching level 12 puts you around the top fifth of players, level 14 is roughly the top ten percent, and anything from level 17 up is genuinely rare. Below level 6 usually means distraction, fatigue, or unfamiliarity with the format rather than a poor memory: first runs are almost always a few levels below what you manage after five minutes of practice. Judge yourself by your rested personal best, not by a single cold attempt.',
+  },
+  {
+    q: 'Do memory games actually improve memory?',
+    a: 'They improve the skill they train. Play this brain memory game daily and your level will climb, partly from real gains in visual attention and mostly from better strategy, like chunking tiles into shapes. Independent research on commercial brain training, including a large review signed by dozens of memory scientists, found little evidence that game gains transfer broadly to everyday memory or intelligence. Memory games are best treated as a fun measurement and a light workout, while sleep, exercise, and learning genuinely new skills carry the heavier lifting for overall brain health.',
+  },
+  {
+    q: 'Is poor test performance a sign of a memory problem?',
+    a: 'No. A low score on a browser game reflects many ordinary things: tiredness, stress, distraction, an unfamiliar test format, or simply sitting at the low end of the normal range, which is still normal. Healthy short term memory capacity varies widely between people, and single test sessions vary widely for the same person. This is not a medical or diagnostic tool and cannot detect memory disorders. If you notice persistent real world changes, such as forgetting familiar routes or recent conversations, raise that with a doctor rather than a website.',
+  },
+  {
+    q: 'How does age affect short term memory?',
+    a: 'Visual short term memory capacity rises through childhood, peaks in the mid twenties, and then declines slowly and gradually across adulthood. Studies of millions of test takers show the drop is measured in fractions of an item per decade, not cliffs, and healthy older adults still land well within the normal range. Processing speed slows a little too, which matters here because the pattern shows for only a second. Experience compensates in daily life: older adults often use better strategies and stronger knowledge, which is why real world performance declines far less than lab scores.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Memory Test: How Many Tiles Can You Remember?</h1>
+    <p class="mt-1 text-sm text-muted">
+      Tiles light up for one second. Tap them back from memory. Three lives.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Level</p>
+          <p class="score-nums text-2xl font-bold" id="stat-level">1</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Lives</p>
+          <p class="mt-2 flex items-center justify-center gap-1.5" id="stat-lives" aria-label="Lives remaining">
+            {[1, 2, 3].map(() => <span class="inline-block size-3 rounded-full bg-accent2" data-life></span>)}
+          </p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Best</p>
+          <p class="score-nums text-2xl font-bold text-accent" id="stat-best">-</p>
+        </div>
+      </div>
+
+      <div
+        id="memory-grid"
+        class="mx-auto mt-4 grid w-full max-w-md select-none gap-2"
+        style="grid-template-columns: repeat(3, minmax(0, 1fr));"
+        aria-label="Memory grid"
+      >
+      </div>
+
+      <div class="mt-4 text-center">
+        <button type="button" id="start-btn" class="btn btn-primary press">Start test</button>
+        <p class="mt-2 min-h-5 text-sm text-muted" id="status-line">Press start, memorize the lit tiles, then tap them back.</p>
+      </div>
+    </div>
+
+    <ResultCard unit="level" />
+
+    <StatsPanel historyTitle="Last 20 runs: level reached" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What This Visual Memory Test Measures and How Levels Work</h2>
+    <p>
+      This memory test is a visual memory test in the classic tile format: a square grid appears, a set of tiles lights
+      up simultaneously for about one second, the tiles go dark, and you tap every lit position back from memory. Level
+      1 starts gently with three tiles on a 3x3 grid. Each level adds one more tile to remember, and the grid itself
+      grows as you climb: 4x4 from level 3, 5x5 from level 6, 6x6 from level 10, and a full 7x7 grid from level 15
+      onward. You get three lives for the whole run. Tap a tile that was never lit and you lose a life, and the game
+      deals you a fresh pattern at the same level so you cannot brute force a single layout. Lose all three lives and
+      the run ends at the level you reached.
+    </p>
+    <p>
+      What the game is really measuring is your visual short term memory span: how much spatial information you can
+      grab in a single glance and hold for the few seconds it takes to reproduce it. There is no vocabulary, no math,
+      and no trick. That simplicity is why researchers have used nearly identical tasks for decades, and why this kind
+      of memory test online has become one of the most popular ways to benchmark your brain against everyone else. Your
+      best level is saved in your browser, so you can watch your span grow as your strategy improves.
+    </p>
+
+    <h2>The Magic Number 7 Plus or Minus 2, and the Modern 4 Chunk View</h2>
+    <p>
+      In 1956 the psychologist George Miller published one of the most cited papers in psychology, The Magical Number
+      Seven, Plus or Minus Two. Reviewing experiments on digits, letters, and tones, Miller noticed that immediate
+      memory kept bumping into the same ceiling: about seven items, give or take two. The finding escaped the lab and
+      became folklore, quoted everywhere from advertising guides to the design of seven digit phone numbers.
+    </p>
+    <p>
+      Modern research tells a stricter story. When Nelson Cowan reviewed the evidence in 2001, controlling for the
+      sneaky strategies people use, such as silently repeating items or grouping them, the true capacity of short term
+      memory came out closer to four chunks for genuinely new material. The seven item figure appears when people have
+      time to rehearse and recode. On this test you will typically pass level 8 or 9, which means reproducing 10 or 11
+      tile positions. That does not contradict the four chunk limit: your brain compresses the pattern into a few
+      shapes, and each shape rides along as a single chunk. The gap between four raw slots and eleven remembered tiles
+      is exactly the power of chunking, which is worth understanding if you want a higher score.
+    </p>
+
+    <h2>Short Term Memory vs Working Memory</h2>
+    <p>
+      The two terms get mixed together, but psychologists draw a useful line. Short term memory is passive storage:
+      holding a verification code in your head between reading it and typing it. Working memory is that same storage
+      plus active manipulation, the mental workspace where you hold information and do something with it at the same
+      time, like computing a tip while remembering the total.
+    </p>
+    <p>
+      A short term memory test asks you to hold and reproduce. A working memory test asks you to hold and transform,
+      like repeating digits in reverse order. This tile game sits mostly on the short term side, with a light working
+      memory load: while tapping, you must track which tiles you have already used and which remain, all while the
+      original image fades. Working memory capacity is one of the strongest single predictors of performance on
+      reasoning tasks, which is why researchers care about it so much, and why the distinction is more than academic
+      hair splitting.
+    </p>
+
+    <h2>Visual Memory Test Benchmarks: What Is a Good Score?</h2>
+    <p>
+      Most players reach level 8 to 10 before running out of lives. Here is how levels on this memory test map to the
+      wider population, based on aggregated results from tile based visual memory tests:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Level reached</th><th>Share of people you beat</th><th>Rating</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4</td><td>8%</td><td>Warming up</td></tr>
+          <tr><td>6</td><td>22%</td><td>Below average</td></tr>
+          <tr><td>8</td><td>42%</td><td>Slightly below average</td></tr>
+          <tr><td>10</td><td>62%</td><td>Above average</td></tr>
+          <tr><td>12</td><td>80%</td><td>Strong</td></tr>
+          <tr><td>14</td><td>91%</td><td>Excellent</td></tr>
+          <tr><td>17</td><td>97%</td><td>Exceptional</td></tr>
+          <tr><td>20</td><td>99%</td><td>Elite</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Two caveats make these numbers fair. First runs land low: the format itself takes a few attempts to learn, and
+      most people gain two or three levels within their first session. Second, conditions matter enormously. The same
+      person can swing several levels between a rested morning attempt and a tired midnight one. Treat your rested
+      personal best as your real benchmark and single runs as weather.
+    </p>
+
+    <h2>Chunking and Strategies That Raise Your Level</h2>
+    <p>
+      Because capacity is counted in chunks, the winning move is to make each chunk carry more tiles. Instead of
+      memorizing eleven separate positions, strong players see a diagonal line, an L in the corner, and a pair on the
+      right edge: three chunks, eleven tiles. Practical strategies that players consistently report helping:
+    </p>
+    <ul>
+      <li><strong>Hunt for shapes first.</strong> In the one second flash, look for lines, corners, boxes, and diagonals before anything else. Named shapes survive; scattered dots evaporate.</li>
+      <li><strong>Anchor to landmarks.</strong> Corners, edges, and the center tile are cheap to remember. Encode stray tiles relative to them: one left of center, touching the top right corner.</li>
+      <li><strong>Say it silently.</strong> Verbal labels such as top row full, bottom left pair recruit a second memory system alongside the visual one, doubling your storage routes.</li>
+      <li><strong>Tap your confident tiles first.</strong> Certain tiles fade slower than uncertain ones. Bank the sure things immediately, then reconstruct the stragglers from your shape memory.</li>
+      <li><strong>Keep your eyes central.</strong> Fixate the middle of the grid during the flash and let peripheral vision photograph the layout. Darting your gaze wastes the exposure time.</li>
+    </ul>
+
+    <h2>How to Improve Your Memory: 6 Habits That Actually Work</h2>
+    <ol>
+      <li><strong>Protect your sleep.</strong> Seven to nine hours is the highest leverage memory intervention known. Encoding weakens sharply when tired, and deep sleep is when the hippocampus consolidates what you learned.</li>
+      <li><strong>Exercise aerobically.</strong> Regular cardio increases blood flow to the brain and is linked to a larger hippocampus and better memory performance across every age group studied.</li>
+      <li><strong>Practice with strategy, not just repetition.</strong> Mindless replays plateau fast. Deliberately practicing chunking and anchoring keeps your level climbing after raw effort stalls.</li>
+      <li><strong>Use spacing.</strong> Three short sessions across a week beat one long grind. Spaced practice is one of the most replicated effects in all of learning research.</li>
+      <li><strong>Manage stress.</strong> Cortisol from chronic stress directly impairs hippocampal function. Even a few slow breaths before a run measurably steadies attention.</li>
+      <li><strong>Feed attention, not just memory.</strong> Most everyday forgetting is an encoding failure: the information never got in because you were distracted. Full attention during the flash is worth more than any trick.</li>
+    </ol>
+
+    <h2>The Science in Plain Language</h2>
+    <p>
+      When the tiles flash, the image lands first in iconic memory, a raw photographic buffer that holds a rich picture
+      for a fraction of a second before it decays. What you manage to grab from it moves into the visuospatial
+      sketchpad, the component of working memory that handles visual and spatial material, the same system you use to
+      imagine rotating furniture or picturing a chessboard. The sketchpad is the bottleneck this game measures: it
+      holds only a handful of objects at a time, which is why chunking several tiles into one shape effectively smuggles
+      more information through.
+    </p>
+    <p>
+      Deeper in the brain, the hippocampus, a seahorse shaped structure in each temporal lobe, binds the pieces of an
+      experience together and is essential for forming lasting memories. During a single one second trial the heavy
+      lifting is cortical, but the hippocampus is what lets a pattern you studied earlier feel familiar, and during
+      sleep it replays and files the day away. None of this requires effort or awareness. Your job is only to point
+      your attention at the grid; the machinery underneath is automatic, and it is the same machinery in every human
+      brain, tuned slightly differently from person to person.
+    </p>
+
+    <h2>Who Uses Memory Tests?</h2>
+    <p>
+      Cognitive psychologists have used span tasks like this one for over a century, from digit span in early
+      intelligence testing to modern change detection experiments that established the four chunk view. Neuroscience
+      labs use visual memory tests while imaging the brain to watch working memory in action. Employers in aviation,
+      air traffic control, and defense include memory span components in aptitude screening. Game developers and
+      esports players use them as warm ups, since holding enemy positions in mind is a live skill in tactical games.
+      Students use a quick brain memory game as a study break that keeps attention sharp. And millions of people simply
+      enjoy the ladder: a clean number, a personal best, and a reason to try one more run.
+    </p>
+    <p>
+      One thing this test is not: a medical instrument. It is not a medical or psychological diagnostic tool, and a
+      poor score does not indicate a memory disorder, dementia, ADHD, or anything clinical. Scores vary hugely with
+      sleep, stress, and practice, and the healthy range is wide. If memory changes in your daily life ever concern
+      you, that is a conversation for a healthcare professional, not a browser game.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['sequence', 'stroop', 'reaction', 'typing']} />
+
+</BaseLayout>
+
+<script>
+  import { GridMemoryEngine } from '../games/memoryEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { getBest } from '../games/storage';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const grid = document.getElementById('memory-grid') as HTMLElement;
+  const statLevel = document.getElementById('stat-level') as HTMLElement;
+  const statBest = document.getElementById('stat-best') as HTMLElement;
+  const statusLine = document.getElementById('status-line') as HTMLElement;
+  const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
+  const lifeDots = Array.from(document.querySelectorAll<HTMLElement>('[data-life]'));
+
+  const TABLE: PercentilePoint[] = [
+    { value: 4, beats: 8 },
+    { value: 6, beats: 22 },
+    { value: 8, beats: 42 },
+    { value: 10, beats: 62 },
+    { value: 12, beats: 80 },
+    { value: 14, beats: 91 },
+    { value: 17, beats: 97 },
+    { value: 20, beats: 99 },
+  ];
+
+  let tiles: HTMLButtonElement[] = [];
+  let currentSize = 0;
+  let lastSize = 3;
+
+  function buildGrid(size: number): void {
+    if (size === currentSize) {
+      for (let i = 0; i < tiles.length; i++) setTile(i, 'base');
+      return;
+    }
+    currentSize = size;
+    grid.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
+    grid.innerHTML = '';
+    tiles = [];
+    for (let i = 0; i < size * size; i++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'press aspect-square w-full rounded-xl bg-surface2 transition-colors duration-150';
+      b.setAttribute('aria-label', `Tile ${i + 1}`);
+      b.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        engine.tap(i);
+      });
+      grid.appendChild(b);
+      tiles.push(b);
+    }
+  }
+
+  function setTile(i: number, state: 'base' | 'lit' | 'hit' | 'bad'): void {
+    const t = tiles[i];
+    if (!t) return;
+    t.classList.remove('bg-surface2', 'bg-accent', 'bg-bad', 'shadow-glow');
+    if (state === 'lit') t.classList.add('bg-accent', 'shadow-glow');
+    else if (state === 'hit') t.classList.add('bg-accent');
+    else if (state === 'bad') t.classList.add('bg-bad');
+    else t.classList.add('bg-surface2');
+  }
+
+  function paintLives(n: number): void {
+    lifeDots.forEach((d, i) => {
+      d.classList.toggle('bg-accent2', i < n);
+      d.classList.toggle('bg-surface2', i >= n);
+    });
+  }
+
+  function paintBest(): void {
+    const best = getBest('memory');
+    statBest.textContent = best === null ? '-' : String(best);
+  }
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'memory',
+    valueLabel: 'Level',
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'memory',
+    higherIsBetter: true,
+    format: (v) => `level ${v}`,
+    onRestart: () => {
+      engine.reset();
+      startGame();
+    },
+  });
+
+  const engine = new GridMemoryEngine({
+    onLevel: (level, gridSize) => {
+      lastSize = gridSize;
+      statLevel.textContent = String(level);
+      buildGrid(gridSize);
+      statusLine.textContent = 'Memorize the lit tiles...';
+    },
+    onShowPattern: (indices) => {
+      for (const i of indices) setTile(i, 'lit');
+    },
+    onInputPhase: () => {
+      for (let i = 0; i < tiles.length; i++) setTile(i, 'base');
+      statusLine.textContent = 'Now tap every tile that was lit.';
+    },
+    onTileResult: (index, correct) => {
+      if (correct) {
+        setTile(index, 'hit');
+      } else {
+        setTile(index, 'bad');
+        statusLine.textContent = 'Wrong tile! New pattern, same level.';
+        window.setTimeout(() => setTile(index, 'base'), 450);
+      }
+    },
+    onLives: (livesLeft) => paintLives(livesLeft),
+    onFinish: (levelReached) => {
+      statusLine.textContent = 'Out of lives. Check your result below.';
+      startBtn.classList.remove('hidden');
+      startBtn.textContent = 'Play again';
+      card.show({
+        score: levelReached,
+        display: String(levelReached),
+        detail: `Reached level ${levelReached} on a ${lastSize}x${lastSize} grid`,
+        compare: 'Most people reach level 8 to 10 on this visual memory test.',
+        percentileTable: TABLE,
+        shareText: `I reached level ${levelReached} on the Memory Test. Most people manage level 8 to 10. Beat me: https://thereflexhub.com/memory-test`,
+      });
+      stats.record(levelReached);
+      paintBest();
+    },
+  });
+
+  function startGame(): void {
+    startBtn.classList.add('hidden');
+    engine.start();
+  }
+
+  startBtn.addEventListener('click', startGame);
+
+  buildGrid(3);
+  paintBest();
+</script>

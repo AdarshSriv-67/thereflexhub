@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Reaction Time Test - Free Reflex Test | The Reflex Hub';
+const description =
+  'Test your reaction time in milliseconds with this free reflex test. The average is 273 ms: play five rounds, see your percentile, and beat your best.';
+const path = '/reaction-time-test';
+
+const schema = [
+  webAppSchema(
+    'Reaction Time Test',
+    path,
+    'Free five round reaction time test measured in milliseconds with false start detection.'
+  ),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Reaction Time Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is a good reaction time?',
+    a: 'For a simple visual stimulus like this test, anything under 250 milliseconds is a good reaction time, under 220 ms is excellent, and under 200 ms puts you in roughly the fastest few percent of the population. The commonly cited average is 273 ms. Keep in mind that your score includes hardware delay from your screen and mouse, typically 20 to 60 ms, so the same person scores differently on different setups. Compare scores on the same device, and judge yourself against your own five round average rather than a single lucky click.',
+  },
+  {
+    q: 'What is the average human reaction time?',
+    a: 'The average human reaction time to a visual stimulus is about 273 milliseconds, based on millions of aggregated online test results. Reaction to sound is faster, around 170 ms, because auditory signals reach the brain through a shorter processing path. Touch sits in between at roughly 150 to 200 ms in laboratory conditions. Lab studies with specialized equipment report faster visual averages, around 200 to 250 ms, because consumer screens, browsers, and mice add measurable delay on top of true human latency.',
+  },
+  {
+    q: 'Why is my reaction time slower on a TV or old monitor?',
+    a: 'Displays add their own delay before you ever see the color change. A TV in a standard picture mode can add 50 to 150 milliseconds of input lag from image processing, and a 60 Hz office monitor refreshes only every 16.7 ms, so the green frame itself appears late. Gaming monitors at 144 Hz or more, or a TV switched into game mode, cut this dramatically. Your nervous system is equally fast either way: the difference you see between devices is almost entirely hardware latency, not you.',
+  },
+  {
+    q: 'Does age affect reaction time?',
+    a: 'Yes, in a well documented curve. Simple reaction time is fastest in the late teens and early twenties, stays close to peak through the thirties, then slows gradually, roughly 2 to 6 ms per decade at first and faster after 60. The slowdown comes from reduced nerve conduction speed and slower central processing. The encouraging news: regular physical activity, good sleep, and practice on speeded tasks measurably narrow the gap at every age, and experience often compensates in real tasks like driving, where anticipation matters more than raw latency.',
+  },
+  {
+    q: 'Can I improve my reaction time?',
+    a: 'You can, within limits. Raw simple reaction time is heavily biological, but most people shave 10 to 30 milliseconds off their scores through practice, better sleep, and testing under good conditions. Training improves the parts you control: recognizing the stimulus earlier, committing to the response without hesitation, and reducing decision noise. Consistency improves even more than peak speed, meaning fewer slow outliers. Regular aerobic exercise, hydration, and caffeine in moderate doses all have measurable positive effects, while fatigue and alcohol reliably slow you down.',
+  },
+  {
+    q: 'Do gamers have faster reaction times?',
+    a: 'On average, yes. Studies comparing action game players to non-players consistently find 10 to 50 millisecond advantages on simple and choice reaction tasks, and professional esports players routinely average under 200 ms on tests like this one. The causal arrow runs both ways: fast people gravitate to competitive games, and thousands of hours of play train the visual system to detect changes sooner. The advantage transfers partially to other fast tasks, though it does not make anyone superhuman at everything reaction based.',
+  },
+  {
+    q: 'What is the difference between reaction time and reflexes?',
+    a: 'A true reflex, like your knee jerking when tapped, is an involuntary loop through the spinal cord that fires in 20 to 50 milliseconds without any brain involvement. Reaction time is a voluntary process: your eyes register the green screen, the visual cortex processes it, your brain makes a decision, and a command travels to your finger muscles. That full chain takes around 200 ms at best. This test measures reaction time. Genuine reflexes cannot be tested with a screen and are far faster than any conscious response.',
+  },
+  {
+    q: 'Does caffeine or sleep affect reaction time?',
+    a: 'Both, strongly. Moderate caffeine, about one or two cups of coffee, reliably improves simple reaction time by roughly 5 to 30 milliseconds and reduces slow lapses, with effects peaking about 30 to 60 minutes after drinking. Sleep works the other direction: staying awake for 17 to 19 hours degrades reaction performance to a level comparable with legally relevant blood alcohol, and chronic short sleep produces frequent slow responses called lapses. If you want your genuine best score, test rested, hydrated, and mildly caffeinated.',
+  },
+  {
+    q: 'Why does the test use a color change?',
+    a: 'A sudden color change from red to green is a clean, unambiguous visual stimulus that arrives everywhere on the play area at once, so it isolates simple reaction time without any searching, aiming, or decision making. Red and green also carry universal stop and go meaning, which removes any learning curve. The random 2 to 5 second delay before each change prevents you from predicting the moment and jumping the gun. If you click during red, the test catches the false start and restarts that round rather than rewarding a guess.',
+  },
+  {
+    q: 'Is reaction time linked to intelligence?',
+    a: 'There is a real but modest statistical correlation: people with faster and, especially, more consistent simple reaction times tend to score somewhat higher on cognitive tests, and researchers use reaction based tasks to study processing speed. But the effect is far too weak to say anything about an individual. A 320 ms average says nothing meaningful about how smart you are, and neither does a 210 ms one. Treat this test as a fun measure of visual motor speed, not a cognitive assessment. It is not a medical or psychological diagnostic tool.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Reaction Time Test: How Fast Are Your Reflexes?</h1>
+    <p class="mt-1 text-sm text-muted">
+      Wait for green, then click as fast as you can. Five rounds, averaged.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="mb-3 flex items-center justify-center gap-2" id="round-dots" aria-label="Round progress">
+        {[1, 2, 3, 4, 5].map(() => <span class="size-2.5 rounded-full bg-surface2 ring-1 ring-line" data-dot></span>)}
+      </div>
+      <button
+        type="button"
+        id="reaction-zone"
+        class="flex min-h-[300px] w-full select-none flex-col items-center justify-center gap-2 rounded-xl bg-surface2 font-display transition-colors duration-100 sm:min-h-[340px]"
+      >
+        <span class="text-2xl font-bold" id="zone-title">Tap to start</span>
+        <span class="px-6 text-sm font-normal text-muted" id="zone-sub">
+          Wait for red to turn green, then react. Click too early and the round restarts.
+        </span>
+        <span class="score-nums hidden text-6xl font-bold" id="zone-ms"></span>
+      </button>
+    </div>
+
+    <ResultCard unit="ms" />
+
+    <StatsPanel runChartTitle="This run: ms per round" historyTitle="Last 20 runs: average ms" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Is a Reaction Time Test?</h2>
+    <p>
+      A reaction time test measures the delay between a stimulus appearing and your response to it, reported in
+      milliseconds. This reflex test uses the classic format trusted by decades of psychology research: the screen
+      turns red while you wait, then after a random delay of 2 to 5 seconds it flips to green, and you click the
+      instant you notice. The randomness is the point. Because you cannot predict the exact moment, the test captures
+      genuine reaction speed instead of anticipation or rhythm.
+    </p>
+    <p>
+      One round proves little, because single clicks are noisy: you might catch a change mid-blink or land a lucky
+      early twitch. That is why this reaction test runs five rounds and reports your average, the same approach used in
+      research settings. Your average, your best round, and your full history are stored in your browser so you can
+      track improvement over days and weeks.
+    </p>
+
+    <h2>Average Reaction Time: Where Do You Stand?</h2>
+    <p>
+      The most widely cited figure for average human reaction time to a visual stimulus is 273 milliseconds, drawn from
+      millions of online test results. Reaction to sound is faster, around 170 ms, because auditory processing takes a
+      shorter path through the brain. Here is how visual reaction time test scores commonly stack up:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Average (ms)</th><th>Rating</th><th>Typical of</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 200</td><td>Exceptional</td><td>Top esports players, sprinters at the gun</td></tr>
+          <tr><td>200 to 230</td><td>Excellent</td><td>Serious gamers, athletes in reactive sports</td></tr>
+          <tr><td>230 to 270</td><td>Above average</td><td>Regular gamers, young adults at their peak</td></tr>
+          <tr><td>270 to 320</td><td>Average</td><td>The broad middle of the population</td></tr>
+          <tr><td>320 to 400</td><td>Below average</td><td>Fatigue, distraction, slower displays</td></tr>
+          <tr><td>Over 400</td><td>Slow today</td><td>Tiredness, unfamiliar device, or high display lag</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      For perspective, Formula 1 drivers respond to the start lights in roughly 200 to 250 milliseconds, and Olympic
+      sprint rules treat anything faster than 100 ms off the blocks as a false start, because a genuine human response
+      that fast is considered impossible.
+    </p>
+
+    <h2>How to Improve Your Reaction Time</h2>
+    <p>Raw speed has a biological floor, but nearly everyone can move closer to their own floor. The levers that work:</p>
+    <ol>
+      <li><strong>Sleep seven to nine hours.</strong> Sleep deprivation is the single biggest everyday cause of slow, inconsistent reactions, producing lapses of 500 ms or more.</li>
+      <li><strong>Use moderate caffeine.</strong> One or two cups of coffee measurably sharpens simple reaction time for a few hours. More than that mostly adds jitter, not speed.</li>
+      <li><strong>Practice the exact task.</strong> Ten runs a day for two weeks typically trims 10 to 30 ms as your visual system learns to detect the change earlier and your response becomes automatic.</li>
+      <li><strong>Exercise regularly.</strong> Aerobic fitness improves nerve conduction and processing speed, with benefits documented across every age group.</li>
+      <li><strong>Remove distractions.</strong> Reaction time degrades sharply when attention is split. Full screen, sound off, one task.</li>
+      <li><strong>Fix your hardware.</strong> A high refresh monitor and a low latency mouse can shave 20 to 40 ms off your displayed score without your nervous system changing at all.</li>
+      <li><strong>Stay warm and loose.</strong> Cold hands respond slower. A brief warm-up round before serious attempts is worth a few milliseconds.</li>
+    </ol>
+
+    <h2>The Science: What Happens in Those 273 Milliseconds</h2>
+    <p>
+      Your score is the sum of a chain of biological events. Light from the green screen strikes your retina, which
+      needs 20 to 40 ms to transduce it into neural signals. Those signals travel to the visual cortex and are
+      recognized as the go stimulus, consuming roughly 50 to 100 ms. Your brain then commits to the decision and the
+      motor cortex issues a command, another 40 to 80 ms. The command travels down the spinal cord and peripheral
+      nerves to your forearm at up to 120 meters per second, and finally the muscles contract and the mouse switch
+      closes. Every stage is fast; it is the stacking that adds up to a quarter of a second.
+    </p>
+    <p>
+      This is also why reaction time and reflexes are different things. A true reflex arc, like pulling your hand off a
+      hot pan, routes through the spinal cord in 20 to 50 ms without waiting for the brain. A voluntary reaction
+      requires perception and decision, which is what this test measures, and what games, driving, and sports mostly
+      demand.
+    </p>
+
+    <h2>Who Uses Reaction Time Tests and Why</h2>
+    <p>
+      Gamers and esports players use reaction tests as a warm-up thermometer and a long term benchmark: many
+      professional players check their reaction speed before scrims the way a sprinter checks the track. Coaches in
+      reactive sports (tennis, boxing, goalkeeping, baseball) use reaction drills to sharpen response under pressure.
+      Driving instructors reference reaction figures constantly, because at highway speed a 273 ms reaction adds about
+      9 meters of travel before braking even begins. Researchers and students use simple reaction tasks as a workhorse
+      measure of processing speed. And many visitors are simply curious how they compare to the average, or whether
+      their focus today is sharper than yesterday.
+    </p>
+    <p>
+      Some people also try reaction tests while curious about attention or focus issues. That curiosity is welcome, but
+      one number from a browser game cannot assess ADHD, neurological health, or anything clinical. This is not a
+      medical diagnostic tool; if reaction speed in daily life genuinely concerns you, talk to a professional.
+    </p>
+
+    <h2>Simple vs Choice Reaction Time</h2>
+    <p>
+      This page measures simple reaction time: one stimulus, one response, no decisions. Psychology also studies choice
+      reaction time, where you must pick between responses (press left for green, right for blue), and recognition
+      reaction time, where you respond to some stimuli and ignore others. Every added decision costs time. A rule known
+      as Hick's law describes it: each doubling of the number of choices adds a roughly constant chunk of processing
+      time, which is why a driver choosing between braking and swerving responds hundreds of milliseconds slower than a
+      sprinter reacting to a single gun. Our Stroop test and aim trainer both lean toward choice reaction, which is why
+      per-response times there run well above your simple reaction score. Comparing your results across the two kinds
+      of test shows you how much of your speed is raw detection and how much is decision making.
+    </p>
+
+    <h2>Reaction Time in Gaming and Esports</h2>
+    <p>
+      Few skills transfer to competitive gaming as directly as reaction speed. In tactical shooters, the difference
+      between a 200 ms and a 280 ms reaction is often the difference between trading a kill and taking one, before
+      aim even enters the picture. Fighting game players time punishes inside windows of 10 to 20 frames, roughly 160
+      to 330 ms, meaning average human reaction time sits right at the edge of what those games demand. Rhythm and
+      racing games lean on anticipation instead, teaching players to predict rather than react, which is a separate
+      skill this reflex test deliberately removes with its random delay. Many esports coaches have players log a
+      five round average daily; the trend line matters more than any single day, and a sudden slowdown is usually a
+      sleep or stress signal rather than lost talent.
+    </p>
+
+    <h2>Why Your Score Varies Between Attempts</h2>
+    <p>
+      Expect your five round average to swing 20 to 40 ms across a day. Attention drifts in and out on a scale of
+      seconds, blinks steal 100 to 150 ms windows of vision, and arousal level shifts with food, stress, and time of
+      day. Hardware adds its own noise: browsers batch input events, monitors refresh in fixed steps, and wireless mice
+      buffer clicks. None of this is a flaw in you or the test; it is exactly why averages beat single runs, and why
+      comparing scores across different devices misleads. For a fair benchmark, test on the same machine, at the same
+      time of day, in the same state of caffeination.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['f1', 'aim', 'cps', 'sequence']} />
+
+</BaseLayout>
+
+<script>
+  import { ReactionEngine } from '../games/reactionEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const zone = document.getElementById('reaction-zone') as HTMLElement;
+  const zoneTitle = document.getElementById('zone-title') as HTMLElement;
+  const zoneSub = document.getElementById('zone-sub') as HTMLElement;
+  const zoneMs = document.getElementById('zone-ms') as HTMLElement;
+  const dots = Array.from(document.querySelectorAll<HTMLElement>('[data-dot]'));
+
+  // CDF of visual reaction times: "beats" is the share of people faster than the value.
+  const TABLE: PercentilePoint[] = [
+    { value: 150, beats: 1 },
+    { value: 180, beats: 4 },
+    { value: 200, beats: 10 },
+    { value: 230, beats: 25 },
+    { value: 273, beats: 50 },
+    { value: 320, beats: 72 },
+    { value: 380, beats: 88 },
+    { value: 450, beats: 95 },
+    { value: 600, beats: 99 },
+  ];
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'reaction',
+    valueLabel: 'Avg ms',
+    columns: [{ key: 'best', label: 'Best round' }],
+    runItemNoun: 'Round',
+    runItemUnit: 'ms',
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'reaction',
+    higherIsBetter: false,
+    format: (v) => `${Math.round(v)} ms`,
+    onRestart: () => engine.reset(),
+  });
+
+  function paint(bg: string, title: string, sub: string, ms?: string): void {
+    zone.className = zone.className.replace(/bg-\S+/g, '');
+    zone.classList.add(bg);
+    zoneTitle.textContent = title;
+    zoneSub.textContent = sub;
+    if (ms) {
+      zoneMs.textContent = ms;
+      zoneMs.classList.remove('hidden');
+    } else {
+      zoneMs.classList.add('hidden');
+    }
+  }
+
+  function paintDots(round: number): void {
+    dots.forEach((d, i) => {
+      d.classList.toggle('bg-accent', i < round);
+      d.classList.toggle('bg-surface2', i >= round);
+    });
+  }
+
+  const engine = new ReactionEngine({
+    zone,
+    rounds: 5,
+    onStateChange: (state, { round, rounds }) => {
+      if (state === 'idle') {
+        paint('bg-surface2', 'Tap to start', 'Wait for red to turn green, then react. Click too early and the round restarts.');
+        paintDots(0);
+      } else if (state === 'waiting') {
+        paint('bg-bad', 'Wait for green', `Round ${round} of ${rounds}`);
+      } else if (state === 'go') {
+        paint('bg-ok', 'Click now!', '');
+      } else if (state === 'tooSoon') {
+        paint('bg-surface2', 'Too soon!', 'You clicked while it was still red. Tap to retry this round.');
+      }
+    },
+    onRound: (ms, round) => {
+      paintDots(round);
+      if (round < 5) {
+        paint('bg-surface2', '', 'Tap to continue', `${ms} ms`);
+      }
+    },
+    onFalseStart: () => {},
+    onFinish: (avg, times) => {
+      paint('bg-surface2', 'Done!', 'Your five round average is below. Tap to play again.');
+      const best = Math.min(...times);
+      card.show({
+        score: avg,
+        display: String(avg),
+        detail: `Rounds: ${times.join(', ')} ms (best ${best} ms)`,
+        compare: 'The average human visual reaction time is 273 ms.',
+        percentileTable: TABLE,
+        shareText: `My reaction time is ${avg} ms (average of 5 rounds). The human average is 273 ms. Beat me: https://thereflexhub.com/reaction-time-test`,
+      });
+      stats.record(avg, { best: `${best} ms` }, times);
+    },
+  });
+</script>

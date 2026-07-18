@@ -1,0 +1,347 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'F1 Reaction Test - Beat the Start Lights | The Reflex Hub';
+const description =
+  'Free F1 reaction test: five red lights, a random hold, then lights out. React like a Formula 1 driver, see your ms and percentile, beat 250 ms.';
+const path = '/f1-reaction-test';
+
+const schema = [
+  webAppSchema(
+    'F1 Reaction Test',
+    path,
+    'Formula 1 start light simulation: five red lights, a random hold, then lights out. React in milliseconds with jump start detection.'
+  ),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'F1 Reaction Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'How fast do F1 drivers react to the start lights?',
+    a: 'Formula 1 drivers typically react to lights out in about 200 to 250 milliseconds, measured from the moment the lights go dark to the moment the clutch paddle starts moving. That figure is consistent with laboratory averages for elite athletes on visual tasks, because the light panel is a visual stimulus like any other. Team launch data occasionally shows quicker numbers, but those usually reflect anticipation of the hold window rather than pure reaction. On this test, anything under 250 ms puts you in genuine F1 driver territory, and under 200 ms is exceptional.',
+  },
+  {
+    q: 'How do the F1 start lights work?',
+    a: 'The gantry above the grid holds five pairs of red lights. Once every car is in position, the lights come on one pair at a time, roughly one second apart, from left to right. When all five pairs are lit, the race director arms a randomized hold: the lights stay red for an unpredictable period, usually between a fraction of a second and about three seconds. The race starts the instant all five pairs go dark at once. There is no green light at an F1 race start; going out is the go signal.',
+  },
+  {
+    q: 'What happens if a driver reacts before the lights go out?',
+    a: 'If a car moves before the lights go dark, it is a jump start and the stewards investigate automatically. The standard penalty is a five or ten second time penalty, or a drive-through penalty served during the race, depending on how much advantage was gained. In extreme cases a driver can be disqualified. Even a tiny creep of the car within its grid box can trigger the sensors. That risk is exactly why drivers do not gamble on guessing the hold: the randomized delay makes anticipation a losing bet over a season.',
+  },
+  {
+    q: 'What is a jump start in F1?',
+    a: 'A jump start is any forward movement of the car from its grid position before the five red lights are extinguished. It does not require crossing a line: the car simply has to leave its marked box, or in the current system, move beyond a tiny tolerance detected by the transponder loop under each grid slot. Because the hold period after the fifth light is randomized, a jump start almost always means the driver released the clutch on a guess rather than a reaction. This test replicates that rule: tap while any light is still red and the run is voided.',
+  },
+  {
+    q: 'Is 200 ms a realistic F1 driver reaction time?',
+    a: 'Yes, 200 milliseconds is realistic for the best starts, though it sits at the fast end of the range. Published team and broadcast figures generally place Formula 1 reaction time to lights out between 200 and 250 ms. Occasional headline numbers well below that, such as reported figures around 40 ms in practice launch drills, are best understood as anticipation landing inside the measurement window, not pure reaction, since the human visual system needs roughly 150 to 180 ms minimum to produce any deliberate response. Treat sub-100 ms scores on any light test the same way: lucky timing, not reflexes.',
+  },
+  {
+    q: 'How does this test simulate the real F1 start?',
+    a: 'It follows the same script as a Grand Prix start. Five columns light up red in sequence, about one second apart, exactly like the gantry over the grid. Once all five are lit, a randomized hold begins, so you cannot count your way to the start. At an unpredictable moment all lights go dark simultaneously, and your time is measured from that instant to your tap or spacebar press. React while any light is still on and it is ruled a jump start, just as the FIA sensors would rule it on track. The only thing missing is the engine noise.',
+  },
+  {
+    q: 'Can practicing improve my start reaction?',
+    a: 'Yes, within human limits. Most people improve by 20 to 40 milliseconds over a week or two of short daily sessions, and consistency improves even more than peak speed. The gains come from learned components: your visual system gets better at detecting the offset of the lights, your finger commits without hesitation, and you stop wasting time double-checking. Racing drivers rehearse launches for the same reason. What practice will not do is push you meaningfully below your biological floor, which for most healthy adults sits somewhere around 180 to 220 ms on a visual task.',
+  },
+  {
+    q: 'How does F1 reaction compare to normal reaction time tests?',
+    a: 'A standard reaction test gives you a surprise stimulus after a random delay with no warning structure, which measures pure simple reaction time. The F1 format adds a known five step build-up before the random hold, so your brain can reach peak readiness just as the uncertainty begins. That preparation typically makes people 10 to 30 milliseconds faster here than on a plain red-to-green test. It also adds risk: the more prepared you are, the more tempting it is to guess, which is why jump starts are common. The two tests measure related but distinct skills.',
+  },
+  {
+    q: 'Do sim racers train with light tests?',
+    a: 'Constantly. Race starts in iRacing, F1 games, and Assetto Corsa Competizione are worth positions, so competitive sim racers drill lights out reactions the way aim trainers are used in shooters. Many warm up with a browser light test before a league race to check whether their reactions are sharp that day, then practice full launches in-game to combine the reaction with clutch and throttle technique. Esports racing teams have used reaction benchmarks in driver scouting as well. The skill transfers directly because the stimulus, five red lights going dark, is identical to the real procedure.',
+  },
+  {
+    q: 'What is the best score ever recorded on light-start tests?',
+    a: 'There is no official world record, because scores depend on hardware latency and cannot be verified. On tests like this one, sustained averages around 140 to 160 ms are about the credible ceiling for elite performers on fast monitors and mice. Single results far below that, including the occasional sub-50 ms screenshot, are anticipations that happened to land just after lights out, since deliberate visual reactions under roughly 100 ms are considered physiologically impossible; Olympic sprinting treats faster-than-100 ms starts as false starts for exactly that reason. Judge yourself on a five or ten run average, not one lucky tap.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">F1 Reaction Test: React to the Start Lights Like a Driver</h1>
+    <p class="mt-1 text-sm text-muted">
+      Five red lights, a random hold, then lights out. Tap the instant they go dark.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <button
+        type="button"
+        id="f1-zone"
+        class="flex min-h-[320px] w-full select-none flex-col items-center justify-center gap-5 rounded-xl bg-surface2 font-display transition-colors duration-100 sm:min-h-[360px]"
+      >
+        <span class="flex items-start justify-center gap-2 sm:gap-3" id="gantry" aria-hidden="true">
+          {[1, 2, 3, 4, 5].map(() => (
+            <span class="flex flex-col items-center gap-2 rounded-xl bg-bg px-2 py-2.5 ring-1 ring-line sm:px-2.5 sm:py-3" data-pod>
+              <span class="size-6 rounded-full bg-surface2 transition-all duration-75 sm:size-8" data-lamp></span>
+              <span class="size-6 rounded-full bg-surface2 transition-all duration-75 sm:size-8" data-lamp></span>
+            </span>
+          ))}
+        </span>
+        <span class="text-2xl font-bold" id="zone-title">Tap to start the light sequence</span>
+        <span class="px-6 text-sm font-normal text-muted" id="zone-sub">
+          Five red lights come on one by one, hold, then go dark. React to lights out. Spacebar works too.
+        </span>
+        <span class="score-nums hidden text-6xl font-bold" id="zone-ms"></span>
+      </button>
+    </div>
+
+    <ResultCard unit="ms" />
+
+    <StatsPanel historyTitle="Last 20 runs: reaction ms" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>How the Real F1 Start Procedure Works</h2>
+    <p>
+      Every Formula 1 race begins with the same ritual. Above the front of the grid hangs a gantry carrying five
+      columns of paired red lights. When the final car settles into its grid box, the starter begins the sequence: the
+      first pair of F1 start lights comes on, then the second, third, fourth, and fifth, each about one second after
+      the last. Five pairs of red lights now glare down at twenty drivers holding their engines at launch revs.
+    </p>
+    <p>
+      Then comes the part that makes the F1 start psychologically brutal: nothing happens. The race director has armed
+      a randomized hold, and the lights simply stay red for an unpredictable period, anywhere from a blink to roughly
+      three seconds. Drivers cannot count their way to the start, because there is no rhythm to count. At an
+      unknowable instant, all five pairs go dark at once. That is the signal. Not a green light, not a flag: lights
+      out, and away they go. This page reproduces that exact procedure, which is why it feels so different from an
+      ordinary reflex game. You know precisely what is coming, you just do not know when.
+    </p>
+
+    <h2>What This F1 Reaction Test Measures</h2>
+    <p>
+      A standard reaction time test gives you a surprise: the screen changes after a random delay with no warning
+      structure, and you respond. That measures pure simple reaction time. This lights out reaction test measures
+      something subtly different: your ability to respond at maximum readiness inside a known sequence. The five light
+      build-up is information. By the time the fifth pair is lit, your nervous system can be fully primed, muscles
+      pre-tensed, attention locked on the panel, motor command loaded and waiting for release.
+    </p>
+    <p>
+      That preparation is why most people score 10 to 30 milliseconds faster here than on a plain red-to-green test.
+      It is also why the format is dangerous. The better prepared you are, the stronger the urge to guess the hold and
+      jump. The randomized delay exists precisely to punish that urge, in this test and on a real grid. So the skill
+      being measured is really two skills fused together: raw visual reaction speed, and the discipline to stay
+      coiled without firing early. Sprinters at the blocks and drag racers on a Christmas tree face the same trade,
+      which is why light-start training shows up across so many speed sports.
+    </p>
+
+    <h2>Formula 1 Reaction Time: What the Real Benchmarks Say</h2>
+    <p>
+      Published figures for F1 driver reaction time at the start consistently land in the 200 to 250 millisecond
+      range, measured from lights out to first movement of the clutch paddle. That may sound modest next to internet
+      legends, but it is genuinely elite: it means producing a near-perfect response, under race pressure, with heart
+      rates around 170 beats per minute, and doing it reliably at every start of a twenty-plus race season.
+    </p>
+    <p>
+      You will also see much smaller numbers quoted. The most famous is Valtteri Bottas, who was reported to have
+      recorded a reaction of around 40 milliseconds in team launch tests, a figure widely repeated in coverage of his
+      lightning starts. Treat claims like that carefully. A deliberate human response to a visual stimulus needs
+      roughly 150 to 180 ms at the absolute physiological limit, because the retina, visual cortex, decision circuits,
+      and motor pathway all take real time. A 40 ms result almost certainly means the driver anticipated the hold and
+      happened to release fractionally after lights out: perfectly legal if the car does not move early, and arguably
+      a skill of its own, but not pure reaction. Olympic athletics draws the same line, ruling any sprint start faster
+      than 100 ms a false start on the grounds that no human can genuinely react that quickly.
+    </p>
+
+    <h2>Jump Starts: How Formula 1 Catches Them</h2>
+    <p>
+      Under each grid slot sits a detection loop, and each car carries an FIA transponder. Together they watch for any
+      forward movement before the lights go out. The system is automatic and unforgiving: creep a few centimeters
+      while the fifth light is still lit and the stewards are notified before the field reaches the first corner.
+      Penalties scale with the advantage gained, typically a five or ten second penalty or a drive-through, and the
+      data makes arguing pointless. The sensors have also caught the opposite sin, drivers lined up outside their
+      grid box, which is judged by the same hardware.
+    </p>
+    <p>
+      This test applies the same rule with the same lack of mercy. Tap, click, or press space while any light is
+      still red and the run is ruled a jump start and voided. No time is recorded, because a guess is not a reaction.
+      If you find yourself jumping repeatedly, that is the test working as designed: it is teaching you the
+      discipline half of the skill.
+    </p>
+
+    <h2>F1 Reaction Test Benchmarks: How Your Score Stacks Up</h2>
+    <p>
+      Scores on this test run a little quicker than classic reaction tests because of the primed build-up. Here is a
+      realistic ladder, based on how lights out scores distribute:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Reaction (ms)</th><th>Rating</th><th>Grid position equivalent</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 180</td><td>Exceptional</td><td>Front row material, elite among all players</td></tr>
+          <tr><td>180 to 230</td><td>Excellent</td><td>Genuine F1 driver territory</td></tr>
+          <tr><td>230 to 260</td><td>Very good</td><td>Points-scoring start, better than half of players</td></tr>
+          <tr><td>260 to 300</td><td>Average</td><td>The middle of the pack</td></tr>
+          <tr><td>300 to 350</td><td>Below average</td><td>Bogged down off the line, room to improve</td></tr>
+          <tr><td>Over 350</td><td>Slow today</td><td>Fatigue, distraction, or a laggy display</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Remember that your score includes hardware delay: a 60 Hz office monitor and a wireless mouse can add 30 to 60
+      ms that has nothing to do with your nervous system. Compare runs on the same device, and judge yourself on an
+      average of five or more starts rather than one golden tap.
+    </p>
+
+    <h2>How to Improve Your Lights Out Reaction</h2>
+    <p>The fastest starters are made by habits, not just genetics. These are the levers that reliably work:</p>
+    <ol>
+      <li><strong>Practice anticipation discipline.</strong> Your first goal is zero jump starts across ten runs, even if your times rise briefly. Guessing trains the wrong circuit; clean reactions train the right one.</li>
+      <li><strong>Watch the whole panel, not one light.</strong> Soften your gaze so the full gantry sits in view. Your visual periphery detects the offset of five lights going dark faster than a hard stare at a single pod.</li>
+      <li><strong>Pre-load the movement.</strong> Rest your finger on the button or spacebar with light pressure, decision already made. The only remaining step should be release, not choice.</li>
+      <li><strong>Run short, frequent sessions.</strong> Ten starts a day beats a hundred once a week. Reaction gains come from consolidation between sessions, and fatigue within a long session adds slow outliers.</li>
+      <li><strong>Control your state.</strong> Seven to nine hours of sleep, a moderate dose of caffeine, and a warm hand are each worth real milliseconds. Testing exhausted tells you about your exhaustion, not your ceiling.</li>
+      <li><strong>Exhale before the hold.</strong> A slow breath out as the fifth light comes on drops shoulder tension and steadies attention through the random wait, the same trick sprinters use in the set position.</li>
+      <li><strong>Fix the hardware floor.</strong> A high refresh monitor, game mode on a TV, and a wired mouse remove latency you cannot train away.</li>
+    </ol>
+
+    <h2>The Science: Why Lights Out Is a Hard Signal</h2>
+    <p>
+      Reacting to the F1 start lights is a purely visual task, and vision is not the fastest channel we have.
+      Auditory reactions average around 170 ms against roughly 273 ms for unprepared visual ones, because sound
+      reaches the motor system through a shorter processing path. A starting pistol would produce quicker launches
+      than a light panel; motorsport uses lights anyway because they are fair across a grid stretched over hundreds
+      of meters, immune to engine noise, and identical for every driver.
+    </p>
+    <p>
+      Researchers split a reaction into premotor time, the interval from stimulus to the first electrical activity in
+      the muscle, and motor time, the interval from that activation to actual movement. Training and readiness mostly
+      compress premotor time: the countdown structure of the five lights lets your brain complete almost all of its
+      preparation in advance, holding a fully assembled motor command at the starting gate. What remains is detecting
+      the offset of the lights, a slightly slower percept than an onset, which is one reason lights out is a
+      surprisingly tough stimulus. Everything after that is nerve conduction and muscle contraction, which is
+      effectively fixed. That is why elite drivers cluster in a narrow band: past a point, biology sets the limit.
+    </p>
+
+    <h2>Who Trains With Light-Start Tests</h2>
+    <p>
+      F1 drivers rehearse launches relentlessly, in simulators and in dedicated practice start zones during test
+      sessions, because a tenth of a second at lights out can be worth two places into the first corner. Sim racers
+      and esports drivers in iRacing and the official F1 games drill the identical stimulus, often warming up with a
+      browser test like this one before league races. Sprinters and swimmers train reaction to a start signal under
+      false start rules that mirror jump start detection. Drag racers face the most extreme version, a vertical
+      Christmas tree of lights where reaction time is printed on every timeslip. And plenty of visitors are simply
+      here to settle whether they could hang with a Formula 1 field when the lights go dark.
+    </p>
+    <p>
+      One honest note: this is a game and a training aid, not a medical or psychological diagnostic tool. If your
+      reaction speed in daily life genuinely concerns you, speak to a professional rather than a light panel.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['reaction', 'aim', 'cps', 'sequence']} />
+
+</BaseLayout>
+
+<script>
+  import { F1ReactionEngine } from '../games/reactionEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const zone = document.getElementById('f1-zone') as HTMLElement;
+  const zoneTitle = document.getElementById('zone-title') as HTMLElement;
+  const zoneSub = document.getElementById('zone-sub') as HTMLElement;
+  const zoneMs = document.getElementById('zone-ms') as HTMLElement;
+  const pods = Array.from(document.querySelectorAll<HTMLElement>('[data-pod]'));
+
+  // Lights out reaction distribution: "beats" is the share of people faster than the value.
+  const TABLE: PercentilePoint[] = [
+    { value: 150, beats: 2 },
+    { value: 180, beats: 6 },
+    { value: 200, beats: 15 },
+    { value: 230, beats: 32 },
+    { value: 260, beats: 50 },
+    { value: 300, beats: 70 },
+    { value: 350, beats: 86 },
+    { value: 450, beats: 96 },
+    { value: 600, beats: 99 },
+  ];
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'f1',
+    valueLabel: 'ms',
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'f1',
+    higherIsBetter: false,
+    format: (v) => `${Math.round(v)} ms`,
+    onRestart: () => engine.reset(),
+  });
+
+  const LIT = ['bg-bad', 'shadow-[0_0_18px_rgba(239,68,68,0.7)]'];
+
+  function setLights(litCount: number): void {
+    pods.forEach((pod, i) => {
+      const on = litCount > 0 && i < litCount;
+      pod.querySelectorAll<HTMLElement>('[data-lamp]').forEach((lamp) => {
+        LIT.forEach((cls) => lamp.classList.toggle(cls, on));
+        lamp.classList.toggle('bg-surface2', !on);
+      });
+    });
+  }
+
+  function paint(bg: string, title: string, sub: string, ms?: string): void {
+    zone.className = zone.className.replace(/bg-\S+/g, '');
+    zone.classList.add(bg);
+    zoneTitle.textContent = title;
+    zoneSub.textContent = sub;
+    if (ms) {
+      zoneMs.textContent = ms;
+      zoneMs.classList.remove('hidden');
+    } else {
+      zoneMs.classList.add('hidden');
+    }
+  }
+
+  const engine = new F1ReactionEngine({
+    zone,
+    lightIntervalMs: 1000,
+    onLight: (n) => setLights(n),
+    onStateChange: (state) => {
+      if (state === 'idle') {
+        paint(
+          'bg-surface2',
+          'Tap to start the light sequence',
+          'Five red lights come on one by one, hold, then go dark. React to lights out. Spacebar works too.'
+        );
+      } else if (state === 'lights' || state === 'hold') {
+        paint('bg-surface2', 'Wait for lights out...', 'React the instant all five lights go dark.');
+      } else if (state === 'go') {
+        paint('bg-ok', 'GO!', '');
+      } else if (state === 'jumpStart') {
+        paint('bg-surface2', 'Jump start!', 'You reacted before lights out. Tap to retry.');
+      } else if (state === 'finished') {
+        paint('bg-surface2', 'Lights out!', 'Your reaction is below. Tap to launch again.');
+      }
+    },
+    onJumpStart: () => {},
+    onFinish: (ms) => {
+      paint('bg-surface2', '', 'Tap to launch again.', `${ms} ms`);
+      card.show({
+        score: ms,
+        display: String(ms),
+        detail: 'From lights out to your reaction',
+        compare: 'F1 drivers typically react to lights out in 200 to 250 ms.',
+        percentileTable: TABLE,
+        shareText: `I reacted to the F1 start lights in ${ms} ms. F1 drivers manage 200 to 250 ms. Beat me: https://thereflexhub.com/f1-reaction-test`,
+      });
+      stats.record(ms);
+    },
+  });
+</script>

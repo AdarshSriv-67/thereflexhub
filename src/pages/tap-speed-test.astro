@@ -1,0 +1,343 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Tap Speed Test - Taps Per Second | The Reflex Hub';
+const description =
+  'Take the free tap speed test and measure your taps per second on any phone, tablet, or PC. Play 5 to 60 second modes and beat the 7 TPS average.';
+const path = '/tap-speed-test';
+
+const schema = [
+  webAppSchema('Tap Speed Test', path, 'Free mobile-friendly tap speed test with 5, 10, 15, 30, and 60 second modes.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Tap Speed Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is a tap speed test?',
+    a: 'A tap speed test measures how many times you can tap a touchscreen (or click, on a computer) within a fixed time window, then reports the result as taps per second. You pick a duration, tap the big zone as fast as you can, and the tool timestamps every touch with a high resolution timer. It is the touchscreen version of the classic CPS test, tuned for thumbs and fingertips instead of mouse buttons. Mobile gamers use it as a finger speed test to benchmark their tapping before rhythm games, clicker games, and battle royale button mashing.',
+  },
+  {
+    q: 'What is a good taps-per-second score?',
+    a: 'On a 10 second run, most people land between 5 and 8 taps per second, with the typical average around 7. Anything above 9 taps per second is faster than the average player, and 11 or more is elite territory, usually reached with two-finger alternation or a very light drumming technique. Scores dip on longer runs as the finger fatigues, so a 60 second result will normally sit 15 to 25 percent below your 10 second pace. Compare scores within the same duration for a fair picture of your tapping speed.',
+  },
+  {
+    q: 'Is tapping speed different from clicking speed?',
+    a: 'Yes, and most people score higher on a tapping test than on a mouse click test. A screen tap needs only a few millimeters of finger travel and no mechanical switch to compress, while a mouse click requires pressing a sprung button through its full actuation and release cycle. Tapping also lets you use your whole finger or thumb from a relaxed hover, whereas clicking anchors your hand to the mouse shell. The skills overlap, but they are distinct enough that serious players benchmark both separately.',
+  },
+  {
+    q: 'Which finger is fastest for tapping?',
+    a: 'For most people the index finger wins on raw frequency because it is the most practiced at fine, rapid movement and has the most independent muscle control. The middle finger is usually a close second. Thumbs are stronger and dominate phone use, so heavy mobile gamers often tap faster with a thumb than desktop users do with an index finger. The real speed unlock is using two fingers in alternation: each finger only needs half the frequency, which is why drumming index and middle finger routinely beats any single digit.',
+  },
+  {
+    q: 'Does screen refresh rate affect tap tests?',
+    a: 'Refresh rate affects what you see far more than what gets counted. Taps are registered by the touch digitizer, which samples at 120 to 240 Hz or more on modern phones, independent of the display. A 60 Hz screen updates the visible counter less smoothly than a 120 Hz screen, but the underlying timestamps are the same. Touch sampling rate is the spec that matters: a budget panel sampling at 60 Hz can genuinely miss extremely fast double taps, while flagship and gaming phones sampling at 240 to 720 Hz will not.',
+  },
+  {
+    q: 'Can I use multiple fingers?',
+    a: 'Yes. The test counts every touch that lands inside the tap zone, so two-finger alternation, two thumbs, or a full four-finger drumroll all register. Multi-finger tapping is the fastest legitimate technique: alternating two fingers halves the frequency each one must sustain, exactly like butterfly clicking on a mouse. If you want a strict single-finger benchmark to track over time, just discipline yourself to one digit and keep your technique consistent between runs, because a technique change makes old scores incomparable.',
+  },
+  {
+    q: 'Why do rhythm game players train tap speed?',
+    a: 'Because raw tap frequency is a hard gate on difficulty. Rhythm games such as osu, Cytus, Arcaea, and Piano Tiles chart note streams at specific speeds: a 200 beats per minute stream of sixteenth notes demands over 13 taps per second split across fingers. Players who cannot physically produce that frequency fail the chart no matter how good their timing is. A tap counter gives them a clean number to train against, and the endurance modes mirror the sustained streams that appear late in long songs when fatigue sets in.',
+  },
+  {
+    q: 'Does phone case or screen protector affect results?',
+    a: 'A good tempered glass protector adds a fraction of a millimeter and has no measurable effect on tap registration. Thick or cheap plastic film protectors, especially ones with trapped bubbles or worn spots, can occasionally swallow light taps, and any protector reduces the tactile glide that fast drumming relies on. Cases matter mainly through grip: a bulky case that forces an awkward hold slows your thumbs more than any screen layer. If your taps feel like they are dropping, test once without the protector to isolate the cause.',
+  },
+  {
+    q: 'How is tap speed measured?',
+    a: 'The formula is total taps divided by the test duration in seconds. Land 84 taps in a 10 second run and your score is 8.4 taps per second. The timer starts on your first tap rather than on page load, every touch is timestamped with a high resolution clock accurate to a fraction of a millisecond, and the run locks the instant time expires. Results are saved in your browser per duration, so your 10 second personal best and your 60 second personal best live on separate leaderboards.',
+  },
+  {
+    q: 'What is the tap speed world record?',
+    a: 'There is no official sanctioning body for taps per second, so records are community claims. Widely circulated leaderboard results put elite 10 second runs around 12 to 14 taps per second with a single finger, and above 20 with multi-finger drumming on high sampling rate screens. Guinness recognizes related feats like most touchscreen taps in fixed periods, but methodologies differ from online tests. Treat viral claims of 25 plus taps per second skeptically: many involve multiple fingers, macros, or touch hardware registering one press as several.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Tap Speed Test: How Many Taps Per Second?</h1>
+    <p class="mt-1 text-sm text-muted">
+      Tap as fast as you can. The timer starts on your first tap.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Test duration">
+        {[5, 10, 15, 30, 60].map((s) => (
+          <button
+            type="button"
+            class:list={[
+              'btn px-3 py-1.5 text-sm',
+              s === 10 ? 'btn-primary' : 'btn-ghost',
+            ]}
+            data-duration={s}
+          >
+            {s}s
+          </button>
+        ))}
+      </div>
+
+      <div class="score-nums mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">10.0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Taps</p>
+          <p class="text-2xl font-bold" id="stat-taps">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Taps/Sec</p>
+          <p class="text-2xl font-bold text-accent" id="stat-tps">0.0</p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="tap-zone"
+        class="press mt-4 flex min-h-[320px] w-full touch-manipulation select-none flex-col items-center justify-center gap-2 rounded-xl border border-line bg-gradient-to-b from-surface2 to-surface font-display text-xl font-bold transition-shadow hover:shadow-glow sm:min-h-[380px]"
+      >
+        <span id="zone-label">Tap here to start</span>
+        <span class="text-sm font-normal text-muted" id="zone-sub">Any finger works, and multiple fingers count too</span>
+      </button>
+    </div>
+
+    <ResultCard unit="taps/sec" />
+
+    <StatsPanel historyTitle="Last 20 runs: taps per second" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Does a Tap Speed Test Measure?</h2>
+    <p>
+      A tap speed test is a finger speed test built for touchscreens: it counts every tap you land inside the zone
+      during a fixed window and reports your rate in taps per second. The timer starts on your first tap, every touch
+      is timestamped with a high resolution clock, and your score is simply total taps divided by elapsed seconds. Tap
+      92 times in 10 seconds and you scored 9.2 taps per second. The same tap counter works with a mouse on desktop,
+      but it is designed first for thumbs and fingertips on glass, with a large target you cannot miss mid-frenzy.
+    </p>
+    <p>
+      What the number actually captures is the ceiling of your rapid, repetitive finger movement: how fast your nervous
+      system can fire press commands and how quickly your finger muscles can alternate between contraction and
+      relaxation. That makes the tapping test a genuine motor skill benchmark, not just a toy. It responds to
+      technique, warms up with practice, fatigues over long runs, and improves measurably with training, which is
+      exactly why mobile gamers and rhythm game players keep one bookmarked.
+    </p>
+
+    <h2>What Is a Good Taps Per Second Score?</h2>
+    <p>
+      Aggregates from popular mobile tap tests put the average player around 7 taps per second on a 10 second run,
+      slightly higher than the 6.5 CPS average for mouse clicking. Here is the usual spread:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Taps per second (10s)</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 5</td><td>Slow</td><td>Cautious tapping, thick screen protector, or an unfamiliar device</td></tr>
+          <tr><td>5 to 7</td><td>Average</td><td>Relaxed single-finger tapping, right around the mean</td></tr>
+          <tr><td>7 to 9</td><td>Solid</td><td>Confident technique with a loose wrist and short strokes</td></tr>
+          <tr><td>9 to 11</td><td>Fast</td><td>Practiced single finger or early two-finger alternation</td></tr>
+          <tr><td>11+</td><td>Elite</td><td>Refined multi-finger drumming on responsive hardware</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Duration matters as much as technique. A 5 second sprint flatters your burst speed, while the 30 and 60 second
+      modes expose stamina: most players lose 15 to 25 percent of their pace over a full minute. Chase records within
+      one mode rather than comparing across modes.
+    </p>
+
+    <h2>Tapping vs Clicking: Why the Scores Differ</h2>
+    <p>
+      Tapping and clicking feel like the same skill but they are mechanically different. A mouse click must compress a
+      sprung switch through its actuation point and let it fully release before the next click registers, and your hand
+      is anchored to the mouse shell the whole time. A screen tap only needs skin to meet glass: travel distance is a
+      few millimeters, there is no spring resistance, and your hand floats freely, so you can recruit the fast, light
+      motion of the whole finger. That is why most people gain one or two points moving from the CPS test to a tap
+      test, and why touchscreen records run higher than mouse records.
+    </p>
+    <p>
+      The comparison is worth making in both directions. If your click speed is strong but your tap speed lags, your
+      technique probably relies on the mouse switch rebound doing half the work. If tapping is strong and clicking
+      lags, you likely have fast fingers held back by a heavy switch or high debounce mouse. Testing both gives you a
+      cleaner picture of raw finger speed than either number alone.
+    </p>
+
+    <h2>Tap Speed in Mobile and Rhythm Gaming</h2>
+    <p>
+      Mobile games quietly demand serious tap frequency. Rhythm titles are the obvious case: osu streams, Piano Tiles
+      runs, and dense Arcaea or Cytus charts require sustained bursts above 10 taps per second split across fingers,
+      and a player who cannot produce the frequency fails the chart regardless of timing skill. Clicker and idle games
+      reward raw volume. Battle royale and MOBA players on mobile mash ability buttons and fire controls in fights
+      where a few extra inputs per second genuinely matter. Even fishing minigames and quick-time events in big RPGs
+      come down to short tap sprints.
+    </p>
+    <p>
+      That is why the mobile tap test has become a standard warmup: it isolates the exact motion those games use, on
+      the exact device you play them on, with a number you can track. Rhythm players often pair short sprint modes with
+      long endurance runs to mirror the difference between a burst and a full-song stream.
+    </p>
+
+    <h2>Hardware Factors: Touch Sampling, Protectors, and Cases</h2>
+    <p>
+      Two phones with identical screens can score differently because of the digitizer underneath. Touch sampling rate,
+      the frequency at which the panel scans for contact, ranges from 60 Hz on budget devices to 240, 480, or even 720
+      Hz on gaming phones. Higher sampling means each tap is detected sooner and extremely fast repeated contacts are
+      less likely to merge. Display refresh rate, by contrast, only changes how smoothly the counter animates: the
+      timestamps behind your score come from the touch hardware, not the screen.
+    </p>
+    <p>
+      Surface condition matters too. A quality tempered glass protector is effectively invisible to the digitizer, but
+      thick plastic films, moisture, or a cracked screen can swallow light taps. Bulky cases slow you down indirectly
+      by forcing an awkward grip. For a personal best attempt: clean the screen, dry your fingertip, hold the device so
+      your tapping finger hovers close to the zone, and use the same setup every time so your history stays comparable.
+    </p>
+
+    <h2>How to Improve Your Tapping Speed</h2>
+    <ol>
+      <li><strong>Shorten the stroke.</strong> Hover a few millimeters above the glass and pulse the fingertip. Big lifts waste half your cycle time in the air.</li>
+      <li><strong>Relax the hand.</strong> Tension in the wrist and forearm slows alternation. Only the finger should be working; everything else stays loose.</li>
+      <li><strong>Learn two-finger alternation.</strong> Drumming index and middle finger halves each finger's workload and is the single biggest legitimate speed gain.</li>
+      <li><strong>Warm up before record attempts.</strong> Twenty seconds of relaxed tapping raises peak speed and lowers early-run misses.</li>
+      <li><strong>Train in short sets.</strong> Five focused 10 second runs beat five minutes of continuous mashing, which mostly trains fatigue and sloppy form.</li>
+      <li><strong>Add one endurance run.</strong> Finish each session with a 30 or 60 second mode to build the stamina that long rhythm charts actually demand.</li>
+      <li><strong>Stop at any pain.</strong> Sharp wrist or thumb pain is a repetitive strain warning. Rest costs a day; an injury costs months.</li>
+    </ol>
+
+    <h2>The Science of Finger Speed</h2>
+    <p>
+      Every tap runs a full sensorimotor loop: motor cortex command, signal down the spinal cord, contraction of the
+      finger flexors, contact, then sensory confirmation that clears the next command. Sustaining 8 to 10 loops per
+      second sits near the natural ceiling for a single digit, a limit set by how fast muscle fibers can alternate
+      between contraction and relaxation rather than by willpower. Fast-twitch fibers carry this work, and they adapt:
+      studies of finger tapping show coordination gains within days of practice and endurance gains over weeks, with
+      the index finger typically the quickest digit and alternation between fingers beating any single one.
+    </p>
+    <p>
+      Finger tapping rate is also used by researchers as a general index of motor function, but an online game is not a
+      clinical instrument. This tap speed test is not a medical or psychological diagnostic tool: a slow day says
+      nothing about your health, only about your current tapping form. When you want to test the same reflexes from
+      another angle, run the reaction time test for pure response speed or the CPS test for the mouse-side equivalent,
+      and watch how the three numbers move together as you train.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['cps', 'spacebar', 'reaction', 'aim']} />
+
+</BaseLayout>
+
+<script>
+  import { ClickEngine } from '../games/clickEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const zone = document.getElementById('tap-zone') as HTMLElement;
+  const zoneLabel = document.getElementById('zone-label') as HTMLElement;
+  const zoneSub = document.getElementById('zone-sub') as HTMLElement;
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statTaps = document.getElementById('stat-taps') as HTMLElement;
+  const statTps = document.getElementById('stat-tps') as HTMLElement;
+  const durationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-duration]'));
+
+  // Distribution calibrated for the 10 second test; other durations are approximate.
+  const TABLE: PercentilePoint[] = [
+    { value: 4, beats: 8 },
+    { value: 5.5, beats: 25 },
+    { value: 7, beats: 50 },
+    { value: 9, beats: 80 },
+    { value: 11, beats: 95 },
+    { value: 13, beats: 99 },
+  ];
+
+  const gameKey = (d: number) => (d === 10 ? 'tap' : `tap-${d}`);
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'tap',
+    valueLabel: 'Taps/sec',
+    decimals: 1,
+    format: (v) => v.toFixed(1),
+    columns: [
+      { key: 'taps', label: 'Taps' },
+      { key: 'mode', label: 'Mode' },
+    ],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'tap',
+    higherIsBetter: true,
+    format: (v) => `${v.toFixed(1)} taps/sec`,
+    onRestart: () => engine.reset(),
+  });
+
+  const engine = new ClickEngine({
+    zone,
+    duration: readHashDuration() ?? 10,
+    mode: 'click',
+    onStart: () => {
+      zoneLabel.textContent = 'Go!';
+      zoneSub.textContent = 'Keep tapping!';
+    },
+    onTick: (remaining, clicks, cps) => {
+      statTime.textContent = remaining.toFixed(1);
+      statTaps.textContent = String(clicks);
+      statTps.textContent = cps.toFixed(1);
+      if (clicks === 0 && remaining === engine.getDuration()) {
+        zoneLabel.textContent = 'Tap here to start';
+        zoneSub.textContent = 'Any finger works, and multiple fingers count too';
+      }
+    },
+    onFinish: ({ clicks, cps, duration }) => {
+      zoneLabel.textContent = 'Time!';
+      zoneSub.textContent = 'Check your result below';
+      const rounded = Math.round(cps * 10) / 10;
+      card.setGame(gameKey(duration));
+      card.show({
+        score: rounded,
+        display: rounded.toFixed(1),
+        detail: `${clicks} taps in ${duration} seconds`,
+        compare: 'The average player scores about 7 taps per second on a 10 second test.',
+        percentileTable: TABLE,
+        shareText: `I hit ${rounded.toFixed(1)} taps/sec (${clicks} taps in ${duration}s) on the Tap Speed Test. Beat me: https://thereflexhub.com/tap-speed-test`,
+      });
+      stats.record(rounded, { taps: String(clicks), mode: `${duration}s` });
+    },
+  });
+
+  function readHashDuration(): number | null {
+    const n = parseInt(location.hash.slice(1), 10);
+    return [5, 10, 15, 30, 60].includes(n) ? n : null;
+  }
+
+  function selectDuration(d: number): void {
+    engine.setDuration(d);
+    card.setGame(gameKey(d));
+    for (const b of durationBtns) {
+      const active = Number(b.dataset.duration) === d;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+    statTime.textContent = d.toFixed(1);
+    history.replaceState(null, '', d === 10 ? location.pathname : `#${d}`);
+  }
+
+  for (const b of durationBtns) {
+    b.addEventListener('click', () => selectDuration(Number(b.dataset.duration)));
+  }
+
+  const initial = readHashDuration();
+  if (initial && initial !== 10) selectDuration(initial);
+</script>

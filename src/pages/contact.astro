@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '../data/seo';
+import { byId } from '../data/tests';
+
+const title = 'Contact The Reflex Hub - Feedback and Bug Reports';
+const description =
+  'Contact The Reflex Hub by email with bug reports, feedback, or questions about our free reaction, typing, and clicking tests. We read every message.';
+const path = '/contact';
+
+const schema = [
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Contact', path },
+  ]),
+];
+
+const popularLinks = ['reaction', 'cps', 'typing', 'aim', 'memory'].map((id) => byId(id));
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <div class="mx-auto max-w-6xl px-4 pt-10">
+    <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Contact The Reflex Hub</h1>
+    <p class="mt-4 leading-relaxed text-muted">
+      Found a bug, have an idea for a new test, or want to question one of our benchmarks? We want to hear it. The
+      Reflex Hub is a small, independent project, and reader feedback directly shapes which tests get built and which
+      rough edges get fixed first. There is no contact form because the site has no backend, so the fastest route is a
+      plain old email.
+    </p>
+
+    <div class="card mt-8 flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="font-display text-lg font-bold">Email us directly</h2>
+        <p class="mt-1 text-sm text-muted">One inbox for everything: bugs, feedback, ideas, and privacy questions.</p>
+      </div>
+      <a href="mailto:contact@thereflexhub.com" class="btn btn-primary shrink-0">contact@thereflexhub.com</a>
+    </div>
+
+    <section class="mt-10" aria-labelledby="bug-heading">
+      <h2 id="bug-heading" class="font-display text-2xl font-bold">Reporting a Bug</h2>
+      <p class="mt-3 leading-relaxed text-muted">
+        Bug reports are gold, and a little detail makes them ten times easier to fix. When something misbehaves, please
+        include these three things in your email:
+      </p>
+      <ul class="mt-4 flex flex-col gap-3">
+        <li class="card flex items-start gap-3 p-4">
+          <span class="mt-0.5 font-display font-bold text-accent">1.</span>
+          <span class="text-sm leading-relaxed text-muted">
+            <strong class="text-ink">Your browser and version.</strong> For example Chrome 138, Firefox 140, or Safari
+            on iOS. Most bugs only show up in one browser.
+          </span>
+        </li>
+        <li class="card flex items-start gap-3 p-4">
+          <span class="mt-0.5 font-display font-bold text-accent">2.</span>
+          <span class="text-sm leading-relaxed text-muted">
+            <strong class="text-ink">Your device.</strong> Desktop or phone, and roughly what model. Touch and mouse
+            input take different code paths.
+          </span>
+        </li>
+        <li class="card flex items-start gap-3 p-4">
+          <span class="mt-0.5 font-display font-bold text-accent">3.</span>
+          <span class="text-sm leading-relaxed text-muted">
+            <strong class="text-ink">The test name and what happened.</strong> Which test you were playing, what you
+            expected, and what you saw instead. A screenshot helps enormously.
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="mt-10" aria-labelledby="response-heading">
+      <h2 id="response-heading" class="font-display text-2xl font-bold">Response Time</h2>
+      <p class="mt-3 leading-relaxed text-muted">
+        We read every message that arrives, but as a small team we cannot always reply immediately. Expect an answer
+        within a few business days for most questions. Confirmed bugs that break a test get priority and are usually
+        fixed quickly, even when we do not manage to reply to every individual report. If your message concerns
+        privacy or advertising, mention that in the subject line so it gets routed faster.
+      </p>
+    </section>
+
+    <section class="mt-10" aria-labelledby="popular-heading">
+      <h2 id="popular-heading" class="font-display text-2xl font-bold">While You Are Here</h2>
+      <p class="mt-3 leading-relaxed text-muted">
+        Waiting on a reply? Warm up with one of our most popular tests:
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {popularLinks.map((t) => (
+          <a href={t.href} class="btn btn-ghost text-sm">{t.title}</a>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

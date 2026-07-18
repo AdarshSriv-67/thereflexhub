@@ -1,0 +1,375 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Spacebar Counter - Test Press Speed | The Reflex Hub';
+const description =
+  'Count your spacebar presses per second with the free spacebar counter. Play 1 to 100 second modes, beat the 6.5 press average, and set a new record.';
+const path = '/spacebar-counter';
+
+const schema = [
+  webAppSchema('Spacebar Counter', path, 'Free spacebar counter and spacebar test with 1, 5, 10, 30, 60, and 100 second modes.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Spacebar Counter', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is a spacebar counter?',
+    a: 'A spacebar counter is a simple online tool that counts how many times you can press the spacebar in a fixed window of time, then reports your speed in presses per second. You choose a duration, hammer the key as fast as you can, and the counter tracks every press with a high resolution timer. It is the keyboard cousin of the CPS test: same idea, different muscle group. People use it as a spacebar clicker for games, a warmup drill, or just a quick competition with friends to see whose thumb is fastest.',
+  },
+  {
+    q: 'What is a good spacebar clicking speed?',
+    a: 'On a 10 second run, most people land between 5 and 7 presses per second, and the commonly cited average is about 6.5. Anything above 8 presses per second is faster than the typical player, and sustained speeds of 10 or more put you in elite territory, usually achieved with two-thumb technique or a very light switch under the spacebar. Scores drop noticeably on longer runs because the thumb fatigues quickly, so compare your results within the same duration rather than across different modes.',
+  },
+  {
+    q: 'Why do people practice spacebar speed?',
+    a: 'Mostly for games. Minecraft players spam the spacebar while bridging and jumping in PvP, osu players who bind taps to keys need rapid, rhythmic presses, and speedrunners in many platformers buffer jumps frame by frame. Beyond gaming, the spacebar test is a popular reflex challenge on its own: it is easy to understand, takes ten seconds, and produces a score you can immediately try to beat. Some typists also use it as a warmup, since fast controlled thumb presses wake up the same muscles used for the space key while typing.',
+  },
+  {
+    q: 'Does keyboard type affect spacebar speed?',
+    a: 'Yes, measurably. Mechanical keyboards with light linear switches (around 45 grams of actuation force) let the key rebound faster than a rubber dome membrane board, which needs a full bottom-out and has a mushier return. Actuation distance matters too: a switch that registers at 1.2 mm fires sooner than one at 2 mm. Spacebar stabilizers, keycap weight, and firmware debounce time all add or shave milliseconds per press. The same person can score 1 to 2 presses per second higher simply by switching from a soft laptop membrane to a responsive mechanical board.',
+  },
+  {
+    q: 'How does the spacebar counter calculate score?',
+    a: 'The math is total presses divided by the test duration in seconds. Hit 68 presses in 10 seconds and your score is 6.8 presses per second. The counter timestamps each keydown event with a high resolution timer, and it ignores operating system auto-repeat, so holding the key down does not inflate your count: only real physical presses register. The timer starts on your first press, not when the page loads, which means you can take your time getting into position without losing a single tick.',
+  },
+  {
+    q: 'Can I test for 10, 30, or 60 seconds?',
+    a: 'Yes. This spacebar counter offers 1, 5, 10, 30, 60, and 100 second modes, and each one keeps its own separate personal best in your browser. The 10 second mode is the standard benchmark most averages are based on, so start there. Short 1 and 5 second sprints measure pure burst speed, while the 30, 60, and 100 second runs test endurance and pacing. You can also link a friend directly to a specific mode: the duration you pick is stored in the page address.',
+  },
+  {
+    q: 'What is the spacebar speed world record?',
+    a: 'There is no official governing body for spacebar records, so treat every claim online with some skepticism. Widely shared leaderboard results put top 10 second runs around 14 to 16 presses per second, and short 1 second bursts have been claimed above 20 using two-hand or drumming techniques. Numbers beyond that usually involve macros, auto-clickers, or key remapping tricks rather than raw finger speed. If you can hold 10 presses per second for a full 10 seconds with one thumb, you are genuinely among the fastest players around.',
+  },
+  {
+    q: 'Does spacebar spamming damage the keyboard?',
+    a: 'Not in any way you will notice soon. Mechanical switches are rated for 50 to 100 million presses, so even daily testing consumes a tiny fraction of their lifespan. Membrane keyboards are rated lower, typically 5 to 10 million presses, and a heavily spammed spacebar can eventually feel mushier than its neighbors. The more realistic risks are loosened spacebar stabilizers, which cause rattle, and keycap shine. Press firmly but do not slam the key: speed comes from quick rebound, not force, and a lighter touch is actually faster.',
+  },
+  {
+    q: 'How do gamers use spacebar speed?',
+    a: 'In Minecraft, rapid spacebar presses drive jump bridging, jump resets in PvP, and quick ladder or water exits. In osu, many players bind clicks to keys and alternate them at high speed, so raw press frequency directly limits their playable difficulty. Speedrunners use precise, rapid jumps to buffer tricks in platformers, and bunny-hop movement in shooters rewards well-timed spam. Even rhythm games like Friday Night Funkin lean on the spacebar. For all of these, a spacebar counter provides a clean, repeatable way to measure whether practice is paying off.',
+  },
+  {
+    q: 'Does it work on laptop keyboards?',
+    a: 'Yes, the test works on any physical keyboard, including laptops. Laptop spacebars use low-travel scissor or membrane mechanisms: the short key travel can actually help burst speed, though the softer rebound often hurts endurance runs. Since the test uses a single key, key rollover and anti-ghosting limits are irrelevant here. On phones and tablets without a physical keyboard, tap the large on-screen spacebar instead: the counter accepts taps on the bar so mobile users can play the same modes and chase the same benchmarks.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Spacebar Counter: Test Your Press Speed</h1>
+    <p class="mt-1 text-sm text-muted">
+      Press the spacebar as fast as you can. The timer starts on your first press.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Test duration">
+        {[1, 5, 10, 30, 60, 100].map((s) => (
+          <button
+            type="button"
+            class:list={[
+              'btn px-3 py-1.5 text-sm',
+              s === 10 ? 'btn-primary' : 'btn-ghost',
+            ]}
+            data-duration={s}
+          >
+            {s}s
+          </button>
+        ))}
+      </div>
+
+      <div class="score-nums mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">10.0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Presses</p>
+          <p class="text-2xl font-bold" id="stat-presses">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Per Sec</p>
+          <p class="text-2xl font-bold text-accent" id="stat-pps">0.0</p>
+        </div>
+      </div>
+
+      <div
+        id="press-zone"
+        role="button"
+        aria-label="Spacebar test area. Press the spacebar or tap the bar to count presses."
+        class="mt-4 flex min-h-[280px] w-full cursor-pointer touch-manipulation select-none flex-col items-center justify-center gap-5 rounded-xl border border-line bg-gradient-to-b from-surface2 to-surface transition-shadow hover:shadow-glow sm:min-h-[320px]"
+      >
+        <span class="font-display text-xl font-bold" id="zone-label">Press the spacebar to start</span>
+        <div
+          id="spacebar-visual"
+          class="flex h-16 w-4/5 max-w-md items-center justify-center rounded-2xl border border-line border-b-4 bg-surface2 font-display text-sm font-bold uppercase tracking-[0.35em] text-muted shadow-lg transition-transform duration-75"
+        >
+          Space
+        </div>
+        <span class="text-sm text-muted" id="zone-sub">On a phone? Tap the bar instead</span>
+      </div>
+    </div>
+
+    <ResultCard unit="presses/sec" />
+
+    <StatsPanel historyTitle="Last 20 runs: presses per second" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Is a Spacebar Counter and How Does Scoring Work?</h2>
+    <p>
+      A spacebar counter is a spacebar test that counts every press of the biggest key on your keyboard within a fixed
+      time window, then reports the result as presses per second. Where a CPS test measures your mouse finger, a space
+      bar speed test measures your thumb: a different joint, a different muscle group, and often a surprisingly
+      different score. On this page the run begins the instant you land your first press, ticks down for the duration
+      you selected, and locks in your final speed the moment the clock hits zero.
+    </p>
+    <p>
+      The scoring is fully transparent. Your total presses are divided by the elapsed seconds: 72 presses in a 10
+      second run equals 7.2 presses per second. Every keydown is timestamped with a high resolution timer, and the
+      counter deliberately ignores operating system key auto-repeat, so holding the spacebar down counts as exactly one
+      press. If you are on a phone or tablet, the large on-screen bar accepts taps, so a spacebar clicker session works
+      just as well with a thumb on glass as with a thumb on plastic.
+    </p>
+    <p>
+      The classic benchmark is the spacebar counter 10 seconds mode: long enough that a lucky burst cannot carry the
+      score, short enough that fatigue does not dominate. The 1 and 5 second sprints isolate burst speed, while 30, 60,
+      and 100 second modes are endurance events where pacing matters as much as raw frequency. Personal bests are
+      stored separately for each duration, so every mode has its own record to chase.
+    </p>
+
+    <h2>What Is a Good Spacebar Speed?</h2>
+    <p>
+      Averages compiled from popular spacebar tests put the typical player at about 6.5 presses per second on a 10
+      second run. Here is how scores usually break down:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Presses per second (10s)</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 4</td><td>Slow</td><td>Unfamiliar keyboard, cautious pressing, or a stiff key</td></tr>
+          <tr><td>4 to 6</td><td>Below average</td><td>Relaxed single-thumb pressing without urgency</td></tr>
+          <tr><td>6 to 8</td><td>Average to solid</td><td>Normal fast pressing, right around the 6.5 mean</td></tr>
+          <tr><td>8 to 10</td><td>Fast</td><td>Practiced technique, light switch, good rebound control</td></tr>
+          <tr><td>10+</td><td>Elite</td><td>Two-thumb or drumming technique on responsive hardware</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Expect your number to fall 15 to 25 percent between a 10 second and a 60 second run: the thumb is powerful but it
+      is not built for sustained high-frequency work. If your short-mode score is high and your long-mode score
+      collapses, that is a stamina gap, and endurance modes are exactly how you train it.
+    </p>
+
+    <h2>Why Gamers Train Spacebar Speed</h2>
+    <p>
+      Minecraft is the biggest driver. Jump bridging, in which players repeatedly leap backward while placing blocks
+      beneath themselves, demands rhythmically precise, rapid spacebar presses, and PvP jump resets reward players who
+      can re-jump the instant they touch the ground. Bedwars and Skywars regulars will recognize the drill immediately:
+      a spacebar counter is the dry-land version of a bridging session.
+    </p>
+    <p>
+      In osu, most high-level players bind their taps to two keyboard keys and alternate them, so raw press frequency
+      sets a hard ceiling on the difficulty they can pass. Streams at 180 beats per minute require six presses per
+      second sustained with perfect rhythm, and the fastest maps demand much more. Speedrunners are the third group:
+      platformer categories are full of tricks that require frame-tight jump buffering, and shooters with bunny-hop
+      movement reward players who can time repeated presses to the exact moment of landing. In all three communities,
+      the press the spacebar challenge doubles as both a warmup and a measurable training log.
+    </p>
+
+    <h2>Does Your Keyboard Matter? Membrane vs Mechanical</h2>
+    <p>
+      More than most people expect. A rubber dome membrane keyboard needs the key to bottom out and then relies on a
+      relatively slow, mushy rebound before the next press can register. A mechanical switch actuates partway through
+      its travel, often at 1.2 to 2 mm, and its spring returns the key crisply, so the same thumb motion completes more
+      cycles per second. Light linear switches around 45 grams are the community favorite for speed work.
+    </p>
+    <p>
+      Two quieter factors also shape your score. First, debounce: keyboard firmware waits a few milliseconds after each
+      press to filter electrical noise, and a board with 5 ms of debounce simply loses fewer presses at high speed than
+      one with 20 ms. Second, the spacebar itself is a stabilized key, and worn or dry stabilizers add friction and
+      rattle that slow the rebound. Key rollover, by contrast, does not matter here at all: since the test uses a
+      single key, even a basic two-key rollover board keeps up perfectly. If your fingers feel faster than your score,
+      try the same test on a different keyboard before blaming your thumb.
+    </p>
+
+    <h2>How to Press the Spacebar Faster: 6 Practical Tips</h2>
+    <ol>
+      <li><strong>Ride the rebound.</strong> Do not bottom the key out with force. Press just past actuation and let the spring throw your thumb back up: the key does half the work if you let it.</li>
+      <li><strong>Anchor your hand.</strong> Rest your palm or wrist on the desk so only the thumb moves. A floating hand wastes motion and tires the forearm.</li>
+      <li><strong>Try two thumbs.</strong> Alternating left and right thumbs on the wide spacebar halves each thumb's required frequency, the same principle that makes butterfly clicking fast.</li>
+      <li><strong>Warm up first.</strong> Ten seconds of slow deliberate presses and a quick wrist stretch measurably raises peak speed and protects the tendons.</li>
+      <li><strong>Practice in short sets.</strong> Five focused 10 second runs with rest in between build speed faster than minutes of continuous mashing, which mostly trains fatigue.</li>
+      <li><strong>Track your numbers.</strong> Run the same mode daily and watch your personal best. Visible progress is the strongest motivator, and plateaus tell you when to change technique.</li>
+    </ol>
+
+    <h2>The Science of Rapid Key Presses</h2>
+    <p>
+      Each press is a complete sensorimotor loop: the motor cortex issues a command, the signal travels down the spinal
+      cord to the flexor muscles controlling the thumb, the key goes down, and sensory feedback confirms the press so
+      the next command can fire. Repeating that loop seven or more times per second pushes against how quickly human
+      muscle fibers can alternate between contraction and relaxation. Fast-twitch fibers handle this rapid, repetitive
+      work, and like any muscle system they adapt to training: coordination improves within days, endurance over
+      weeks.
+    </p>
+    <p>
+      The thumb has an interesting advantage and disadvantage compared with the index finger used in click tests. It is
+      stronger and driven by large, robust muscles at the base of the hand, which helps short bursts. But it is also
+      less practiced at fine high-frequency oscillation than an index finger that spends all day clicking, which is why
+      many people score slightly lower on a spacebar test than on a CPS test until they train it. To be clear, this
+      spacebar counter is a game and a training tool, not a medical or psychological diagnostic instrument: a slow
+      score means nothing more than an untrained thumb today.
+    </p>
+
+    <h2>Which Duration Should You Pick?</h2>
+    <p>
+      Start with 10 seconds, since that is the mode every published average refers to and the fairest basis for
+      comparing against friends. Use the 1 and 5 second sprints for low-fatigue technique reps, and graduate to 30, 60,
+      and 100 seconds when you want to build the stamina that bridging sessions and long osu maps actually demand. Your
+      history and personal bests for every mode are saved in your browser, so each duration becomes its own little
+      leaderboard against yourself. When your spacebar numbers plateau, test the same skills from a different angle
+      with the CPS test or the tap speed test and see which finger is really your fastest.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['cps', 'tap', 'rightclick', 'typing']} />
+
+</BaseLayout>
+
+<script>
+  import { ClickEngine } from '../games/clickEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const zone = document.getElementById('press-zone') as HTMLElement;
+  const zoneLabel = document.getElementById('zone-label') as HTMLElement;
+  const zoneSub = document.getElementById('zone-sub') as HTMLElement;
+  const bar = document.getElementById('spacebar-visual') as HTMLElement;
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statPresses = document.getElementById('stat-presses') as HTMLElement;
+  const statPps = document.getElementById('stat-pps') as HTMLElement;
+  const durationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-duration]'));
+
+  // Distribution calibrated for the 10 second test; other durations are approximate.
+  const TABLE: PercentilePoint[] = [
+    { value: 3, beats: 7 },
+    { value: 5, beats: 28 },
+    { value: 6.5, beats: 50 },
+    { value: 8, beats: 78 },
+    { value: 10, beats: 94 },
+    { value: 12, beats: 99 },
+  ];
+
+  const gameKey = (d: number) => (d === 10 ? 'spacebar' : `spacebar-${d}`);
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'spacebar',
+    valueLabel: 'Per second',
+    decimals: 1,
+    format: (v) => v.toFixed(1),
+    columns: [
+      { key: 'presses', label: 'Presses' },
+      { key: 'mode', label: 'Mode' },
+    ],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'spacebar',
+    higherIsBetter: true,
+    format: (v) => `${v.toFixed(1)} presses/sec`,
+    onRestart: () => engine.reset(),
+  });
+
+  const engine = new ClickEngine({
+    zone,
+    duration: readHashDuration() ?? 10,
+    mode: 'space',
+    alsoPointer: true,
+    onStart: () => {
+      zoneLabel.textContent = 'Go!';
+      zoneSub.textContent = 'Keep pressing!';
+    },
+    onTick: (remaining, clicks, cps) => {
+      statTime.textContent = remaining.toFixed(1);
+      statPresses.textContent = String(clicks);
+      statPps.textContent = cps.toFixed(1);
+      if (clicks === 0 && remaining === engine.getDuration()) {
+        zoneLabel.textContent = 'Press the spacebar to start';
+        zoneSub.textContent = 'On a phone? Tap the bar instead';
+      }
+    },
+    onFinish: ({ clicks, cps, duration }) => {
+      zoneLabel.textContent = 'Time!';
+      zoneSub.textContent = 'Check your result below';
+      const rounded = Math.round(cps * 10) / 10;
+      card.setGame(gameKey(duration));
+      card.show({
+        score: rounded,
+        display: rounded.toFixed(1),
+        detail: `${clicks} presses in ${duration} seconds`,
+        compare: 'The average player scores about 6.5 presses per second on a 10 second test.',
+        percentileTable: TABLE,
+        shareText: `I hit ${rounded.toFixed(1)} presses/sec (${clicks} presses in ${duration}s) on the Spacebar Counter. Beat me: https://thereflexhub.com/spacebar-counter`,
+      });
+      stats.record(rounded, { presses: String(clicks), mode: `${duration}s` });
+    },
+  });
+
+  // Visual-only: depress the on-screen spacebar while the key or a tap is held.
+  const pressDown = (): void => {
+    bar.classList.add('translate-y-1', 'scale-[0.97]', 'shadow-none', 'border-b');
+  };
+  const pressUp = (): void => {
+    bar.classList.remove('translate-y-1', 'scale-[0.97]', 'shadow-none', 'border-b');
+  };
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !e.repeat) pressDown();
+  });
+  window.addEventListener('keyup', (e) => {
+    if (e.code === 'Space') pressUp();
+  });
+  zone.addEventListener('pointerdown', pressDown);
+  window.addEventListener('pointerup', pressUp);
+  window.addEventListener('pointercancel', pressUp);
+
+  function readHashDuration(): number | null {
+    const n = parseInt(location.hash.slice(1), 10);
+    return [1, 5, 10, 30, 60, 100].includes(n) ? n : null;
+  }
+
+  function selectDuration(d: number): void {
+    engine.setDuration(d);
+    card.setGame(gameKey(d));
+    for (const b of durationBtns) {
+      const active = Number(b.dataset.duration) === d;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+    statTime.textContent = d.toFixed(1);
+    history.replaceState(null, '', d === 10 ? location.pathname : `#${d}`);
+  }
+
+  for (const b of durationBtns) {
+    b.addEventListener('click', () => {
+      selectDuration(Number(b.dataset.duration));
+      // Drop focus so the next spacebar press counts instead of re-clicking the button.
+      b.blur();
+    });
+  }
+
+  const initial = readHashDuration();
+  if (initial && initial !== 10) selectDuration(initial);
+</script>

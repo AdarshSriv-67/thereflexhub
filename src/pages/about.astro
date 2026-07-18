@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '../data/seo';
+
+const title = 'About The Reflex Hub - Fast, Free Skill Tests';
+const description =
+  'Learn what The Reflex Hub is, how our free reaction, typing, and clicking tests work, and why your scores stay private in your own web browser.';
+const path = '/about';
+
+const schema = [
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'About', path },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <div class="mx-auto max-w-6xl px-4 pt-10">
+    <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">About The Reflex Hub</h1>
+
+    <article class="copy mt-6">
+      <p>
+        The Reflex Hub is a collection of free browser games that measure human performance skills: reaction time,
+        clicking speed, typing speed, aim precision, and short term memory. Every test runs entirely in your browser,
+        gives you a score in seconds, and shows you how that score compares with published averages. The site exists
+        for gamers warming up before a match, typists checking their words per minute, students taking a study break,
+        and anyone who simply wants to know how quick they really are.
+      </p>
+
+      <h2>Our Philosophy</h2>
+      <p>
+        We built this site around a few stubborn principles. First, instant loading: every page is static, lightweight,
+        and playable within about a second, even on a mid range phone. Second, no signup: you will never hit a login
+        wall, an email capture form, or a locked result. Third, no dark patterns: there are no fake leaderboards, no
+        countdown timers pressuring you to share, and no results held hostage behind a paywall. And fourth, your data
+        stays yours. Scores and personal bests are stored with localStorage, a standard browser feature that keeps data
+        on your own device. Nothing you do here is uploaded to a server or connected to your identity. The tradeoff is
+        that scores do not sync between devices, and we think that is a fair price for genuine privacy.
+      </p>
+
+      <h2>How We Benchmark Scores</h2>
+      <p>
+        A score only means something next to a reference point, so every test on The Reflex Hub compares your result
+        against widely published averages rather than numbers we invented. For reaction speed, we use the commonly
+        cited average visual reaction time of 273 ms. For typing, the reference is the average typing speed of 40 WPM,
+        with professional typists landing around 65 to 75 WPM. For clicking, the benchmark is roughly 6.5 clicks per
+        second on a standard 10 second test. Percentile tables on each results card are calibrated to these figures, so
+        when the site says you beat 80 percent of people, that claim is anchored to real published data.
+      </p>
+
+      <h2>Honest Limitations</h2>
+      <p>
+        Browser tests are accurate enough for meaningful self comparison, but they are not laboratory instruments, and
+        we would rather say so plainly. Your measured reaction time includes hardware and software latency: monitor
+        refresh rate, mouse and keyboard delay, and browser overhead can add anywhere from 10 to 50 ms to the number
+        you see. A 60 Hz display alone can add up to 16 ms compared with a 240 Hz gaming monitor. That overhead is
+        roughly constant on a given setup, which means your scores are highly comparable with each other over time,
+        just not perfectly comparable with a friend testing on different hardware. For honest progress tracking, use
+        the same device and browser, and pay attention to trends rather than single runs.
+      </p>
+
+      <h2>Not a Medical Tool</h2>
+      <p>
+        The tests on this site are for fun, practice, and casual self measurement. They are not a medical or
+        psychological diagnostic tool, and no score here can identify, rule out, or monitor any health condition. Many
+        things move these numbers day to day, including sleep, caffeine, stress, and simple practice effects. If you
+        have concerns about your reflexes, attention, coordination, or memory, please speak with a qualified healthcare
+        professional rather than relying on a browser game.
+      </p>
+
+      <h2>Get in Touch</h2>
+      <p>
+        Found a bug, spotted an inaccurate benchmark, or have an idea for a test you would love to see? We read every
+        message. Head over to the <a href="/contact">contact page</a> and tell us what is on your mind.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

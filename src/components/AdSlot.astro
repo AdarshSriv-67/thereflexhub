@@ -1,0 +1,27 @@
+---
+// Fixed-size ad placeholder. The reserved box prevents layout shift (CLS 0).
+// Never place this component above or inside a game area.
+interface Props {
+  size: 'leaderboard' | 'mobile-banner' | 'box';
+  class?: string;
+}
+
+const { size, class: className = '' } = Astro.props;
+
+const dims: Record<Props['size'], { w: number; h: number; label: string }> = {
+  leaderboard: { w: 728, h: 90, label: '728x90' },
+  'mobile-banner': { w: 320, h: 100, label: '320x100' },
+  box: { w: 300, h: 250, label: '300x250' },
+};
+const { w, h, label } = dims[size];
+---
+
+<div
+  class:list={['mx-auto flex items-center justify-center rounded-xl border border-dashed border-line bg-surface/50', className]}
+  style={`width:min(100%,${w}px);height:${h}px;`}
+  data-ad-slot={label}
+  aria-hidden="true"
+>
+  <!-- AdSense: paste the ad unit code for the {label} slot here -->
+  <span class="text-xs uppercase tracking-widest text-muted/60">Advertisement</span>
+</div>

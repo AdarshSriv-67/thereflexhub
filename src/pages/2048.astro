@@ -1,0 +1,378 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = '2048 - Play the Classic Puzzle Online | The Reflex Hub';
+const description =
+  'Play 2048 online free. Slide and merge number tiles to reach the 2048 tile, learn the corner strategy, track your best score, and beat the average player.';
+const path = '/2048';
+
+const schema = [
+  webAppSchema('2048', path, 'Free online 2048 number merge puzzle with keyboard, WASD, and swipe controls plus saved best scores.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: '2048', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'How do you play 2048?',
+    a: 'You play 2048 on a 4x4 grid that starts with two numbered tiles. Every move slides all tiles as far as they can go in one direction: up, down, left, or right. When two tiles with the same number collide, they merge into one tile worth their sum, so two 4s become an 8. After every move that changes the board, a new tile appears in a random empty cell. Your goal is to keep merging until you build the 2048 tile. The game ends when the grid is full and no neighboring tiles match, so plan each swipe before you make it.',
+  },
+  {
+    q: 'What is the best 2048 strategy?',
+    a: 'The most reliable strategy is to anchor your biggest tile in one corner and never let it move. Pick a corner, commit to it, and use only the two or three directions that keep that corner locked. Build a descending chain of values next to the anchor so merges flow naturally toward it, keep your bottom row full so an unlucky spawn cannot shove your anchor out of place, and think one or two moves ahead instead of swiping on instinct. Players who follow this discipline reach 1024 and 2048 far more consistently than players who chase individual merges around the board.',
+  },
+  {
+    q: 'What is the corner strategy?',
+    a: 'The corner strategy means choosing one corner, usually the bottom left or bottom right, and treating it as the permanent home of your largest tile. You then restrict yourself to moves that never pull tiles away from that corner. If your anchor sits in the bottom left, you mostly press down and left, use right when you must, and avoid up except in emergencies. Around the anchor you arrange the next largest tiles in decreasing order along the bottom row. This creates a stable structure where small new tiles feed into bigger ones, step by step, like a supply chain ending at your corner.',
+  },
+  {
+    q: 'Can you keep playing after reaching 2048?',
+    a: 'Yes. Reaching the 2048 tile is the official win condition, but the game does not stop there. On this page you get a win message the moment the tile appears, and the board stays live so you can keep merging toward 4096, 8192, and beyond. Your score keeps climbing with every merge. Play only ends when the grid is completely full and no two adjacent tiles share a value. Many dedicated players treat 2048 as the halfway point: the real challenge is seeing how far past it you can push before the board finally locks up.',
+  },
+  {
+    q: 'What is the highest possible tile in 2048?',
+    a: 'On a standard 4x4 board the theoretical maximum tile is 131072, which is 2 to the power of 17. The limit exists because the board only has 16 cells. To build a huge tile you need its two halves on the board at the same time, plus all the smaller tiles required to build those halves. The perfect scenario fills all 16 cells with the chain 4, 8, 16, and so on up to 65536, then a fresh 4 spawns in exactly the right spot and triggers a cascade of merges all the way up. It is mathematically possible but no human has done it.',
+  },
+  {
+    q: 'Is 2048 a math game or a logic game?',
+    a: 'Mostly a logic game. The only math involved is doubling: 2 becomes 4, 4 becomes 8, and so on through the powers of two. You never calculate anything harder than that. The real skill is spatial planning: reading the whole grid, predicting where tiles will land after a swipe, keeping your large tiles organized, and managing the risk of random spawns. In that sense 2048 has more in common with chess endgames or sliding block puzzles than with arithmetic drills. Players describe improvement not as getting faster at sums but as getting better at seeing two or three moves ahead.',
+  },
+  {
+    q: 'Who created 2048?',
+    a: 'Gabriele Cirulli, a 19 year old Italian web developer, created 2048 in March 2014. He built it over a single weekend as a programming exercise, inspired by earlier games including 1024 and the iOS hit Threes. He released it free in the browser and published the source code openly on GitHub, refusing to charge for it because he felt the core idea was not originally his. The game exploded within days, reaching millions of players in its first weekend and spawning countless clones and variants, from hexagonal boards to versions played with element symbols instead of numbers.',
+  },
+  {
+    q: 'Why is 2048 so addictive?',
+    a: 'A few well studied psychological hooks stack up. Every merge delivers a small, instant reward, but big merges arrive on an unpredictable schedule, and rewards that arrive at variable intervals are exactly the kind the brain finds hardest to walk away from. Losses almost always feel close: the board fills up while your next big merge sits one move out of reach, and near misses strongly motivate another attempt. Add a restart that takes one tap, rounds short enough to fit anywhere, and a score that always feels beatable, and you get a loop that quietly consumes an afternoon.',
+  },
+  {
+    q: 'Can 2048 improve your brain?',
+    a: 'Honestly, the evidence is modest. Playing 2048 clearly makes you better at 2048: you learn to plan ahead, hold the board layout in working memory, and stay disciplined under pressure. Those are genuine skills within the game. But research on brain training consistently finds that this kind of improvement transfers weakly to unrelated tasks, so 2048 practice is unlikely to raise your grades or sharpen your memory in general. It is a fine mental warm up and far better for you than passive scrolling. It is not a medical or psychological tool, and no puzzle score measures intelligence.',
+  },
+  {
+    q: 'What is the highest score ever in 2048?',
+    a: 'There is no official record body, so exact records are hard to verify. Strong human players who push past the 8192 tile report scores in the range of 200,000 to 400,000 points, and a handful of claimed human runs approach the 32768 tile. Computer solvers go much further: AI programs using expectimax search reliably reach 32768, sometimes 65536, with scores above 800,000. For perspective, reaching the 2048 tile itself is worth roughly 20,000 points, so anything above 25,000 already puts you well ahead of the typical player who ever loads the game.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">2048: Play the Classic Number Merge Puzzle</h1>
+    <p class="mt-1 text-sm text-muted">
+      Slide tiles, merge matching numbers, and build your way to the 2048 tile.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="mx-auto w-full max-w-[420px]">
+        <div class="flex items-center justify-between gap-2">
+          <div class="score-nums flex gap-2">
+            <div class="min-w-[84px] rounded-xl bg-surface2 px-3 py-2 text-center">
+              <p class="text-xs uppercase tracking-widest text-muted">Score</p>
+              <p class="text-xl font-bold" id="stat-score">0</p>
+            </div>
+            <div class="min-w-[84px] rounded-xl bg-surface2 px-3 py-2 text-center">
+              <p class="text-xs uppercase tracking-widest text-muted">Best</p>
+              <p class="text-xl font-bold text-accent" id="stat-best">0</p>
+            </div>
+          </div>
+          <button type="button" id="new-game" class="btn btn-ghost press tap-target">New game</button>
+        </div>
+
+        <div
+          id="board-2048"
+          class="relative mt-3 aspect-square w-full touch-none select-none rounded-2xl border border-line bg-surface2 p-2"
+          aria-label="2048 board"
+        >
+          <div class="grid h-full w-full grid-cols-4 gap-2">
+            {Array.from({ length: 16 }).map(() => <div class="rounded-md bg-surface"></div>)}
+          </div>
+          <div id="tile-layer" class="absolute inset-2"></div>
+        </div>
+
+        <p class="mt-3 text-center text-xs text-muted" id="board-hint">
+          Use your arrow keys or WASD. On a touch screen, swipe the board.
+        </p>
+      </div>
+    </div>
+
+    <ResultCard unit="pts" />
+
+    <StatsPanel historyTitle="Last 20 games: score" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>How to Play 2048: Rules and Controls</h2>
+    <p>
+      2048 is a sliding tile puzzle played on a 4x4 grid. The game starts with two low value tiles on the board. Each
+      turn you choose one of four directions, and every tile on the board slides as far as it can in that direction
+      until it hits the wall or another tile. When two tiles carrying the same number collide, they merge into a single
+      tile worth their sum: two 2s become a 4, two 4s become an 8, and the chain continues through the powers of two.
+      Each tile can only take part in one merge per move, so a row of four 2s pushed left becomes two 4s, not a single
+      8. After every move that actually changes the board, a new tile appears in a random empty cell, usually a 2 and
+      occasionally a 4.
+    </p>
+    <p>
+      On this page you can play 2048 online with three control schemes: the arrow keys, the WASD keys, or a swipe on
+      the board itself, which makes the puzzle fully playable one handed on a phone. Your score increases by the value
+      of every merged tile, so combining two 64s adds 128 points. The run ends when the grid is full and no two
+      neighboring tiles match. Reach the 2048 tile and you win, but the board stays live so you can keep pushing for
+      4096 and beyond. Your best score is saved in your browser automatically.
+    </p>
+
+    <h2>The Corner Strategy Explained Step by Step</h2>
+    <p>
+      Ask any strong player how to win 2048 and you will hear the same answer: pick a corner and never betray it. The
+      corner strategy turns a chaotic board into an organized production line. Here is how to run it, step by step:
+    </p>
+    <ol>
+      <li>
+        <strong>Choose your anchor corner.</strong> Most players use the bottom left or bottom right. Everything that
+        follows assumes the bottom left; mirror the directions if you prefer the other side.
+      </li>
+      <li>
+        <strong>Send your biggest tile there early.</strong> Within the first dozen moves, steer your largest tile into
+        the anchor corner and treat it as immovable from then on.
+      </li>
+      <li>
+        <strong>Restrict your directions.</strong> Favor down and left on almost every move. Use right when you need
+        to line up a merge along the bottom row. Treat up as an emergency-only move, because a single up swipe can
+        drag your anchor out of the corner and let a small tile spawn beneath it.
+      </li>
+      <li>
+        <strong>Build a descending ladder.</strong> Arrange the next largest tiles beside the anchor in decreasing
+        order along the bottom row, for example 512, 256, 128, 64. Now every new merge has an obvious destination one
+        step up the ladder.
+      </li>
+      <li>
+        <strong>Keep the bottom row full.</strong> A full bottom row is stable: left and right swipes cannot move it,
+        and no spawn can appear inside it. If a gap opens in the bottom row, filling it becomes your top priority
+        before you attempt anything ambitious.
+      </li>
+      <li>
+        <strong>Merge into the corner, not away from it.</strong> When a merge is available in two directions, pick
+        the one that moves value toward your anchor. Small sacrifices of tempo are fine; disorder around the anchor is
+        not.
+      </li>
+    </ol>
+    <p>
+      The corner strategy works because it converts random tile spawns into raw material. Small tiles appear in the
+      open area of the board, get merged into medium tiles, and flow down the ladder into the corner. Without an
+      anchor, big tiles drift to the center, block half your merges, and strangle the board.
+    </p>
+
+    <h2>More 2048 Strategies: Snake Building and Board Discipline</h2>
+    <p>
+      Once the corner habit is automatic, the next refinement is the snake, sometimes called the chain. Instead of
+      only ordering the bottom row, you order the whole board in a serpentine path: values descend from the anchor
+      across the bottom row, turn upward at the far end, come back across the second row, and so on. When a new large
+      tile completes a link, the entire chain can collapse toward the corner in a satisfying cascade of merges. The
+      snake is how players convert a messy 300 point midgame into a 2048 tile.
+    </p>
+    <p>
+      Two habits of board discipline separate consistent players from lucky ones. First, keep rows committed: if your
+      strategy lives on the bottom row, never make a move that leaves it partially empty when an alternative exists.
+      Second, respect the forbidden direction. In a bottom-corner game, the up move is the one that ruins runs,
+      because it lifts your entire structure and invites a spawn directly under your anchor, where it is nearly
+      impossible to remove. Before every swipe, ask one question: does this move keep my biggest tile in its corner?
+      If the answer is no, look for another move. Playing slowly matters too. 2048 has no timer, and most lost games
+      trace back to two or three hasty swipes, not bad luck.
+    </p>
+
+    <h2>2048 Scoring: What Counts as a Good Score?</h2>
+    <p>
+      Your score is the running total of every merge you have made: combine two 8s and you earn 16 points, combine two
+      1024s and you earn 2048 points in a single move. Because every big tile is built from a pyramid of smaller
+      merges, score tracks progress closely. Building the 2048 tile from scratch is worth roughly 20,000 points across
+      the whole run, a little less when helpful 4s spawn along the way. Here is how scores commonly stack up:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Score</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 1,000</td><td>Beginner</td><td>Early board locks, merges made without a plan</td></tr>
+          <tr><td>1,000 to 3,000</td><td>Learning</td><td>Reaching the 128 or 256 tile</td></tr>
+          <tr><td>3,000 to 7,000</td><td>Average</td><td>A solid run to the 512 tile</td></tr>
+          <tr><td>7,000 to 16,000</td><td>Good</td><td>The 1024 tile, corner strategy paying off</td></tr>
+          <tr><td>16,000 to 25,000</td><td>Strong</td><td>The 2048 tile, the classic win</td></tr>
+          <tr><td>25,000 to 60,000</td><td>Expert</td><td>Playing on past 2048 toward 4096</td></tr>
+          <tr><td>Over 60,000</td><td>Elite</td><td>8192 territory, near flawless discipline</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Treat these bands as motivation, not judgment. A first session typically ends under 2,000 points, and a week of
+      corner strategy practice often triples that. The percentile bar on your result card shows roughly how your run
+      compares with other players.
+    </p>
+
+    <h2>The Math of 2048: Powers of Two and the 131072 Ceiling</h2>
+    <p>
+      Every tile in 2048 is a power of two: 2, 4, 8, 16, and onward. Doubling is what makes the game readable at a
+      glance, since any two equal tiles always form the next value in the sequence, and it is also what makes progress
+      exponential. The 2048 tile is 2 to the power of 11, and it silently contains more than a thousand of those
+      little 2s you merged along the way.
+    </p>
+    <p>
+      The 16 cell board imposes a hard ceiling. To create a tile you need both of its halves present at the same time,
+      and each half needs its own halves before that. Push the logic to the limit and the best possible position fills
+      all 16 cells with the perfect descending chain 4, 8, 16, 32, and so on up to 65536. If a fresh 4 then spawns in
+      exactly the right cell, it triggers a cascade of merges up the entire chain and produces 131072, which is 2 to
+      the power of 17. That is the theoretical maximum tile on a 4x4 board. No verified human game has reached it; even
+      the strongest computer players top out at 65536, because the game must cooperate with a perfectly timed spawn.
+    </p>
+
+    <h2>Gabriele Cirulli and the 2014 Origin Story</h2>
+    <p>
+      2048 was created by Gabriele Cirulli, a 19 year old developer from Italy, over a single weekend in March 2014.
+      He wanted to test whether he could build a game from scratch, borrowing the merge concept from two earlier
+      games: Threes, the elegant iOS puzzle released a few weeks earlier, and 1024, one of its early imitators.
+      Cirulli published his version free on the web and released the entire source code on GitHub under an open
+      license, saying he did not feel right charging money for an idea he had not invented.
+    </p>
+    <p>
+      The result was one of the fastest viral spreads in gaming history. The game passed four million visitors in
+      under a week, and its open source code meant anyone could study it, host it, or remix it. Thousands of variants
+      appeared within months, from 3D and hexagonal boards to joke editions. More than a decade later the original
+      formula remains the one people return to: one grid, four directions, and a number that doubles.
+    </p>
+
+    <h2>Why 2048 Is So Hard to Put Down</h2>
+    <p>
+      The pull of 2048 is not an accident of charm; it is a textbook case of variable reward. Small merges pay out
+      constantly, but the big, satisfying cascades arrive on an unpredictable schedule, and unpredictable rewards hold
+      attention far more strongly than regular ones. The game also manufactures near misses. Most losses happen with a
+      huge merge one move out of reach, and a near miss does not feel like failure; it feels like proof that the next
+      run is the one. Combine that with a one tap restart, no penalty for losing, and rounds that fit into any spare
+      minute, and stopping requires genuine effort. Knowing the mechanism helps: decide on a fixed number of games
+      before you start, and the loop loses much of its grip.
+    </p>
+
+    <h2>Does Playing 2048 Train Your Brain?</h2>
+    <p>
+      Within the game, absolutely. Regular play measurably improves your planning depth, your ability to hold the
+      board state in working memory, and your discipline under pressure, which is why your scores climb week over
+      week. Beyond the game, the honest answer is: probably not much. Decades of research on brain training point the
+      same direction: practicing a specific puzzle makes you better at that puzzle and its close relatives, while
+      transfer to general memory, attention, or intelligence is weak. Enjoy 2048 as a genuinely engaging exercise in
+      planning and patience rather than as a cognitive supplement. And to be plain about it: this game is not a
+      medical or psychological diagnostic tool, and no score here says anything clinical about your brain.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['memory', 'sequence', 'stroop', 'typing']} />
+
+</BaseLayout>
+
+<script>
+  import { Game2048, type TilePaint } from '../games/game2048';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { getBest } from '../games/storage';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const tileLayer = document.getElementById('tile-layer') as HTMLElement;
+  const statScore = document.getElementById('stat-score') as HTMLElement;
+  const statBest = document.getElementById('stat-best') as HTMLElement;
+  const hint = document.getElementById('board-hint') as HTMLElement;
+  const newGameBtn = document.getElementById('new-game') as HTMLButtonElement;
+
+  const HINT_DEFAULT = 'Use your arrow keys or WASD. On a touch screen, swipe the board.';
+
+  // Tailwind cannot see dynamic classes, so tile colors come from this map
+  // and are applied as inline styles by the engine. 2 and 4 stay muted,
+  // 8 to 64 warm through cyan tints, 128 to 2048 climb the violet range.
+  const COLORS: Record<number, TilePaint> = {
+    2: { bg: 'rgb(154 165 184 / 0.16)', fg: 'var(--ink)' },
+    4: { bg: 'rgb(154 165 184 / 0.30)', fg: 'var(--ink)' },
+    8: { bg: 'rgb(34 211 238 / 0.25)', fg: 'var(--ink)' },
+    16: { bg: 'rgb(34 211 238 / 0.42)', fg: 'var(--ink)' },
+    32: { bg: 'rgb(34 211 238 / 0.62)', fg: 'var(--ink)' },
+    64: { bg: '#22d3ee', fg: '#083344' },
+    128: { bg: '#818cf8', fg: '#ffffff' },
+    256: { bg: '#8b5cf6', fg: '#ffffff' },
+    512: { bg: '#7c3aed', fg: '#ffffff' },
+    1024: { bg: '#6d28d9', fg: '#ffffff' },
+    2048: { bg: 'linear-gradient(135deg, #8b5cf6, #22d3ee)', fg: '#ffffff' },
+  };
+  const colorFor = (value: number): TilePaint => COLORS[value] ?? { bg: '#111827', fg: '#22d3ee' };
+
+  const TABLE: PercentilePoint[] = [
+    { value: 1000, beats: 10 },
+    { value: 3000, beats: 28 },
+    { value: 6000, beats: 45 },
+    { value: 12000, beats: 62 },
+    { value: 20000, beats: 78 },
+    { value: 36000, beats: 92 },
+    { value: 60000, beats: 98 },
+  ];
+
+  function refreshBest(): void {
+    const best = getBest('2048');
+    statBest.textContent = best === null ? '0' : String(best);
+  }
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: '2048',
+    valueLabel: 'Score',
+    columns: [{ key: 'tile', label: 'Best tile' }],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: '2048',
+    higherIsBetter: true,
+    format: (v) => `${v} pts`,
+    onRestart: () => startNewGame(),
+  });
+
+  const engine = new Game2048({
+    board: tileLayer,
+    tileClass: 'rounded-md font-display font-bold',
+    colorFor,
+    gapPx: 8,
+    onScore: (score) => {
+      statScore.textContent = String(score);
+    },
+    onWin: () => {
+      hint.textContent = 'You made the 2048 tile! Keep going for a bigger score.';
+      hint.classList.add('text-accent');
+    },
+    onGameOver: (score, bestTile) => {
+      hint.textContent = 'No moves left. Check your result below.';
+      card.show({
+        score,
+        display: String(score),
+        detail: `Best tile: ${bestTile}`,
+        compare: 'Reaching the 2048 tile typically takes about 20,000 points.',
+        percentileTable: TABLE,
+        shareText: `I scored ${score} points in 2048 (best tile: ${bestTile}). Beat me: https://thereflexhub.com/2048`,
+      });
+      stats.record(score, { tile: String(bestTile) });
+      refreshBest();
+    },
+  });
+
+  function startNewGame(): void {
+    hint.textContent = HINT_DEFAULT;
+    hint.classList.remove('text-accent');
+    engine.reset();
+  }
+
+  newGameBtn.addEventListener('click', () => {
+    card.hide();
+    startNewGame();
+  });
+
+  refreshBest();
+</script>

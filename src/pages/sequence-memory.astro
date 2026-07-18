@@ -1,0 +1,386 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Sequence Memory Test - Simon Style Game | The Reflex Hub';
+const description =
+  'Play the free sequence memory test, a Simon style pattern game. Watch the tiles light up in order, repeat the sequence, and beat the average of 8.';
+const path = '/sequence-memory';
+
+const schema = [
+  webAppSchema(
+    'Sequence Memory Test',
+    path,
+    'Free Simon style sequence memory game where a growing pattern of tiles lights up and you repeat the order.'
+  ),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Sequence Memory', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is a sequence memory test?',
+    a: 'A sequence memory test measures how long an ordered pattern you can hold in mind and reproduce. On this page, tiles on a 3x3 grid light up one at a time, and you tap them back in exactly the same order. Each level you complete adds one step to the sequence, so the game keeps growing until it finds your limit. Order is everything: remembering which tiles lit up is not enough, you must remember when each one fired. One wrong tap ends the run, classic Simon rules, and your level is your score.',
+  },
+  {
+    q: 'How is it different from a visual memory test?',
+    a: 'A visual memory test flashes several tiles at once and asks which positions were lit, with no order involved. You can chunk the whole picture into shapes in a single glance. A sequence memory test presents tiles one at a time and demands the order back, which adds a temporal dimension: position plus timing. That extra requirement changes the memory systems involved, pulling in serial rehearsal alongside spatial storage. Many people are noticeably better at one format than the other, which is exactly why we offer both tests and why comparing your two scores is interesting.',
+  },
+  {
+    q: 'What is the average sequence length people can remember?',
+    a: 'Aggregated results from Simon style tests put the typical adult limit at a sequence of about 8 steps, with most players landing somewhere between 5 and 10. That is consistent with a century of research on serial recall, where immediate memory for ordered items tops out around 7 plus or minus 2 for digits and a little lower for spatial locations. Reaching level 13 puts you around the top 15 percent of players, and sequences past 20 are genuinely rare without deliberate chunking strategies or a lot of practice.',
+  },
+  {
+    q: 'Why is it similar to Simon Says?',
+    a: 'The format descends directly from Simon, the electronic game Ralph Baer and Howard Morrison launched in 1978, which itself borrowed the follow the leader idea from the playground game Simon Says. The original toy had four colored buttons that flashed and beeped in a growing sequence, and players repeated the pattern until they slipped. This test keeps that exact loop, watch, repeat, grow, but swaps four buttons for nine tiles, which reduces lucky guessing and makes each step carry more information. If you were good at Simon at the kitchen table, this will feel instantly familiar.',
+  },
+  {
+    q: 'What memory system does sequence recall use?',
+    a: 'Repeating an ordered pattern leans on working memory, and on two of its components at once. The visuospatial sketchpad stores where each tile sits on the grid, while serial order is maintained by rehearsal, the same loop you use when repeating a phone number to yourself. Many players convert tiles into a verbal or rhythmic code, top left, center, bottom right, which recruits the phonological loop. The brain regions involved include the prefrontal cortex for holding and updating the sequence and the hippocampus for binding positions to their place in the order.',
+  },
+  {
+    q: 'Can musicians or dancers do better at sequence memory?',
+    a: 'Often, yes. Research on musicians consistently finds advantages on serial recall and auditory working memory tasks, and dancers train the same skill with movement phrases: long ordered chains rehearsed until they compress into fluid chunks. Both groups spend years converting sequences into rhythm and structure, which is precisely the winning strategy here. The advantage is a trained skill rather than magic: a musician hears the tile pattern as a phrase with a beat, and phrases are easier to hold than nine isolated events. Anyone can borrow the technique by giving sequences a rhythm.',
+  },
+  {
+    q: 'How can I improve my sequence memory score?',
+    a: 'Strategy beats effort. Chunk the sequence into groups of two or three steps and rehearse the groups, not the individual tiles. Give the pattern a rhythm, since rhythmic grouping is one of the oldest and best supported memory aids. Use spatial language, like corner, center, edge, to add a verbal code on top of the visual one. Stay calm during playback and resist rehearsing so hard that you miss the new step being added. Beyond technique, sleep and short spaced practice sessions reliably raise scores, while fatigue and distraction reliably sink them.',
+  },
+  {
+    q: 'Does the test get faster as sequences get longer?',
+    a: 'Yes, slightly. At level 1 each tile stays lit for 600 milliseconds with a 200 millisecond gap between steps. As your level climbs, the lit time shrinks a little each level, down to a floor of 300 milliseconds, so playback stays brisk instead of dragging through a 20 step pattern for half a minute. The speed up adds mild pressure but rarely decides the outcome: players almost always fail because the sequence outgrew their memory, not because the lights moved too fast. The gap between steps stays constant so the order remains easy to see.',
+  },
+  {
+    q: 'What is chunking and does it help here?',
+    a: 'Chunking is grouping several items into one meaningful unit so they occupy a single slot in memory, the way you remember a phone number as three groups rather than ten digits. It is the single most effective technique in this game. A 12 step sequence held as 12 separate events is beyond almost everyone, but held as four little three step paths across the grid, it fits comfortably. Build chunks as the sequence grows: keep the old chunks stable, attach each new step to the newest group, and rehearse chunk by chunk during playback.',
+  },
+  {
+    q: 'What is a good sequence memory score?',
+    a: 'The average player reaches about level 8, so anything above that beats most people. Level 10 puts you around the top third, level 13 is roughly the top 15 percent, level 16 is top 6 percent territory, and level 20 or beyond is elite, achieved by about 2 percent of players. Your first few runs will undersell you while you learn the format, and scores swing with sleep and focus. Track your personal best over a week of short sessions for a fair picture, and remember this is a game benchmark, not a clinical measure.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Sequence Memory Test: How Long a Pattern Can You Hold?</h1>
+    <p class="mt-1 text-sm text-muted">
+      Watch the tiles light up in order, then repeat the sequence. One mistake ends the run.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="score-nums grid grid-cols-2 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Level</p>
+          <p class="text-2xl font-bold" id="stat-level">1</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Best</p>
+          <p class="text-2xl font-bold text-accent" id="stat-best">-</p>
+        </div>
+      </div>
+
+      <div
+        id="sequence-grid"
+        class="mx-auto mt-4 grid w-full max-w-sm select-none grid-cols-3 gap-2"
+        aria-label="Sequence grid"
+      >
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+          <button
+            type="button"
+            class="press tap-target aspect-square w-full rounded-xl bg-surface2 transition-colors duration-150"
+            data-tile={i}
+            aria-label={`Tile ${i + 1}`}
+          ></button>
+        ))}
+      </div>
+
+      <div class="mt-4 text-center">
+        <button type="button" id="start-btn" class="btn btn-primary press">Start test</button>
+        <p class="mt-2 min-h-5 text-sm text-muted" id="status-line">Press start and watch the first tile light up.</p>
+      </div>
+    </div>
+
+    <ResultCard unit="level" />
+
+    <StatsPanel historyTitle="Last 20 runs: level reached" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Sequence Memory Is and How the Game Works</h2>
+    <p>
+      Sequence memory is your ability to hold an ordered series of events in mind and play it back exactly. This
+      sequence memory test measures it with the cleanest possible task: nine tiles on a 3x3 grid, a pattern that lights
+      one tile at a time, and a simple demand, repeat what you saw in the order you saw it. Level 1 is a single tile.
+      Complete a level and the game replays the same growing sequence with one new step added to the end. Level 8 means
+      an eight step memory sequence, level 15 means fifteen, and the ladder climbs until you slip. One wrong tap ends
+      the run, exactly like the classic Simon says game that inspired the format, and the level you reached becomes
+      your score.
+    </p>
+    <p>
+      The one mistake rule is not cruelty, it is what makes the measurement honest. With three by three tiles and no
+      second chances, a completed level proves you actually held the whole sequence, not that you guessed well. The
+      playback also speeds up gently as levels climb, from 600 milliseconds per light at the start down to a floor of
+      300 milliseconds, keeping long sequences brisk. Your best level is stored in your browser so every run has a
+      target to chase.
+    </p>
+
+    <h2>Simon and the History of Sequence Games</h2>
+    <p>
+      The pattern memory test you are playing has a surprisingly specific birthday: Studio 54, New York, May 1978,
+      where Milton Bradley launched Simon at a midnight party. Created by Ralph Baer, the engineer often called the
+      father of video games, and Howard Morrison, Simon was a black disc with four colored buttons that flashed and
+      beeped in a growing sequence. Players repeated the pattern until someone missed, and the toy became one of the
+      defining fads of the era, selling through the holidays faster than stores could stock it.
+    </p>
+    <p>
+      Baer borrowed the concept from an Atari arcade game called Touch Me and gave each button a musical tone, in a
+      choice that mattered more than it looked: the tones let players encode the sequence as a melody, not just lights.
+      The name came from the playground game Simon Says, another follow the leader format centuries older than
+      electronics. Decades later the same loop lives on in browser tests like this one, with nine tiles instead of
+      four. More tiles means each step is harder to guess and carries more information, which is why a level here is a
+      tougher earn than a round on the original toy.
+    </p>
+
+    <h2>Sequential vs Simultaneous Visual Memory</h2>
+    <p>
+      Our visual memory test flashes a whole pattern at once and asks what was lit. This sequence memory game shows one
+      tile at a time and asks for the order back. The difference sounds small and is anything but. Simultaneous
+      patterns can be compressed instantly into shapes, a line here, a corner there, so a single glance can capture
+      eleven tiles. Sequences resist that compression because the information arrives spread across time: you cannot
+      see step seven until steps one through six have already started fading.
+    </p>
+    <p>
+      That temporal spread forces a different mental workflow. Instead of photographing a layout, you are maintaining a
+      running rehearsal, refreshing the old steps while appending each new one, a juggling act that loads both storage
+      and attention. Research on spatial span tasks, like the Corsi block test used in labs since the 1970s, finds that
+      ordered spatial recall tops out a little lower than unordered recall, typically around five to seven locations
+      for new material. Many people show a clear tilt toward one format: strong pattern photographers who lose order
+      quickly, or methodical sequencers who struggle with dense simultaneous grids. Playing both tests reveals which
+      brain you have.
+    </p>
+
+    <h2>The Phonological Loop and Rehearsal</h2>
+    <p>
+      In the standard model of working memory, proposed by Alan Baddeley and Graham Hitch in 1974, a central executive
+      coordinates two storage systems: the visuospatial sketchpad for images and locations, and the phonological loop
+      for sound and speech. The loop is a short audio tape, roughly two seconds long, kept alive by silent repetition.
+      It is what you use when you mutter a phone number between hearing it and dialing it.
+    </p>
+    <p>
+      Sequence memory is unusual because high scorers recruit both systems at once. The sketchpad holds where the tiles
+      are; the loop holds the order, usually as a silently spoken path, corner, middle, top, corner. Turning a visual
+      sequence into a verbal rhythm is called recoding, and it is probably the single biggest difference between
+      average and excellent scores. The loop has a hard limit though: it holds about as much as you can say in two
+      seconds. That is why grouping steps into short rhythmic phrases works so well, and why an unrehearsed 12 step
+      sequence collapses while the same sequence as four spoken triplets survives.
+    </p>
+
+    <h2>Sequence Memory Benchmarks: What Is a Good Score?</h2>
+    <p>
+      Across large numbers of players, the average sequence length people can hold is about 8 steps. Here is how levels
+      on this test map to the wider population:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Level reached</th><th>Share of people you beat</th><th>Rating</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4</td><td>10%</td><td>Warming up</td></tr>
+          <tr><td>6</td><td>28%</td><td>Below average</td></tr>
+          <tr><td>8</td><td>50%</td><td>Average</td></tr>
+          <tr><td>10</td><td>68%</td><td>Above average</td></tr>
+          <tr><td>13</td><td>85%</td><td>Strong</td></tr>
+          <tr><td>16</td><td>94%</td><td>Excellent</td></tr>
+          <tr><td>20</td><td>98%</td><td>Exceptional</td></tr>
+          <tr><td>25</td><td>99%</td><td>Elite</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      As with any memory sequence task, first attempts undersell you. The format takes a few runs to learn, and most
+      players add two or three levels in their first session purely from getting comfortable. Conditions swing scores
+      too: sleep, caffeine, stress, and time of day all move the needle by multiple levels. Your rested personal best
+      over a week of short sessions is the number worth quoting.
+    </p>
+
+    <h2>Chunking Strategies for Sequences</h2>
+    <p>
+      Chunking, grouping single steps into larger units, is the highest leverage skill in this game. Useful ways to
+      build sequence chunks:
+    </p>
+    <ul>
+      <li><strong>Group in threes.</strong> Hold the sequence as short phrases of two or three steps. Twelve steps as four triplets fits in memory; twelve loose steps do not.</li>
+      <li><strong>Trace paths, not points.</strong> Consecutive tiles form a little journey across the grid: down the left edge, cut to center. A path is one chunk no matter how many tiles it visits.</li>
+      <li><strong>Give it a rhythm.</strong> Rehearse chunks with a beat, the way you chant a phone number. Rhythmic grouping is one of the oldest documented memory aids and works even for visual material.</li>
+      <li><strong>Freeze the old, attach the new.</strong> Each level adds exactly one step. Keep your established chunks untouched and weld the new step onto the final group, starting a fresh group every three steps.</li>
+      <li><strong>Rehearse during playback.</strong> While the early, well known part of the sequence replays, whisper your chunks along with it and save full attention for the ending, where the new step appears.</li>
+    </ul>
+
+    <h2>How to Improve Your Sequence Memory: 6 Practical Tips</h2>
+    <ol>
+      <li><strong>Sleep first, play second.</strong> Working memory is among the first abilities to sag when you are short on sleep, and a tired run can land four levels below a rested one.</li>
+      <li><strong>Practice in short spaced sessions.</strong> Three five minute sessions across a day beat one long grind. Spacing is one of the most replicated findings in learning science.</li>
+      <li><strong>Drill your recoding.</strong> Decide on names for the nine positions, corners, edges, center, and use them every run until the verbal code becomes automatic.</li>
+      <li><strong>Slow your breathing before long sequences.</strong> Anxiety competes for the same attention that maintains rehearsal. A calm exhale before tapping preserves more of the sequence than any trick.</li>
+      <li><strong>Play both memory formats.</strong> Alternating this test with the simultaneous visual memory test trains storage and order separately, and the contrast teaches you where your errors come from.</li>
+      <li><strong>Review your failure point.</strong> Most misses happen at chunk boundaries, not random spots. Notice whether you lose the start, the middle, or the newest step, and aim your rehearsal there.</li>
+    </ol>
+
+    <h2>The Science in Plain Language</h2>
+    <p>
+      Each flash of a tile sets off a small relay. Visual cortex registers where the light was. The parietal lobe tags
+      the location on your internal map of the grid. Prefrontal cortex, the brain's project manager, holds the growing
+      list and keeps it in order, refreshing each entry before it fades. The hippocampus helps bind each position to
+      its slot in time, first, fourth, seventh, which is the part that makes sequences harder than snapshots. When you
+      recode tiles into silent speech, language areas join in and give the memory a second, sturdier home.
+    </p>
+    <p>
+      Failure has a signature too. Items in the middle of a sequence are the most fragile, a pattern called the serial
+      position effect: the start gets the most rehearsal and the end is freshest, so the middle starves. Neighboring
+      steps also blur together, so most wrong taps land on a tile adjacent in time or space to the right one. None of
+      this is a defect. It is the normal behavior of a memory system built for meaning rather than raw playback, being
+      pushed politely to its limit by a game designed to find exactly where that limit sits.
+    </p>
+
+    <h2>Who Is Naturally Good at Sequence Memory?</h2>
+    <p>
+      Musicians top the list. Playing an instrument is years of daily practice at converting ordered material into
+      rhythm and phrases, and studies consistently find musicians outperform non musicians on serial recall tasks.
+      Dancers train the same muscle with choreography, holding movement chains dozens of steps long by chunking them
+      into eights. Athletes in playbook heavy sports rehearse ordered routines constantly, quarterbacks with play
+      sequences, gymnasts with routines. Gamers who grind rhythm games or fighting game combos build the identical
+      skill, executing memorized input chains under pressure. And people who work with procedures, pilots, surgeons,
+      cooks in a busy kitchen, exercise ordered memory all day without calling it that.
+    </p>
+    <p>
+      Wherever you start, the skill trains. And a final note for perspective: this is a game and a benchmark, not a
+      medical or psychological diagnostic tool. A low level does not indicate a memory disorder, and a high one is not
+      a clinical credential. If changes in your everyday memory ever worry you, talk to a healthcare professional. Here,
+      the only stakes are your personal best and the pleasant sting of a run that ended one step too soon.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['memory', 'stroop', 'reaction', 'f1']} />
+
+</BaseLayout>
+
+<script>
+  import { SequenceMemoryEngine } from '../games/memoryEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { getBest } from '../games/storage';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const statLevel = document.getElementById('stat-level') as HTMLElement;
+  const statBest = document.getElementById('stat-best') as HTMLElement;
+  const statusLine = document.getElementById('status-line') as HTMLElement;
+  const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
+  const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-tile]'));
+
+  const TABLE: PercentilePoint[] = [
+    { value: 4, beats: 10 },
+    { value: 6, beats: 28 },
+    { value: 8, beats: 50 },
+    { value: 10, beats: 68 },
+    { value: 13, beats: 85 },
+    { value: 16, beats: 94 },
+    { value: 20, beats: 98 },
+    { value: 25, beats: 99 },
+  ];
+
+  function setTile(i: number, state: 'base' | 'lit' | 'hit' | 'bad'): void {
+    const t = tiles[i];
+    if (!t) return;
+    t.classList.remove('bg-surface2', 'bg-accent', 'bg-bad', 'shadow-glow');
+    if (state === 'lit') t.classList.add('bg-accent', 'shadow-glow');
+    else if (state === 'hit') t.classList.add('bg-accent');
+    else if (state === 'bad') t.classList.add('bg-bad');
+    else t.classList.add('bg-surface2');
+  }
+
+  function clearTiles(): void {
+    for (let i = 0; i < tiles.length; i++) setTile(i, 'base');
+  }
+
+  function paintBest(): void {
+    const best = getBest('sequence');
+    statBest.textContent = best === null ? '-' : String(best);
+  }
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'sequence',
+    valueLabel: 'Level',
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'sequence',
+    higherIsBetter: true,
+    format: (v) => `level ${v}`,
+    onRestart: () => {
+      engine.reset();
+      startGame();
+    },
+  });
+
+  const engine = new SequenceMemoryEngine({
+    onLevel: (level) => {
+      statLevel.textContent = String(level);
+      clearTiles();
+      statusLine.textContent = 'Watch the sequence...';
+    },
+    onPlayback: (index) => {
+      setTile(index, 'lit');
+      window.setTimeout(() => setTile(index, 'base'), engine.playbackOnMs());
+    },
+    onPlaybackEnd: () => {
+      statusLine.textContent = 'Your turn. Repeat the sequence.';
+    },
+    onCorrectTap: (index) => {
+      setTile(index, 'hit');
+      window.setTimeout(() => setTile(index, 'base'), 180);
+    },
+    onFinish: (levelReached) => {
+      statusLine.textContent = 'Wrong tile. Run over. Check your result below.';
+      startBtn.classList.remove('hidden');
+      startBtn.textContent = 'Play again';
+      card.show({
+        score: levelReached,
+        display: String(levelReached),
+        detail: `Repeated a sequence ${levelReached} steps long before slipping`,
+        compare: 'The average sequence length people can hold is about 8.',
+        percentileTable: TABLE,
+        shareText: `I reached level ${levelReached} on the Sequence Memory Test. The average is about 8. Beat me: https://thereflexhub.com/sequence-memory`,
+      });
+      stats.record(levelReached);
+      paintBest();
+    },
+  });
+
+  for (const t of tiles) {
+    t.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      const i = Number(t.dataset.tile);
+      engine.tap(i);
+      if (engine.getPhase() === 'finished') setTile(i, 'bad');
+    });
+  }
+
+  function startGame(): void {
+    startBtn.classList.add('hidden');
+    engine.start();
+  }
+
+  startBtn.addEventListener('click', startGame);
+
+  paintBest();
+</script>

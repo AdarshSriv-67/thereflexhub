@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '../data/seo';
+
+const title = 'Privacy Policy | The Reflex Hub';
+const description =
+  'Read The Reflex Hub privacy policy: what we do not collect, how localStorage saves your scores, and how Google AdSense and analytics cookies work.';
+const path = '/privacy-policy';
+
+const schema = [
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Privacy Policy', path },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <div class="mx-auto max-w-6xl px-4 pt-10">
+    <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Privacy Policy</h1>
+    <p class="mt-2 text-sm text-muted">Effective date: July 11, 2026</p>
+
+    <article class="copy mt-6">
+      <h2>Introduction</h2>
+      <p>
+        The Reflex Hub ("we", "us", or "the site") operates https://thereflexhub.com, a collection of free browser
+        games that measure reaction time, clicking speed, typing speed, memory, and aim. This policy explains what
+        information is and is not processed when you use the site, how advertising and analytics work, and the choices
+        available to you. We designed the site to collect as little as possible: there are no accounts, no forms that
+        gather personal details, and no server side profiles. By using the site, you agree to the practices described
+        below.
+      </p>
+
+      <h2>Information We Do Not Collect</h2>
+      <p>
+        We do not ask for or store your name, email address, phone number, or any other personally identifiable
+        information. There is no registration, no login, and no user database. We do not track your test scores on any
+        server, we do not build behavioral profiles, and we never sell or share personal data, because we do not hold
+        any. The only data connected with your use of the site lives either in your own browser (described in the next
+        section) or in the aggregated, non identifying reports produced by the third party services described below.
+      </p>
+
+      <h2>Local Storage</h2>
+      <p>
+        The site uses localStorage, a standard feature of your web browser, to remember two kinds of things: your test
+        results (personal bests and recent score history for each game) and your display preference (light or dark
+        theme). This data is written and read entirely on your device. It is never transmitted to us or to anyone else,
+        and it is not accessible to other websites. You can erase it at any time by clearing your browser's site data
+        for thereflexhub.com, which will reset your saved scores and theme preference. Because the data lives only in
+        one browser, scores do not sync across devices.
+      </p>
+
+      <h2>Advertising (Google AdSense)</h2>
+      <p>
+        The site displays advertisements served by Google AdSense to keep every test free. Google and its partners use
+        cookies and similar technologies to serve ads based on your prior visits to this and other websites. In
+        particular, Google's use of advertising cookies enables it and its partners to show you personalized ads. You
+        can opt out of personalized advertising at any time:
+      </p>
+      <ul>
+        <li>
+          Visit <a href="https://adssettings.google.com" rel="noopener nofollow">Google Ads Settings</a> to control how
+          Google personalizes ads for you.
+        </li>
+        <li>
+          Visit <a href="https://www.aboutads.info" rel="noopener nofollow">www.aboutads.info</a> to opt out of
+          personalized ads from many third party vendors participating in the Digital Advertising Alliance.
+        </li>
+      </ul>
+      <p>
+        Third party vendors and ad networks other than Google may also serve ads on this site. Where they do, their
+        cookies are governed by their own privacy policies. If you prefer, you can block third party cookies entirely
+        in your browser settings; the tests on this site will continue to work normally.
+      </p>
+
+      <h2>Analytics</h2>
+      <p>
+        We use privacy friendly analytics (Plausible) to understand aggregate traffic: which pages are popular, roughly
+        where visitors come from, and what devices they use. This analytics service does not use cookies, does not
+        collect personal data, and does not track you across websites. Reports contain only anonymous, aggregated
+        counts. We use them to decide which tests to improve and which content to write next, nothing more.
+      </p>
+
+      <h2>Third-Party Links</h2>
+      <p>
+        Pages on this site may link to external websites, including the opt out resources listed above. We are not
+        responsible for the content or privacy practices of other sites. When you follow a link away from
+        thereflexhub.com, the destination site's own privacy policy applies, and we encourage you to review it.
+      </p>
+
+      <h2>Children's Privacy</h2>
+      <p>
+        The Reflex Hub is a general audience website and is not directed at children under 13 years of age. Consistent
+        with the Children's Online Privacy Protection Act (COPPA), we do not knowingly collect personal information
+        from children under 13, and because the site has no accounts or forms, no mechanism exists for a child to
+        submit personal information to us. If you believe a child has somehow provided us with personal data, contact
+        us and we will address it promptly.
+      </p>
+
+      <h2>Your Rights</h2>
+      <p>
+        Depending on where you live, privacy laws such as the EU General Data Protection Regulation (GDPR) and the
+        California Consumer Privacy Act (CCPA) grant you rights over personal data, including access, correction,
+        deletion, and opting out of the sale of personal information. Because we do not collect or hold personal data
+        ourselves, there is typically nothing for us to access or delete on your behalf. For data processed by Google
+        for advertising, use the opt out tools linked in the Advertising section, or exercise your rights directly with
+        Google. You can also clear your own localStorage data at any time through your browser.
+      </p>
+
+      <h2>Changes to This Policy</h2>
+      <p>
+        We may update this policy from time to time, for example if we change ad providers or add a new feature. When
+        we do, we will revise the effective date at the top of this page. Material changes will be reflected here
+        before they take effect, and continued use of the site after an update constitutes acceptance of the revised
+        policy. We encourage you to review this page occasionally.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy or about privacy on The Reflex Hub? Reach out through our
+        <a href="/contact">contact page</a> and we will get back to you as soon as we can.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

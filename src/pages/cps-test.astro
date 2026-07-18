@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'CPS Test - Free Click Speed Test | The Reflex Hub';
+const description =
+  'Take the free CPS test to measure your clicks per second. Play 1 to 100 second click speed modes, beat the average of 6.5 CPS, and set a new record.';
+const path = '/cps-test';
+
+const schema = [
+  webAppSchema('CPS Test', path, 'Free clicks per second test with 1, 5, 10, 30, 60, and 100 second modes.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'CPS Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is a CPS test?',
+    a: 'A CPS test (clicks per second test) measures how many times you can click your mouse in a fixed time window. You click inside the test area as fast as possible, the timer counts down, and the tool divides your total clicks by the elapsed seconds to produce your CPS score. It is the standard way gamers benchmark raw clicking speed. The classic format is the 10 second click test, but shorter sprints and longer endurance modes reveal different strengths: burst speed versus sustained speed.',
+  },
+  {
+    q: 'What is a good CPS score?',
+    a: 'Most people land between 5 and 7 clicks per second with normal clicking, and the commonly cited average is around 6.5 CPS on a 10 second test. Anything above 8 CPS is quicker than the typical player, and 10 or more usually requires a dedicated technique such as jitter clicking or butterfly clicking. Competitive Minecraft PvP players often sustain 10 to 14 CPS. Below 5 CPS is common on trackpads, touchscreens in mouse mode, or unfamiliar hardware, so test with your usual setup for a fair score.',
+  },
+  {
+    q: 'How is CPS calculated?',
+    a: 'CPS is simply your total number of clicks divided by the duration of the test in seconds. If you land 68 clicks in a 10 second click test, your score is 6.8 CPS. Our tool timestamps every click with a high resolution timer, so the math stays accurate even at very high speeds. Longer tests almost always produce a lower CPS than short ones because finger muscles fatigue quickly: a 1 second burst of 10 CPS is far easier than holding 10 CPS for a full minute.',
+  },
+  {
+    q: 'What is jitter clicking?',
+    a: 'Jitter clicking is a technique where you tense your forearm and hand muscles so they vibrate rapidly, transferring that tremor into your index finger on the mouse button. Done well it produces 10 to 14 CPS, far beyond relaxed clicking. The tradeoffs are real: it is tiring, hard on aim precision, and takes weeks of practice to control. Keep sessions short, stop if you feel strain in your wrist or forearm, and remember that comfort and consistency beat raw speed in most actual games.',
+  },
+  {
+    q: 'What is butterfly clicking?',
+    a: 'Butterfly clicking uses two fingers, usually the index and middle finger, alternating rapidly on the same mouse button. Because each finger only needs to click half as often, skilled users reach 15 to 25 CPS. Some mice also register extra clicks from the double contact, which is why several game servers restrict or flag butterfly clicking. It works best on mice with a light, responsive main button. If your scores suddenly jump after switching technique, that is the mechanical advantage showing up in the numbers.',
+  },
+  {
+    q: 'Is drag clicking allowed in games like Minecraft?',
+    a: 'It depends entirely on the server. Drag clicking, where you drag a finger across a textured mouse button so friction fires dozens of clicks, can register 25 to 100 CPS. Many competitive Minecraft servers, including popular PvP networks, cap the clicks their anti-cheat accepts per second or outright ban drag clicking because it mimics auto-clicker behavior. Casual and private servers often allow it. Check the specific server rules before relying on it, because bans for auto-clicker detection are common and rarely reversed.',
+  },
+  {
+    q: 'Does mouse quality affect CPS?',
+    a: 'Yes, noticeably. Three factors matter most: switch actuation force (lighter switches click faster), debounce time (the delay a mouse firmware waits before accepting the next click, often 4 to 20 ms), and click latency. A gaming mouse with light switches and low debounce can add 1 to 3 CPS over an office mouse for the same finger speed. Trackpads score much lower because of built-in tap delays. If you are chasing records, many gaming mice let you reduce debounce time in their software.',
+  },
+  {
+    q: 'What is the world record for clicks per second?',
+    a: 'Claimed records depend on the technique and the test length. For regular clicking, top scores on 10 second tests hover around 14 to 16 CPS. Butterfly clickers have posted runs above 20 CPS, and drag clicking pushes registered rates past 30 CPS, with some viral clips claiming near 100 CPS in 1 second bursts. There is no single official body verifying these numbers, so treat online leaderboards with healthy skepticism. Kohi click test records, a popular historical benchmark, generally topped out in the mid teens.',
+  },
+  {
+    q: 'How can I increase my clicking speed?',
+    a: 'Practice in short, focused sessions of 5 to 10 minutes rather than marathon grinding. Warm up your hand and wrist first, keep your grip relaxed, and click from the finger joint rather than moving your whole hand. Try lowering your mouse debounce time in its software, and experiment with jitter or butterfly technique once your normal speed plateaus around 7 to 8 CPS. Track your scores over a week: measurable feedback speeds up improvement. Stop immediately if you feel wrist pain, since repetitive strain undoes months of progress.',
+  },
+  {
+    q: 'Does the CPS test work on mobile?',
+    a: 'Yes. On phones and tablets the test counts screen taps inside the test area instead of mouse clicks, and every mode from 1 to 100 seconds works the same way. Tapping is a slightly different skill from clicking: most people tap a touchscreen faster than they click a mouse because the finger travel is shorter. If you want a score tuned specifically for touchscreens, with tap-focused tips and mobile benchmarks, try our dedicated tap speed test, and compare your thumb versus index finger results.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">CPS Test: Measure Your Clicks Per Second</h1>
+    <p class="mt-1 text-sm text-muted">
+      Click as fast as you can. The timer starts on your first click.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Test duration">
+        {[1, 5, 10, 30, 60, 100].map((s) => (
+          <button
+            type="button"
+            class:list={[
+              'btn px-3 py-1.5 text-sm',
+              s === 10 ? 'btn-primary' : 'btn-ghost',
+            ]}
+            data-duration={s}
+          >
+            {s}s
+          </button>
+        ))}
+      </div>
+
+      <div class="score-nums mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">10.0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Clicks</p>
+          <p class="text-2xl font-bold" id="stat-clicks">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">CPS</p>
+          <p class="text-2xl font-bold text-accent" id="stat-cps">0.0</p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="click-zone"
+        class="press mt-4 flex min-h-[280px] w-full select-none flex-col items-center justify-center gap-2 rounded-xl border border-line bg-gradient-to-b from-surface2 to-surface font-display text-xl font-bold transition-shadow hover:shadow-glow sm:min-h-[320px]"
+      >
+        <span id="zone-label">Click here to start</span>
+        <span class="text-sm font-normal text-muted" id="zone-sub">Every click counts toward your score</span>
+      </button>
+    </div>
+
+    <ResultCard unit="CPS" />
+
+    <StatsPanel historyTitle="Last 20 runs: CPS" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Is a CPS Test and How Does It Work?</h2>
+    <p>
+      A CPS test is a click speed test that counts how many times you can press your mouse button in a set time, then
+      reports the result as clicks per second. The idea is simple, but the score is surprisingly revealing: clicking
+      speed combines fine motor control, muscle endurance, hardware quality, and technique into one number. On this
+      page the timer starts the instant you land your first click, runs for the duration you choose, and locks in your
+      score the moment time expires.
+    </p>
+    <p>
+      The 10 second click test is the classic format, long enough to smooth out a lucky burst and short enough that
+      fatigue does not dominate. The 1 second and 5 second modes measure pure burst speed, while the 30, 60, and 100
+      second modes are endurance runs where pacing matters as much as raw speed. Your personal best is saved separately
+      for each duration, so you can chase records in every mode.
+    </p>
+
+    <h2>How Your CPS Score Is Calculated</h2>
+    <p>
+      The math is transparent: total clicks divided by elapsed seconds. Score 72 clicks in 10 seconds and you get 7.2
+      CPS. Under the hood, this click test timestamps every press with a high resolution timer accurate to a fraction
+      of a millisecond, so nothing is lost even during 15 CPS bursts. There is no rounding trickery and no minimum
+      click spacing: if your mouse registers it, it counts.
+    </p>
+    <p>
+      One honest caveat: your mouse itself filters clicks. Every mouse has a debounce delay, a short window after each
+      click where new signals are ignored to prevent accidental double clicks from switch noise. Office mice often use
+      15 to 20 ms of debounce, which caps theoretical output around 50 clicks per second and, more practically, eats a
+      click here and there at high speed. Gaming mice usually run 4 to 8 ms. If your fingers feel faster than your
+      score, hardware is a real suspect.
+    </p>
+
+    <h2>What Is a Good CPS Score?</h2>
+    <p>
+      Most players ask this immediately after their first run. Based on widely published test aggregates, the average
+      sits around 6.5 clicks per second on a 10 second test. Here is how scores typically break down:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>CPS (10 second test)</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 5</td><td>Slow</td><td>Trackpad, unfamiliar mouse, or relaxed clicking</td></tr>
+          <tr><td>5 to 7</td><td>Average</td><td>Normal single-finger clicking, no special technique</td></tr>
+          <tr><td>7 to 9</td><td>Fast</td><td>Practiced clicker with good hardware</td></tr>
+          <tr><td>10 to 14</td><td>Very fast</td><td>Jitter clicking or early butterfly technique</td></tr>
+          <tr><td>15+</td><td>Elite</td><td>Refined butterfly or drag clicking</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Context matters: a 6 CPS score with pixel-perfect aim wins more games than 12 CPS sprayed everywhere. Treat CPS
+      as one measurement of your mechanical toolkit, not the whole kit.
+    </p>
+
+    <h2>Clicking Techniques: Jitter, Butterfly, and Drag</h2>
+    <h3>Jitter clicking</h3>
+    <p>
+      Jitter clicking works by tensing the forearm until the hand vibrates, then channeling that tremor through a
+      stiffened index finger. Expect 10 to 14 CPS with practice. It demands a loose grip on the mouse (claw grip users
+      adapt fastest) and it costs aim stability, which is why many players reserve it for moments where speed beats
+      precision.
+    </p>
+    <h3>Butterfly clicking</h3>
+    <p>
+      Butterfly clicking alternates two fingers on the same button. Each finger works at a comfortable rate while the
+      combined output reaches 15 to 25 CPS. It is easier on the muscles than jittering but depends heavily on the
+      mouse: buttons with light, crisp switches respond best, and some anti-cheat systems flag the resulting click
+      patterns, so check the rules of whatever game you play.
+    </p>
+    <h3>Drag clicking</h3>
+    <p>
+      Drag clicking slides a slightly damp fingertip across a textured button so friction bounces the switch dozens of
+      times. Registered rates can exceed 30 CPS. It is a specialty trick: scores are spectacular, in-game legality is
+      questionable on most servers, and it wears out mouse switches faster than any other technique.
+    </p>
+
+    <h2>How to Increase Your Clicking Speed: 7 Practical Tips</h2>
+    <ol>
+      <li><strong>Warm up first.</strong> Thirty seconds of finger stretches and slow deliberate clicks raises peak speed measurably and protects your tendons.</li>
+      <li><strong>Relax everything except the clicking finger.</strong> Tension in your shoulder and wrist steals speed. Only jitter clicking wants deliberate tension, and only in the forearm.</li>
+      <li><strong>Click from the first knuckle.</strong> Small, fast movements from the finger joint beat big movements from the hand. Your fingertip should barely leave the button.</li>
+      <li><strong>Fix your hardware.</strong> Lower your mouse debounce time in its software if available, and test on a mouse with light main switches. This alone is often worth 1 to 2 CPS.</li>
+      <li><strong>Practice in short sets.</strong> Five focused 10 second runs with rest between them build speed faster than ten minutes of continuous mashing, which mostly trains fatigue.</li>
+      <li><strong>Learn one technique at a time.</strong> Get your normal clicking to a stable 7 to 8 CPS before attempting jitter or butterfly clicking, so you can tell whether the technique is actually helping.</li>
+      <li><strong>Track your numbers.</strong> Run the same mode daily and watch your personal best. Improvement that you can see is improvement that continues.</li>
+    </ol>
+
+    <h2>The Science Behind Clicking Speed</h2>
+    <p>
+      A click is a full sensorimotor loop: your motor cortex sends a command down the spinal cord, the signal fires the
+      flexor muscles in your forearm, the finger presses, and sensory feedback confirms the press so the next command
+      can follow. Repeating that loop 10 times per second pushes the limits of how fast human muscle fibers can
+      contract and relax in alternation. Fast-twitch muscle fibers handle this kind of rapid, repetitive contraction,
+      and like anything muscular they respond to training: coordination improves first, then endurance.
+    </p>
+    <p>
+      This is also why techniques work. Jitter clicking replaces deliberate press-release cycles with a tremor that
+      your finger merely transmits. Butterfly clicking halves each finger's required frequency. Both are ways around
+      the roughly 7 clicks per second ceiling that a single relaxed finger hits, a ceiling set less by willpower and
+      more by muscle physiology.
+    </p>
+
+    <h2>Who Uses CPS Tests and Why</h2>
+    <p>
+      Minecraft PvP players are the biggest audience: in versions with click-based combat, more clicks per second means
+      more hit attempts, and servers historically ran their own benchmarks like the kohi click test. Rhythm game and
+      clicker game players use CPS scores to gauge readiness for high-difficulty content. Esports hopefuls test
+      clicking speed alongside reaction time as part of a mechanical skills baseline. And plenty of visitors simply
+      enjoy the competition: a click test is a pure, instantly readable score that is fun to beat.
+    </p>
+    <p>
+      A note on interpretation: clicking speed is a motor skill measurement, not a health or cognitive assessment.
+      This test is not a medical diagnostic tool, and a low score means nothing more than a slow mouse finger today.
+    </p>
+
+    <h2>Which Test Duration Should You Choose?</h2>
+    <p>
+      Start with the 10 second click test, since nearly every published average and benchmark uses it. Use the 1 second
+      and 5 second modes to measure burst speed and to practice technique in low-fatigue reps. The 30 and 60 second
+      modes reveal endurance: most people lose 15 to 25 percent of their CPS between a 10 second and a 60 second run.
+      The 100 second mode is the marathon, mostly a test of pacing discipline and forearm stamina. Whichever you pick,
+      your history and personal bests stay saved in your browser so you can watch every mode improve.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['spacebar', 'rightclick', 'tap', 'reaction']} />
+
+</BaseLayout>
+
+<script>
+  import { ClickEngine } from '../games/clickEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const zone = document.getElementById('click-zone') as HTMLElement;
+  const zoneLabel = document.getElementById('zone-label') as HTMLElement;
+  const zoneSub = document.getElementById('zone-sub') as HTMLElement;
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statClicks = document.getElementById('stat-clicks') as HTMLElement;
+  const statCps = document.getElementById('stat-cps') as HTMLElement;
+  const durationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-duration]'));
+
+  // Distribution calibrated for the 10 second test; other durations are approximate.
+  const TABLE: PercentilePoint[] = [
+    { value: 3, beats: 8 },
+    { value: 5, beats: 28 },
+    { value: 6.5, beats: 50 },
+    { value: 8, beats: 75 },
+    { value: 10, beats: 92 },
+    { value: 12, beats: 98 },
+    { value: 14, beats: 99 },
+  ];
+
+  const gameKey = (d: number) => (d === 10 ? 'cps' : `cps-${d}`);
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'cps',
+    valueLabel: 'CPS',
+    decimals: 1,
+    format: (v) => v.toFixed(1),
+    columns: [
+      { key: 'clicks', label: 'Clicks' },
+      { key: 'mode', label: 'Mode' },
+    ],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'cps',
+    higherIsBetter: true,
+    format: (v) => `${v.toFixed(1)} CPS`,
+    onRestart: () => engine.reset(),
+  });
+
+  const engine = new ClickEngine({
+    zone,
+    duration: readHashDuration() ?? 10,
+    mode: 'click',
+    onStart: () => {
+      zoneLabel.textContent = 'Go!';
+      zoneSub.textContent = 'Keep clicking!';
+    },
+    onTick: (remaining, clicks, cps) => {
+      statTime.textContent = remaining.toFixed(1);
+      statClicks.textContent = String(clicks);
+      statCps.textContent = cps.toFixed(1);
+      if (clicks === 0 && remaining === engine.getDuration()) {
+        zoneLabel.textContent = 'Click here to start';
+        zoneSub.textContent = 'Every click counts toward your score';
+      }
+    },
+    onFinish: ({ clicks, cps, duration }) => {
+      zoneLabel.textContent = 'Time!';
+      zoneSub.textContent = 'Check your result below';
+      const rounded = Math.round(cps * 10) / 10;
+      card.setGame(gameKey(duration));
+      card.show({
+        score: rounded,
+        display: rounded.toFixed(1),
+        detail: `${clicks} clicks in ${duration} seconds`,
+        compare: 'The average player scores about 6.5 CPS on a 10 second test.',
+        percentileTable: TABLE,
+        shareText: `I hit ${rounded.toFixed(1)} CPS (${clicks} clicks in ${duration}s) on the CPS Test. Beat me: https://thereflexhub.com/cps-test`,
+      });
+      stats.record(rounded, { clicks: String(clicks), mode: `${duration}s` });
+    },
+  });
+
+  function readHashDuration(): number | null {
+    const n = parseInt(location.hash.slice(1), 10);
+    return [1, 5, 10, 30, 60, 100].includes(n) ? n : null;
+  }
+
+  function selectDuration(d: number): void {
+    engine.setDuration(d);
+    card.setGame(gameKey(d));
+    for (const b of durationBtns) {
+      const active = Number(b.dataset.duration) === d;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+    statTime.textContent = d.toFixed(1);
+    history.replaceState(null, '', d === 10 ? location.pathname : `#${d}`);
+  }
+
+  for (const b of durationBtns) {
+    b.addEventListener('click', () => selectDuration(Number(b.dataset.duration)));
+  }
+
+  const initial = readHashDuration();
+  if (initial && initial !== 10) selectDuration(initial);
+</script>

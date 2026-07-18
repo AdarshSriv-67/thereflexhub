@@ -1,0 +1,423 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Typing Test - Free WPM and Accuracy Test | The Reflex Hub';
+const description =
+  'Take the free typing test to check your WPM and accuracy on real words. Pick 15 to 120 second modes, beat the 40 WPM average, and set a new best.';
+const path = '/typing-test';
+
+const schema = [
+  webAppSchema('Typing Test', path, 'Free typing speed test with 15, 30, 60, and 120 second modes measuring WPM and accuracy.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Typing Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is a good typing speed (WPM)?',
+    a: 'The average typing speed is about 40 WPM, so anything above that already beats most people. A good practical target is 60 to 70 WPM, the range where typing stops interrupting your thinking during emails, essays, and chat. Professional typists and people who write all day usually sit between 65 and 75 WPM, and competitive typists exceed 100 WPM with high accuracy. Context matters too: 50 WPM at 98 percent accuracy is more useful than 80 WPM at 85 percent, because every error you fix costs several seconds of real time.',
+  },
+  {
+    q: 'How is WPM calculated?',
+    a: 'WPM stands for words per minute, but the formula does not count actual words, because word lengths vary wildly. Instead, every 5 correct characters count as one standardized word. The formula is WPM = (correct characters / 5) / minutes elapsed. If you type 300 correct characters in a 60 second test, that is 300 / 5 = 60 words, so 60 WPM. This test uses net WPM, meaning only correct characters count toward your score. Mistyped, omitted, and extra characters lower your accuracy and are excluded from the WPM math.',
+  },
+  {
+    q: 'What does accuracy percentage mean?',
+    a: 'Accuracy is the share of characters you typed correctly: correct characters divided by all attempted characters, times 100. If you hit 285 correct characters and 15 incorrect ones, your accuracy is 285 / 300 = 95 percent. On this test, a character is incorrect if it does not match the expected letter, if you skip letters by pressing space early, or if you type extra letters past the end of a word. Strong typists hold 96 to 99 percent. Accuracy below about 92 percent usually means you are typing faster than your control allows.',
+  },
+  {
+    q: 'What is touch typing?',
+    a: 'Touch typing is typing without looking at the keyboard, using all ten fingers from a fixed starting position called the home row (ASDF for the left hand, JKL; for the right). Each finger owns a small zone of keys and returns home after every press, so your hands never wander and your eyes never leave the screen. Because the finger-to-key mapping becomes automatic muscle memory, touch typists routinely double the speed of hunt-and-peck typists while making fewer errors. It is the single biggest structural upgrade available to anyone still watching their hands.',
+  },
+  {
+    q: 'How long does it take to learn touch typing?',
+    a: 'Most learners can type every key without looking after 2 to 4 weeks of short daily practice, around 15 to 30 minutes a day. Expect a temporary dip: your speed will drop below your old hunt-and-peck pace for the first week or two while the new finger mapping settles in. Most people pass their old speed within a month and reach 50 to 60 WPM within 3 to 6 months of consistent practice. The key variables are daily consistency, refusing to peek at the keyboard, and prioritizing accuracy before speed.',
+  },
+  {
+    q: 'What typing speed do jobs require?',
+    a: 'Typical requirements: general office and administrative roles ask for 40 to 50 WPM, customer service and live chat support usually want 50 to 60 WPM, data entry positions commonly require 60 WPM or better along with high accuracy, and transcriptionists generally need 75 WPM or more, with legal and medical transcription often expecting 80 to 100 WPM. Court reporters use special stenotype machines that reach spoken speed. If a job posting lists a WPM number, employers usually verify it with a timed test similar to this one, so practice in the same format.',
+  },
+  {
+    q: 'Why do I type slower on this test than normal?',
+    a: 'Timed tests remove the shortcuts that inflate everyday typing. In real writing you compose your own sentences, so your fingers often know what is coming; here you must read unfamiliar random words, which adds a constant read-ahead cost. Autocorrect, predictive text, and casual tolerance for typos also flatter your everyday feel for your speed. Add a bit of performance pressure from the countdown and a 10 to 20 percent drop from your subjective normal pace is completely typical. Take three or four runs; scores usually climb as the format becomes familiar.',
+  },
+  {
+    q: 'Does keyboard type affect typing speed?',
+    a: 'Yes, though less than technique does. Familiarity is the biggest hardware factor: almost everyone types fastest on the keyboard they use daily. Beyond that, key travel, actuation force, and layout geometry all matter a little. Low-profile laptop keyboards favor fast, shallow presses, while mechanical keyboards give clearer feedback that can improve accuracy. Phone touchscreens are far slower, averaging around 35 to 38 WPM even for quick thumb typists. Switching to an unfamiliar keyboard commonly costs 5 to 15 WPM for a few days until your muscle memory recalibrates to it.',
+  },
+  {
+    q: 'What is the fastest typing speed ever recorded?',
+    a: 'The classic benchmark is Stella Pajunas, who reached 216 WPM in 1946 on an IBM electric typewriter. On modern keyboards, Barbara Blackburn was recognized by Guinness for sustaining 150 WPM for 50 minutes with peaks around 212 WPM using a Dvorak layout. In the online era, competitive typists on ranked platforms have posted verified short bursts above 250 WPM, with elite performers sustaining 180 to 220 WPM over longer passages. These are extreme outliers built on years of deliberate practice: fewer than one percent of people ever exceed 120 WPM.',
+  },
+  {
+    q: 'How can I improve my WPM fast?',
+    a: 'Attack accuracy first: slow down until you can hold 97 percent or better, because errors and corrections are what actually cap most people. Learn proper touch typing if you still look at the keyboard, since technique raises your ceiling more than any drill. Then practice in short, focused sessions of 10 to 15 minutes daily rather than occasional marathons, and target your weakest keys and letter combinations specifically. Testing at 15 or 30 seconds builds speed bursts, while 60 and 120 second runs build endurance. Most people gain 10 to 20 WPM within a month this way.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Typing Test: Check Your WPM and Accuracy Free</h1>
+    <p class="mt-1 text-sm text-muted">
+      Type the words below. The timer starts on your first keystroke.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Test duration">
+        {[15, 30, 60, 120].map((s) => (
+          <button
+            type="button"
+            class:list={[
+              'btn px-3 py-1.5 text-sm',
+              s === 60 ? 'btn-primary' : 'btn-ghost',
+            ]}
+            data-duration={s}
+          >
+            {s}s
+          </button>
+        ))}
+      </div>
+
+      <div class="score-nums mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">60</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">WPM</p>
+          <p class="text-2xl font-bold text-accent" id="stat-wpm">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Accuracy</p>
+          <p class="text-2xl font-bold" id="stat-acc">100%</p>
+        </div>
+      </div>
+
+      <div
+        id="tt-stream"
+        class="relative mt-4 h-[4.875em] cursor-text overflow-hidden text-xl leading-relaxed sm:text-2xl"
+        aria-label="Typing area: type the words shown"
+      >
+        <input
+          id="tt-input"
+          class="absolute left-0 top-0 h-px w-px opacity-0"
+          type="text"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-label="Type here"
+        />
+        <div
+          id="tt-overlay"
+          class="absolute inset-0 z-10 flex cursor-pointer items-center justify-center rounded-xl bg-surface/85 px-4 text-center font-display text-sm font-medium backdrop-blur-[2px]"
+        >
+          Click or tap here to focus, then start typing
+        </div>
+      </div>
+
+      <div class="mt-4 flex justify-center">
+        <button type="button" id="tt-restart" class="btn btn-ghost tap-target">Restart</button>
+      </div>
+    </div>
+
+    <ResultCard unit="WPM" />
+
+    <StatsPanel historyTitle="Last 20 runs: WPM" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What This Typing Test Measures and How Scoring Works</h2>
+    <p>
+      This typing speed test measures two things at once: how fast you type and how cleanly you type. You are shown a
+      stream of common English words, the timer starts the instant you press your first key, and when time runs out
+      you get a WPM score and an accuracy percentage. WPM means words per minute, but the industry formula does not
+      count literal words, because "a" and "juxtaposition" are obviously not equal effort. Instead, every 5 characters
+      count as one standardized word: WPM = (correct characters / 5) / minutes elapsed. Type 300 correct characters in
+      60 seconds and you score 60 WPM.
+    </p>
+    <p>
+      There is an important distinction between gross WPM and net WPM. Gross WPM counts every keystroke, right or
+      wrong, and rewards reckless speed. Net WPM counts only correct characters, so errors genuinely cost you. This
+      wpm test reports net WPM, the number employers and typing certifications care about, because it reflects usable
+      output. Pressing space moves you to the next word, letters you skip or mistype count against your accuracy, and
+      backspace lets you fix mistakes within the current word before committing it. Your best score is saved in your
+      browser separately for each duration, so the 15 second sprint and the 120 second marathon each keep their own
+      record.
+    </p>
+
+    <h2>Average Typing Speed: How Do You Compare?</h2>
+    <p>
+      The average typing speed across the general population is about 40 WPM. People who type for a living, such as
+      administrative professionals, writers, and support agents, typically land between 65 and 75 WPM, and competitive
+      typists push past 100 WPM with accuracy still in the high nineties. Here is how words per minute test scores
+      usually break down:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>WPM</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 25</td><td>Beginner</td><td>Hunt-and-peck typing, eyes on the keyboard</td></tr>
+          <tr><td>25 to 40</td><td>Below average to average</td><td>Partial technique, frequent glances down</td></tr>
+          <tr><td>40 to 60</td><td>Solid</td><td>Comfortable everyday typing, some touch typing habits</td></tr>
+          <tr><td>60 to 80</td><td>Professional</td><td>Full touch typing, meets nearly all job requirements</td></tr>
+          <tr><td>80 to 100</td><td>Fast</td><td>Practiced touch typist, top 10 percent territory</td></tr>
+          <tr><td>100+</td><td>Competitive</td><td>Elite technique, roughly the top 1 to 2 percent</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Always read speed together with accuracy. A 90 WPM run at 88 percent accuracy produces slower finished text than
+      a 70 WPM run at 98 percent, because in real work every error triggers a stop, a backspace, and a retype. The
+      typists who look effortless are rarely the ones hammering fastest; they are the ones who almost never miss.
+    </p>
+
+    <h2>Touch Typing and the Home Row</h2>
+    <p>
+      Touch typing is the technique behind nearly every high score on any keyboard test: typing with all ten fingers,
+      without looking down. Its foundation is the home row, the middle row of letter keys where your fingers rest
+      between presses. The left hand covers A, S, D, and F; the right hand covers J, K, L, and the semicolon. The
+      small bumps on F and J exist so your index fingers can find home by feel alone. From this base, each finger is
+      responsible for a narrow column of keys and returns home immediately after striking.
+    </p>
+    <p>
+      The payoff is structural, not incremental. A hunt-and-peck typist spends attention locating keys and shuttling
+      their eyes between keyboard and screen, which caps most people near 30 to 40 WPM no matter how much they
+      practice. A touch typist has delegated key-finding entirely to muscle memory, freeing their eyes to read ahead
+      and their mind to think about content. That is why learning proper technique routinely doubles typing speed
+      within months, an improvement no amount of raw effort on the old technique can match.
+    </p>
+
+    <h2>How to Improve Your WPM Fast: 7 Practical Tips</h2>
+    <ol>
+      <li><strong>Fix accuracy before speed.</strong> Slow down until you consistently hit 97 percent or better. Errors are the real ceiling: each one costs correction time and breaks your rhythm. Speed built on a clean base compounds; speed built on errors collapses.</li>
+      <li><strong>Commit to touch typing.</strong> If you still glance at the keyboard, this is the single highest-value change available. Accept the temporary slowdown of the first two weeks; the new ceiling is worth it.</li>
+      <li><strong>Practice daily in short sessions.</strong> Ten to fifteen focused minutes every day beats a two hour session on the weekend. Motor learning consolidates between sessions, especially with sleep.</li>
+      <li><strong>Target your weak keys.</strong> Most typists have a handful of problem letters and combinations, often involving the ring and pinky fingers. Drilling those directly raises your floor faster than general practice.</li>
+      <li><strong>Read ahead of your fingers.</strong> Train your eyes to sit one or two words ahead of what you are typing. This eliminates micro-pauses between words, which quietly consume a huge share of your time.</li>
+      <li><strong>Mix test durations.</strong> Use the 15 and 30 second modes for burst speed and the 60 and 120 second modes for endurance and consistency. Each format exposes a different weakness.</li>
+      <li><strong>Track your numbers.</strong> Run the same duration daily and watch your saved history. Visible progress sustains practice, and plateaus tell you when to change your drills.</li>
+    </ol>
+
+    <h2>The Science of Fast Typing: Muscle Memory, Chunking, and Automaticity</h2>
+    <p>
+      Fast typing is a textbook case of a skill moving from conscious control to automatic execution. When you first
+      learn a key's location, recalling it is a deliberate act that occupies your attention. With repetition, the
+      brain builds a direct link between seeing a letter and firing the exact finger movement that produces it, a
+      phenomenon usually called muscle memory even though the memory lives in the brain's motor circuits rather than
+      the muscles themselves.
+    </p>
+    <p>
+      The next stage is chunking. Skilled typists do not process text letter by letter; they process familiar
+      sequences like "the", "ing", and "tion" as single units, launching the whole finger sequence as one prepared
+      action. Research on expert typists shows their fingers begin moving toward a key two or three characters before
+      it is due, which is only possible because the hands are executing chunks while the eyes read ahead. The end
+      state is automaticity: typing that runs with almost no conscious supervision, leaving your full attention for
+      what you are writing. That is also why thinking hard about your fingers mid-test usually makes you worse; you
+      are dragging an automatic process back into slow, deliberate control.
+    </p>
+
+    <h2>Who Uses Typing Tests and Why</h2>
+    <p>
+      Job seekers and employers are the biggest users of typing tests. Administrative, data entry, customer support,
+      and transcription roles routinely list WPM requirements and verify them with a timed test, so practicing in this
+      exact format is direct interview preparation. Students use typing speed tests because faster typing pays off in
+      every essay, assignment, and timed exam for years. Programmers benefit too: while coding is thinking-limited
+      rather than typing-limited, clean and confident typing keeps the flow between an idea and working code short.
+    </p>
+    <p>
+      Transcriptionists and captioners live and die by words per minute, typically needing 75 WPM or more just to
+      qualify, and gamers use a free typing test as a mechanical benchmark alongside reaction time and clicks per
+      second. Plenty of visitors simply enjoy the score chase: WPM is a clean, comparable number, and beating your own
+      best is genuinely satisfying. Whatever your reason, this is a skill benchmark, not a medical or psychological
+      diagnostic tool.
+    </p>
+
+    <h2>Why Test Scores Differ From Real-World Typing</h2>
+    <p>
+      Do not be surprised if your score here sits below your everyday feel for your speed. A words per minute test
+      makes you transcribe unfamiliar random words, which forces a constant read-then-type loop. In daily writing you
+      compose the words yourself, so your motor system often knows what is coming before your fingers arrive, and
+      familiar phrases flow out as pre-built chunks. Real-world typing also forgives errors that a test punishes:
+      autocorrect quietly repairs typos, and nobody measures the seconds you spend backspacing in an email.
+    </p>
+    <p>
+      Test pressure plays a role as well. A visible countdown nudges most people to rush, and rushing hurts accuracy,
+      which in turn drags down net WPM. The fix is repetition: after three or four runs the format stops feeling
+      novel, and scores typically rise 5 to 15 percent from your first attempt. For the fairest picture of your true
+      speed, test on your usual keyboard, take several runs, and treat your recent average, not a single hot or cold
+      run, as your real number. Then come back weekly: typing speed responds to practice more reliably than almost
+      any other skill measured on this site.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['typing1m', 'reaction', 'stroop', 'memory']} />
+
+</BaseLayout>
+
+<style is:global>
+  .tt-word {
+    display: inline-block;
+    margin-right: 0.4em;
+  }
+  .tt-pending {
+    color: var(--ink-muted);
+  }
+  .tt-correct {
+    color: var(--ok);
+  }
+  .tt-incorrect {
+    color: var(--bad);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .tt-caret {
+    position: relative;
+  }
+  .tt-caret::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 12%;
+    height: 76%;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--accent);
+    animation: tt-blink 1s steps(1) infinite;
+  }
+  .tt-caret-end::before {
+    left: auto;
+    right: -2px;
+  }
+  @keyframes tt-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tt-caret::before {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { TypingEngine } from '../games/typingEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const stream = document.getElementById('tt-stream') as HTMLElement;
+  const input = document.getElementById('tt-input') as HTMLInputElement;
+  const overlay = document.getElementById('tt-overlay') as HTMLElement;
+  const restart = document.getElementById('tt-restart') as HTMLButtonElement;
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statWpm = document.getElementById('stat-wpm') as HTMLElement;
+  const statAcc = document.getElementById('stat-acc') as HTMLElement;
+  const durationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-duration]'));
+
+  // Distribution of WPM scores: "beats" is the share of people below the value.
+  const TABLE: PercentilePoint[] = [
+    { value: 20, beats: 12 },
+    { value: 30, beats: 30 },
+    { value: 40, beats: 50 },
+    { value: 50, beats: 66 },
+    { value: 60, beats: 78 },
+    { value: 70, beats: 87 },
+    { value: 80, beats: 93 },
+    { value: 100, beats: 98 },
+    { value: 120, beats: 99 },
+  ];
+
+  const gameKey = (d: number) => (d === 60 ? 'typing' : `typing-${d}`);
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'typing',
+    valueLabel: 'WPM',
+    columns: [
+      { key: 'a', label: 'Accuracy' },
+      { key: 'mode', label: 'Mode' },
+    ],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'typing',
+    higherIsBetter: true,
+    format: (v) => `${Math.round(v)} WPM`,
+    onRestart: () => {
+      engine.reset();
+      input.focus();
+    },
+  });
+
+  const engine = new TypingEngine({
+    container: stream,
+    input,
+    duration: readHashDuration() ?? 60,
+    onTick: (remaining, wpm, accuracy) => {
+      statTime.textContent = String(Math.ceil(remaining));
+      statWpm.textContent = String(Math.round(wpm));
+      statAcc.textContent = `${Math.round(accuracy)}%`;
+    },
+    onFocusChange: (focused) => {
+      overlay.classList.toggle('hidden', focused || engine.isFinished());
+    },
+    onFinish: ({ wpm, accuracy, correctChars, duration }) => {
+      overlay.classList.add('hidden');
+      input.blur();
+      const rounded = Math.round(wpm);
+      const acc = Math.round(accuracy);
+      card.setGame(gameKey(duration));
+      card.show({
+        score: rounded,
+        display: String(rounded),
+        detail: `${correctChars} correct chars, ${acc}% accuracy in ${duration} seconds`,
+        compare: 'The average typing speed is 40 WPM; professionals reach 65 to 75 WPM.',
+        percentileTable: TABLE,
+        shareText: `I typed ${rounded} WPM with ${acc}% accuracy on the Typing Test. Beat me: https://thereflexhub.com/typing-test`,
+      });
+      stats.record(rounded, { a: `${acc}%`, mode: `${duration}s` });
+    },
+  });
+
+  function readHashDuration(): number | null {
+    const n = parseInt(location.hash.slice(1), 10);
+    return [15, 30, 60, 120].includes(n) ? n : null;
+  }
+
+  function selectDuration(d: number): void {
+    engine.setDuration(d);
+    card.setGame(gameKey(d));
+    for (const b of durationBtns) {
+      const active = Number(b.dataset.duration) === d;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+    history.replaceState(null, '', d === 60 ? location.pathname : `#${d}`);
+  }
+
+  for (const b of durationBtns) {
+    b.addEventListener('click', () => selectDuration(Number(b.dataset.duration)));
+  }
+
+  restart.addEventListener('click', () => {
+    card.hide();
+    engine.reset();
+    input.focus();
+  });
+
+  const initial = readHashDuration();
+  if (initial && initial !== 60) selectDuration(initial);
+</script>

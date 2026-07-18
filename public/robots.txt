@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thereflexhub.com/sitemap.xml
+Sitemap: https://thereflexhub.com/sitemap-index.xml

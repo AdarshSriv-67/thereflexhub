@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '../data/seo';
+
+const title = 'Terms and Conditions | The Reflex Hub';
+const description =
+  'Read the terms and conditions for using The Reflex Hub. Plain language rules for our free reaction, typing, memory, and aim tests. Updated July 2026.';
+const path = '/terms-and-conditions';
+
+const schema = [
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Terms and Conditions', path },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-8">
+    <h1 class="font-display text-3xl font-bold">Terms and Conditions</h1>
+    <p class="mt-2 text-sm text-muted">Effective date: July 12, 2026</p>
+
+    <article class="copy mt-6">
+      <p>
+        Welcome to The Reflex Hub. These terms and conditions govern your use of thereflexhub.com and all games, tests,
+        and content available on it (the "Site"). By accessing or using the Site, you agree to these terms. If you do
+        not agree with any part of them, please do not use the Site. We have kept the language as plain as possible,
+        because terms you cannot understand protect nobody.
+      </p>
+
+      <h2>1. What the Site Is</h2>
+      <p>
+        The Reflex Hub provides free browser games that measure skills such as reaction time, clicking speed, typing
+        speed, memory, and aim. The Site is provided for entertainment, practice, and casual self measurement. It is
+        not a medical, psychological, or professional assessment service, and no score or result on the Site should be
+        used to evaluate a health condition, fitness to drive, or fitness for any occupation.
+      </p>
+
+      <h2>2. Acceptable Use</h2>
+      <p>You agree to use the Site only for lawful purposes. In particular, you agree not to:</p>
+      <ul>
+        <li>Use bots, scripts, auto-clickers, or other automation to interact with the games or misrepresent scores.</li>
+        <li>Attempt to disrupt, overload, or interfere with the operation or security of the Site.</li>
+        <li>Copy, scrape, republish, or redistribute substantial portions of the Site's content without permission.</li>
+        <li>Use the Site in any way that violates applicable laws or regulations in your jurisdiction.</li>
+      </ul>
+
+      <h2>3. Intellectual Property</h2>
+      <p>
+        The Site's design, text, graphics, game code, and branding are the property of The Reflex Hub and are protected
+        by copyright and other intellectual property laws. You may link to any page on the Site and share your results
+        freely. You may not copy the Site's content or games for republication, resale, or the creation of a competing
+        service without prior written consent. Third party names mentioned on the Site, such as game titles and
+        trademarks, belong to their respective owners and are referenced for identification only.
+      </p>
+
+      <h2>4. Scores and Local Data</h2>
+      <p>
+        Your scores, personal bests, run history, and preferences are stored locally in your own browser using
+        localStorage. They are not uploaded to our servers and we cannot restore them if they are lost. Clearing your
+        browser data, switching browsers or devices, or using private browsing will remove or bypass this data. Scores
+        have no monetary value, confer no rights, and may be affected by your hardware and browser, as explained in our
+        content about measurement accuracy.
+      </p>
+
+      <h2>5. Advertising and Third Party Services</h2>
+      <p>
+        The Site may display advertising and may use privacy focused analytics to understand aggregate traffic. Ads are
+        provided by third parties who may use cookies or similar technologies as described in our
+        <a href="/privacy-policy">privacy policy</a>. We do not control and are not responsible for the content of
+        external websites linked from the Site, including advertiser sites. Visiting external links is at your own
+        discretion.
+      </p>
+
+      <h2>6. Disclaimer of Warranties</h2>
+      <p>
+        The Site is provided on an "as is" and "as available" basis, without warranties of any kind, whether express or
+        implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose,
+        accuracy, and non-infringement. We do not warrant that the Site will be uninterrupted, error free, or free of
+        harmful components, or that scores and measurements will be precise on every combination of hardware, browser,
+        and network.
+      </p>
+
+      <h2>7. Limitation of Liability</h2>
+      <p>
+        To the maximum extent permitted by law, The Reflex Hub and its operators shall not be liable for any indirect,
+        incidental, special, consequential, or punitive damages, or for any loss of data, profits, or goodwill, arising
+        out of or related to your use of the Site. This includes, without limitation, damages arising from reliance on
+        any score or measurement, loss of locally stored data, or temporary unavailability of the Site. Where liability
+        cannot be excluded, it is limited to the amount you paid to use the Site, which is zero, or the smallest amount
+        permitted by applicable law.
+      </p>
+
+      <h2>8. Health and Safety</h2>
+      <p>
+        Some games involve rapid repeated clicking, tapping, or typing. Take regular breaks, stop immediately if you
+        feel pain or discomfort in your hands, wrists, or arms, and consult a professional if discomfort persists. If
+        you are sensitive to flashing or rapidly changing colors, use your judgment before playing games with fast
+        color changes. You use the games at your own risk.
+      </p>
+
+      <h2>9. Children</h2>
+      <p>
+        The Site is a general audience website and is not directed at children under 13. We do not knowingly collect
+        personal information from anyone, including children; see the <a href="/privacy-policy">privacy policy</a> for
+        details on our minimal data practices.
+      </p>
+
+      <h2>10. Changes to the Site and These Terms</h2>
+      <p>
+        We may add, change, or remove games and features at any time without notice. We may also update these terms
+        from time to time. The effective date at the top of this page shows when they were last revised, and continued
+        use of the Site after a revision constitutes acceptance of the updated terms. If a change is significant, we
+        will make that clear on this page.
+      </p>
+
+      <h2>11. Severability</h2>
+      <p>
+        If any provision of these terms is found to be unenforceable, the remaining provisions will continue in full
+        force and effect, and the unenforceable provision will be replaced by an enforceable one that most closely
+        matches its intent.
+      </p>
+
+      <h2>12. Contact</h2>
+      <p>
+        Questions about these terms are welcome. Reach us through the <a href="/contact">contact page</a> and we will
+        respond as soon as we can.
+      </p>
+    </article>
+  </section>
+</BaseLayout>

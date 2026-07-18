@@ -1,0 +1,579 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Stroop Test - Name the Ink Color Challenge | The Reflex Hub';
+const description =
+  'Take the free Stroop test online: name the ink color, not the word, in 30 seconds. Beat the average score of 15 to 25 points and test your focus.';
+const path = '/stroop-test';
+
+const schema = [
+  webAppSchema(
+    'Stroop Test',
+    path,
+    'Free 30 second Stroop effect test: pick the ink color of mismatched color words and score points against the clock.'
+  ),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Stroop Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is the Stroop effect?',
+    a: 'The Stroop effect is the delay and extra error rate you experience when the meaning of a word conflicts with a feature of the word itself, classically its ink color. When the word BLUE is printed in red ink, naming the ink takes measurably longer than naming the ink of a neutral symbol, often 100 to 300 milliseconds longer per item. The effect appears because reading is so practiced that it happens automatically, and your brain must actively suppress the word to report the color. It is one of the most replicated findings in all of psychology.',
+  },
+  {
+    q: 'Who invented the Stroop test?',
+    a: 'The test is named after John Ridley Stroop, an American psychologist who published the defining experiments in 1935 in the Journal of Experimental Psychology. Working at George Peabody College, Stroop had participants read color words printed in conflicting ink colors and then name the inks themselves, timing both tasks with a stopwatch. Earlier researchers, including James McKeen Cattell in the 1880s, had noticed that naming colors is slower than reading words, but Stroop was the first to combine the two into one conflicting stimulus, which is why the interference effect carries his name.',
+  },
+  {
+    q: 'Why is it hard to name the color instead of reading the word?',
+    a: 'Because reading is automatic and color naming is not. After years of practice, a literate adult cannot look at a familiar word without processing its meaning; the word is read before you decide anything. Naming an ink color, by contrast, is a slower, deliberate act. When the two answers disagree, both responses race toward your mouth or your finger, and the automatic one arrives first. Your brain must detect the conflict, hold back the word, and push through the color response instead. That suppression step is what costs you time and causes mistakes.',
+  },
+  {
+    q: 'What does the Stroop test measure?',
+    a: 'The Stroop test measures a cluster of executive functions. The core one is response inhibition, your ability to suppress an automatic but wrong answer. It also taxes selective attention, because you must focus on ink color while ignoring the word, and processing speed, because scores depend on how quickly each decision resolves. Researchers additionally use it to study cognitive flexibility, since the task forces you to apply a rule that contradicts habit. In this 30 second format, your score blends accuracy and speed into one number you can track over time.',
+  },
+  {
+    q: 'Is the Stroop test used in real psychology?',
+    a: 'Yes, extensively. Standardized versions such as the Golden Stroop and the Delis-Kaplan color-word interference test are part of routine neuropsychological batteries. Clinicians use them to assess executive function after concussion or stroke, in dementia screening, and in research on ADHD, depression, and schizophrenia. Cognitive neuroscientists use Stroop tasks inside fMRI scanners to map how the brain detects and resolves conflict. This browser version follows the same logic but is built for fun and self-benchmarking, not clinical assessment, so treat your score as a game statistic rather than a clinical measure.',
+  },
+  {
+    q: 'What is a good Stroop test score?',
+    a: 'On this 30 second format, most people finish with 15 to 25 points. Around 18 points is a typical midpoint, which works out to one correct answer roughly every 1.5 seconds. Scores of 26 to 30 are strong, showing quick conflict resolution with few errors, and anything above 35 is elite territory that usually requires answers near one per second with almost no mistakes. Because a wrong answer costs a point, accuracy matters as much as speed: a careful 24 out of 24 beats a frantic 30 correct with 8 wrong.',
+  },
+  {
+    q: 'Does the Stroop effect work in every language?',
+    a: 'Yes. The interference appears in every written language that has been tested, including Chinese, Japanese, Arabic, Hebrew, and dozens of alphabetic languages. What varies is the size of the effect. It tends to be strongest in the language you read most fluently, because fluency is what makes reading automatic. Logographic scripts like Chinese still show robust interference, and bilingual studies show cross-language effects, where a color word in one language slows color naming in another. The universality is part of why the Stroop task became such a trusted research tool.',
+  },
+  {
+    q: 'Can practice reduce the Stroop effect?',
+    a: 'Partly. With repeated sessions your scores on a Stroop test improve: you learn the button layout, commit to the ink-only rule, and get faster at resolving conflict. Studies show practice shrinks the interference cost, sometimes substantially, but it almost never eliminates it, because you cannot unlearn reading. Most improvement comes in the first handful of sessions, after which gains flatten. Interestingly, training on one version transfers only modestly to other conflict tasks, so you are mostly getting better at this specific skill, plus a little general sharpening of focus.',
+  },
+  {
+    q: 'Is Stroop performance linked to attention or ADHD?',
+    a: 'Research groups have compared Stroop performance between people with and without ADHD for decades. On average, ADHD groups show somewhat slower and more variable responses, consistent with differences in sustained attention and inhibition, but the overlap between groups is large and many individuals with ADHD score perfectly well. A single online score cannot separate fatigue, unfamiliarity, or distraction from anything clinical. This test is not a medical or psychological diagnostic tool. If attention difficulties affect your daily life, the right next step is a qualified clinician, not a browser game.',
+  },
+  {
+    q: 'Why do bilingual people sometimes perform differently?',
+    a: 'Two forces pull in opposite directions. Reading in a second language is usually less automatic, so taking a Stroop test in that language often produces less interference from the words. At the same time, some studies suggest lifelong bilinguals develop slightly stronger general conflict-management skills from constantly selecting one language and suppressing the other, though this advantage is debated and appears small when it appears at all. There are also cross-language effects: seeing the word RED can slow a bilingual person naming ink colors even in their other language.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Stroop Test: Name the Ink Color, Not the Word</h1>
+    <p class="mt-1 text-sm text-muted">
+      Tap the color the word is printed in, not what it says. Number keys answer on desktop, and the buttons deal a
+      new order at the start of every run.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <div class="flex items-center gap-2" role="group" aria-label="Test duration">
+          <span class="text-sm font-medium text-muted">Time</span>
+          {[15, 30, 60].map((s) => (
+            <button
+              type="button"
+              class:list={['btn px-3 py-1.5 text-sm', s === 30 ? 'btn-primary' : 'btn-ghost']}
+              data-duration={s}
+            >
+              {s}s
+            </button>
+          ))}
+        </div>
+        <div class="flex items-center gap-2" role="group" aria-label="Number of colors">
+          <span class="text-sm font-medium text-muted">Colors</span>
+          {[4, 6].map((n) => (
+            <button
+              type="button"
+              class:list={['btn px-3 py-1.5 text-sm', n === 4 ? 'btn-primary' : 'btn-ghost']}
+              data-colors={n}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="score-nums mt-4 grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">30.0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Score</p>
+          <p class="text-2xl font-bold text-accent" id="stat-score">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Avg ms</p>
+          <p class="text-2xl font-bold" id="stat-avg">0</p>
+        </div>
+      </div>
+
+      <div class="relative mt-4">
+        <div
+          class="flex min-h-[150px] select-none items-center justify-center rounded-xl border border-line bg-surface2 transition-shadow sm:min-h-[180px]"
+          id="prompt-box"
+        >
+          <span class="font-display text-5xl font-bold tracking-wide sm:text-6xl" id="prompt-word" style="color:#60a5fa"
+            >READY</span
+          >
+        </div>
+
+        <div id="answers" class="mt-3 grid grid-cols-2 gap-2 sm:gap-3" role="group" aria-label="Ink color answers">
+          <button type="button" class="btn btn-ghost press tap-target min-h-[56px] font-display text-lg font-bold" data-color="red">
+            Red <span class="ml-1 text-xs font-normal text-muted">1</span>
+          </button>
+          <button type="button" class="btn btn-ghost press tap-target min-h-[56px] font-display text-lg font-bold" data-color="green">
+            Green <span class="ml-1 text-xs font-normal text-muted">2</span>
+          </button>
+          <button type="button" class="btn btn-ghost press tap-target min-h-[56px] font-display text-lg font-bold" data-color="blue">
+            Blue <span class="ml-1 text-xs font-normal text-muted">3</span>
+          </button>
+          <button type="button" class="btn btn-ghost press tap-target min-h-[56px] font-display text-lg font-bold" data-color="yellow">
+            Yellow <span class="ml-1 text-xs font-normal text-muted">4</span>
+          </button>
+        </div>
+
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-xl bg-bg/90 backdrop-blur-sm"
+          id="start-overlay"
+        >
+          <p class="font-display text-xl font-bold" id="overlay-title">Ready?</p>
+          <button type="button" id="start-btn" class="btn btn-primary press tap-target px-8 py-3 font-display text-lg font-bold">
+            Tap to start
+          </button>
+          <p class="px-6 text-center text-sm text-muted" id="overlay-sub">
+            The timer starts the moment you tap. Pick the ink color, ignore the word.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <ResultCard unit="pts" />
+
+    <StatsPanel historyTitle="Last 20 runs: score" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Is the Stroop Test and How Does Scoring Work Here?</h2>
+    <p>
+      The Stroop test is the famous color word test from psychology: a color name like GREEN appears on screen, but it
+      is printed in a different ink color, and your job is to report the ink, not the word. It sounds trivial until you
+      try it. Reading is so deeply automatic that the word barges into your decision whether you want it to or not, and
+      suppressing it takes real mental effort. That collision between what you read and what you see is the Stroop
+      effect, and this page turns it into a fast, replayable game with 15, 30, and 60 second modes.
+    </p>
+    <p>
+      Scoring on this Stroop test online is simple. When you tap start, the clock begins immediately and the first
+      mismatched word appears. Choose the ink color from the answer buttons or press the matching number key on a
+      keyboard. You can play the classic four color set (Red, Green, Blue, Yellow) or a harder six color set that adds
+      Purple and Orange. The answer buttons are dealt into a fresh random order at the start of every run, so each game
+      begins with a new layout to learn, but the layout stays put while you play, letting you build speed within the
+      run. Every correct answer adds a point, every wrong answer subtracts one, and your score never drops
+      below zero, so guessing wildly is a losing strategy. The word never matches its ink, and the same word and ink
+      combination never appears twice in a row, so you cannot coast on repetition. At the end you get your score, your
+      correct and wrong counts, your average response time per answer, and, on the standard 30 second four color mode,
+      a percentile estimate against other players.
+    </p>
+
+    <h2>The Stroop Effect Explained: Automatic Reading vs Deliberate Color Naming</h2>
+    <p>
+      Psychologists describe the Stroop effect as a conflict between an automatic process and a controlled one. After
+      thousands of hours of practice, reading no longer feels like a task; a literate adult cannot look at the word
+      BLUE and choose not to understand it. Recognizing and naming a color, on the other hand, is a slower, deliberate
+      operation that needs attention. When the word says one color and the ink shows another, two answers are prepared
+      at the same time, and the automatic one, the word, is ready first.
+    </p>
+    <p>
+      To respond correctly you have to do three things in a fraction of a second: notice that the two answers disagree,
+      hold back the response the word is pushing on you, and let the slower ink answer through instead. That extra
+      management step is called interference, and it is measurable. On matched or neutral items people answer quickly
+      and smoothly; on conflicting items they answer 100 to 300 milliseconds slower on average and make more errors.
+      This brain interference test format is powerful precisely because the delay is involuntary. You cannot decide to
+      skip the conflict; you can only get better at resolving it.
+    </p>
+
+    <h2>John Ridley Stroop and the 1935 Experiment</h2>
+    <p>
+      The task carries the name of John Ridley Stroop, an American psychologist who published his doctoral research in
+      1935 in the Journal of Experimental Psychology. Researchers before him, going back to James McKeen Cattell in the
+      1880s, had already noticed that naming colors takes longer than reading color words. Stroop's insight was to fuse
+      the two into a single conflicting stimulus. In his second and most famous experiment, participants named the ink
+      colors of words that spelled different colors, and they were dramatically slower, about 74 percent slower, than
+      when naming the colors of plain squares.
+    </p>
+    <p>
+      Stroop's paper went on to become one of the most cited publications in the history of experimental psychology,
+      and the task it introduced is still in daily use nearly a century later. Very few laboratory effects are this
+      easy to demonstrate, this reliable across labs, cultures, and decades, and this resistant to willpower. Every
+      person who takes a stroop effect test feels the same tug that Stroop's participants felt in 1935, which is a
+      remarkable kind of scientific durability.
+    </p>
+
+    <h2>What the Stroop Test Measures</h2>
+    <p>The test looks like a color game, but it probes several distinct mental abilities at once:</p>
+    <ul>
+      <li>
+        <strong>Selective attention.</strong> You must lock onto one feature of the stimulus, the ink, while actively
+        ignoring another feature occupying the exact same spot on screen. That is attention working as a filter under
+        the hardest possible conditions.
+      </li>
+      <li>
+        <strong>Response inhibition.</strong> The word constantly loads an answer into the chamber. Suppressing that
+        prepared response, over and over, is the core executive skill the Stroop task was built to expose.
+      </li>
+      <li>
+        <strong>Processing speed.</strong> With only 30 seconds on the clock, your score reflects how quickly each
+        perceive, decide, and respond cycle completes, not just whether it completes correctly.
+      </li>
+      <li>
+        <strong>Cognitive flexibility.</strong> The task forces you to follow a rule that contradicts habit. Holding
+        that rule active, answer by answer, without slipping back into reading is a small act of mental flexibility
+        repeated dozens of times.
+      </li>
+    </ul>
+    <p>
+      No single number can isolate these components, and this page does not try. What your score does give you is a
+      clean, repeatable benchmark of how fast and accurately your brain resolves conflict today, which you can compare
+      against your own history.
+    </p>
+
+    <h2>Real Uses in Psychology and Neuroscience</h2>
+    <p>
+      The Stroop task is a workhorse of real clinical and research practice. Standardized versions, such as the Golden
+      Stroop and the color-word interference subtest of the Delis-Kaplan Executive Function System, appear in
+      neuropsychological batteries used to evaluate executive function after stroke or traumatic brain injury, to
+      track cognitive change in aging and dementia, and to characterize attention in conditions like ADHD, depression,
+      and schizophrenia. Because the task is short, language-light, and nearly impossible to fake in the fast
+      direction, it earns its place in the clinic.
+    </p>
+    <p>
+      In neuroscience labs, Stroop variants run inside fMRI and EEG studies as the standard way to trigger response
+      conflict on demand. When researchers want to watch conflict detection and cognitive control happen in a living
+      brain, they very often reach for exactly the kind of mismatched color words you just played with. Emotional
+      Stroop variants, where charged words replace color words, are used to study anxiety and attentional bias as
+      well.
+    </p>
+
+    <h2>What Is a Good Stroop Test Score? Benchmarks</h2>
+    <p>
+      Most people playing this 30 second format finish between 15 and 25 points. Here is how scores typically break
+      down:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Score (30 seconds)</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 10</td><td>Warming up</td><td>First attempts, unfamiliar layout, or heavy interference</td></tr>
+          <tr><td>10 to 15</td><td>Below average</td><td>Accurate but slow, or fast with too many penalties</td></tr>
+          <tr><td>15 to 25</td><td>Average</td><td>The broad middle; about one answer every 1.5 seconds</td></tr>
+          <tr><td>26 to 30</td><td>Strong</td><td>Quick conflict resolution with very few errors</td></tr>
+          <tr><td>31 to 36</td><td>Excellent</td><td>Near one answer per second, high accuracy</td></tr>
+          <tr><td>37+</td><td>Elite</td><td>Practiced players with fast, clean runs</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Remember that the penalty makes accuracy count double: a wrong answer both misses a point and removes one. Watch
+      your average milliseconds per answer too. Dropping from 1,400 ms to 1,100 ms while staying accurate is exactly
+      the kind of improvement the score rewards.
+    </p>
+
+    <h2>How to Improve Your Stroop Test Score</h2>
+    <ol>
+      <li>
+        <strong>Say the ink color in your head.</strong> Silently naming the color, not the word, keeps the correct
+        response channel active and crowds out the automatic reading response.
+      </li>
+      <li>
+        <strong>Soften your focus on the letters.</strong> Many strong players fix their eyes slightly off center or
+        blur the word a little. The less crisply you read it, the less interference it generates.
+      </li>
+      <li>
+        <strong>Learn the layout in the first seconds.</strong> The buttons are shuffled at the start of each run, so
+        spend your first two or three answers deliberately noting where each color landed. Locking in the new map
+        early costs a moment up front and pays for itself on every answer after.
+      </li>
+      <li>
+        <strong>Slow down by 10 percent.</strong> Because wrong answers subtract a point, the fastest scoring pace is
+        just below your error threshold, not at your maximum speed.
+      </li>
+      <li>
+        <strong>Play short, frequent sessions.</strong> Three or four runs a day beats one long grind. Conflict
+        resolution sharpens quickly early on, and fatigue erases gains within a session.
+      </li>
+      <li>
+        <strong>Test rested and alert.</strong> Sleep loss and mental fatigue hit executive function harder than they
+        hit raw reaction speed. The same person can swing five points or more between a sharp morning and a tired
+        night.
+      </li>
+    </ol>
+
+    <h2>The Science in Plain Language: Your Brain's Conflict Alarm</h2>
+    <p>
+      Neuroscientists have a good working picture of what happens during each answer. A region along the brain's
+      midline called the anterior cingulate cortex acts like a conflict alarm. When the word and the ink prepare two
+      different responses at once, this region detects that both response channels are active, essentially noticing
+      that your brain is about to argue with itself, and signals for backup. The prefrontal cortex, the brain's
+      management layer, then boosts attention toward the feature that matters, the ink, and clamps down on the
+      prepared word response until the correct answer wins.
+    </p>
+    <p>
+      In plain language: one part of your brain rings a bell that says two answers are fighting, and another part
+      settles the fight in favor of the rule you were given. That whole negotiation costs a few hundred milliseconds,
+      which is the delay you feel on every trial. It also explains why the task tires you out. Detecting and resolving
+      response conflict dozens of times a minute is genuinely effortful work, even though nothing about pressing four
+      buttons looks difficult from the outside.
+    </p>
+
+    <h2>Stroop, Attention, and ADHD: A Curiosity, Not a Diagnosis</h2>
+    <p>
+      Because the Stroop task leans so heavily on attention and inhibition, it shows up constantly in ADHD research,
+      and many visitors arrive at a stroop test online wondering what their score says about their focus. The honest
+      summary of the literature: on average, groups with ADHD respond somewhat more slowly and more variably on Stroop
+      tasks, but the distributions overlap heavily, many people with ADHD perform in the normal range, and plenty of
+      people without ADHD score poorly when tired or distracted.
+    </p>
+    <p>
+      So enjoy the curiosity, track your scores, and notice how sleep, caffeine, and time of day move them. But be
+      clear about what this is: a game built on a classic paradigm. This is not a medical or psychological diagnostic
+      tool, and no browser score can assess ADHD or any other condition. If attention problems are affecting your
+      daily life, a qualified clinician can run properly normed tests as part of a full evaluation, which is something
+      no 30 second color word test can do.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['memory', 'sequence', 'reaction', 'typing']} />
+
+</BaseLayout>
+
+<script>
+  import { StroopEngine, type StroopColor } from '../games/stroopEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statScore = document.getElementById('stat-score') as HTMLElement;
+  const statAvg = document.getElementById('stat-avg') as HTMLElement;
+  const promptBox = document.getElementById('prompt-box') as HTMLElement;
+  const promptWord = document.getElementById('prompt-word') as HTMLElement;
+  const overlay = document.getElementById('start-overlay') as HTMLElement;
+  const overlayTitle = document.getElementById('overlay-title') as HTMLElement;
+  const overlaySub = document.getElementById('overlay-sub') as HTMLElement;
+  const startBtn = document.getElementById('start-btn') as HTMLElement;
+  const answersBox = document.getElementById('answers') as HTMLElement;
+  const durationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-duration]'));
+  const colorCountBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-colors]'));
+
+  const HUES: Record<StroopColor, string> = {
+    red: '#f87171',
+    green: '#34d399',
+    blue: '#60a5fa',
+    yellow: '#fbbf24',
+    purple: '#a78bfa',
+    orange: '#fb923c',
+  };
+  const LABELS: Record<StroopColor, string> = {
+    red: 'Red',
+    green: 'Green',
+    blue: 'Blue',
+    yellow: 'Yellow',
+    purple: 'Purple',
+    orange: 'Orange',
+  };
+  const SETS: Record<number, StroopColor[]> = {
+    4: ['red', 'green', 'blue', 'yellow'],
+    6: ['red', 'green', 'blue', 'yellow', 'purple', 'orange'],
+  };
+
+  let duration = 30;
+  let colorCount = 4;
+  /** button order for the current prompt, reshuffled every word */
+  let order: StroopColor[] = [...SETS[4]!];
+
+  const gameKey = (): string =>
+    duration === 30 && colorCount === 4 ? 'stroop' : `stroop-${duration}s-${colorCount}c`;
+
+  function shuffle<T>(arr: T[]): T[] {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j]!, a[i]!];
+    }
+    return a;
+  }
+
+  /** Rebuild the answer grid in the given order. Runs after every prompt. */
+  function renderAnswers(): void {
+    answersBox.className =
+      colorCount === 6
+        ? 'mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3'
+        : 'mt-3 grid grid-cols-2 gap-2 sm:gap-3';
+    answersBox.innerHTML = '';
+    order.forEach((color, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-ghost press tap-target min-h-[56px] font-display text-lg font-bold';
+      btn.dataset.color = color;
+      btn.append(LABELS[color]);
+      const hint = document.createElement('span');
+      hint.className = 'ml-1 text-xs font-normal text-muted';
+      hint.textContent = String(i + 1);
+      btn.append(hint);
+      btn.addEventListener('click', () => engine.answer(color));
+      answersBox.append(btn);
+    });
+  }
+
+  const TABLE: PercentilePoint[] = [
+    { value: 8, beats: 10 },
+    { value: 12, beats: 25 },
+    { value: 18, beats: 50 },
+    { value: 24, beats: 75 },
+    { value: 30, beats: 90 },
+    { value: 36, beats: 97 },
+    { value: 42, beats: 99 },
+  ];
+
+  let flashTimer: number | undefined;
+  function flash(ok: boolean): void {
+    if (flashTimer !== undefined) clearTimeout(flashTimer);
+    promptBox.classList.remove('ring-2', 'ring-ok', 'ring-bad');
+    promptBox.classList.add('ring-2', ok ? 'ring-ok' : 'ring-bad');
+    flashTimer = window.setTimeout(() => {
+      promptBox.classList.remove('ring-2', 'ring-ok', 'ring-bad');
+    }, 160);
+  }
+
+  function showOverlay(title: string, btnLabel: string, sub: string): void {
+    overlayTitle.textContent = title;
+    startBtn.textContent = btnLabel;
+    overlaySub.textContent = sub;
+    overlay.classList.remove('hidden');
+  }
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'stroop',
+    valueLabel: 'Score',
+    columns: [
+      { key: 'mode', label: 'Mode' },
+      { key: 'avg', label: 'Avg answer' },
+      { key: 'wrong', label: 'Wrong' },
+    ],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'stroop',
+    higherIsBetter: true,
+    format: (v) => `${v} pts`,
+    onRestart: () => {
+      engine.reset();
+      promptWord.textContent = 'READY';
+      promptWord.style.color = HUES.blue;
+      statAvg.textContent = '0';
+      showOverlay('Ready?', 'Tap to start', 'The timer starts the moment you tap. Pick the ink color, ignore the word.');
+    },
+  });
+
+  const engine = new StroopEngine({
+    duration: 30,
+    onPrompt: (word, ink) => {
+      promptWord.textContent = word.toUpperCase();
+      promptWord.style.color = HUES[ink];
+    },
+    onTick: (remaining, score) => {
+      statTime.textContent = remaining.toFixed(1);
+      statScore.textContent = String(score);
+    },
+    onAnswer: (correct, avgMs) => {
+      statAvg.textContent = String(avgMs);
+      flash(correct);
+    },
+    onFinish: ({ score, correct, wrong, avgMs }) => {
+      promptWord.textContent = 'TIME!';
+      promptWord.style.color = HUES.blue;
+      showOverlay('Time!', 'Play again', 'Your result is on screen. Tap to run it back.');
+      const isDefaultMode = duration === 30 && colorCount === 4;
+      card.show({
+        score,
+        display: String(score),
+        detail: `${correct} correct, ${wrong} wrong, average ${avgMs} ms per answer`,
+        compare: isDefaultMode
+          ? 'Most people score between 15 and 25 points in 30 seconds.'
+          : `Played with ${colorCount} colors over ${duration} seconds.`,
+        percentileTable: isDefaultMode ? TABLE : undefined,
+        shareText: `I scored ${score} points on the Stroop Test (${duration}s, ${colorCount} colors, ${correct} correct, avg ${avgMs} ms). Name the ink color, not the word: https://thereflexhub.com/stroop-test`,
+      });
+      stats.record(score, { mode: `${duration}s / ${colorCount}c`, avg: `${avgMs} ms`, wrong: String(wrong) });
+    },
+  });
+
+  startBtn.addEventListener('click', () => {
+    overlay.classList.add('hidden');
+    card.hide();
+    // Deal a fresh button layout once per run; it stays fixed while you play.
+    order = shuffle(SETS[colorCount]!);
+    renderAnswers();
+    engine.start();
+  });
+
+  function selectMode(nextDuration: number, nextColors: number): void {
+    duration = nextDuration;
+    colorCount = nextColors;
+    engine.setDuration(duration);
+    engine.setColors(SETS[colorCount]!);
+    card.setGame(gameKey());
+    statTime.textContent = duration.toFixed(1);
+    statScore.textContent = '0';
+    statAvg.textContent = '0';
+    promptWord.textContent = 'READY';
+    promptWord.style.color = HUES.blue;
+    order = shuffle(SETS[colorCount]!);
+    renderAnswers();
+    for (const b of durationBtns) {
+      const active = Number(b.dataset.duration) === duration;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+    for (const b of colorCountBtns) {
+      const active = Number(b.dataset.colors) === colorCount;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+    showOverlay('Ready?', 'Tap to start', 'The timer starts the moment you tap. Pick the ink color, ignore the word.');
+  }
+
+  for (const b of durationBtns) {
+    b.addEventListener('click', () => selectMode(Number(b.dataset.duration), colorCount));
+  }
+  for (const b of colorCountBtns) {
+    b.addEventListener('click', () => selectMode(duration, Number(b.dataset.colors)));
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (!engine.isRunning()) return;
+    const idx = ['1', '2', '3', '4', '5', '6'].indexOf(e.key);
+    if (idx === -1 || idx >= order.length) return;
+    const target = e.target as HTMLElement | null;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+    e.preventDefault();
+    engine.answer(order[idx]!);
+  });
+
+  // Wire the server-rendered initial buttons before the first shuffle replaces them.
+  renderAnswers();
+</script>

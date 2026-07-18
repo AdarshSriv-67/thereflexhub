@@ -1,0 +1,379 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ResultCard from '../../components/ResultCard.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import RelatedTests from '../../components/RelatedTests.astro';
+import StatsPanel from '../../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../../data/seo';
+
+const title = '1 Minute Typing Test - Quick WPM Check | The Reflex Hub';
+const description =
+  'Take the free 1 minute typing test and get your WPM in 60 seconds flat. Type real words, see your accuracy, and beat the 40 WPM average today.';
+const path = '/typing-test/1-minute';
+
+const schema = [
+  webAppSchema('1 Minute Typing Test', path, 'Free 60 second typing test measuring words per minute and accuracy on common English words.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Typing Test', path: '/typing-test' },
+    { name: '1 Minute Typing Test', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'Why take a 1 minute typing test instead of a longer one?',
+    a: 'Sixty seconds is the sweet spot between convenience and reliability. It is short enough to run between tasks with zero commitment, yet long enough that a lucky opening burst or one bad word cannot dominate your score. It is also the length most employers, schools, and typing certificates use, so a 60 second result translates directly to the numbers on job postings. Longer tests add information about endurance, but if you only have time for one quick measurement, the one minute format gives you the most widely comparable WPM per second spent.',
+  },
+  {
+    q: 'Is 1 minute enough to measure WPM accurately?',
+    a: 'For a single snapshot, yes, with a small caveat. Sixty seconds covers roughly 40 to 90 words for most typists, enough volume for the math to stabilize and for early jitters to average out. Research on typing assessment generally treats one minute as the minimum trustworthy window. The caveat is variance between runs: any single minute can swing 5 WPM or so with focus, warm-up, and word luck. Take three runs and use the average, and your one minute figure becomes about as dependable as a five minute test for everyday purposes.',
+  },
+  {
+    q: 'What is a good typing speed (WPM)?',
+    a: 'On a 60 second typing test, 40 WPM is roughly the population average, so beating it puts you in the upper half. From 50 to 60 WPM you are comfortably quick for any everyday writing, 60 to 80 WPM clears essentially every job requirement, and 80 plus places you around the top tenth of typists. Above 100 WPM is competitive territory. Judge the number alongside accuracy though: a clean 55 WPM run at 98 percent will finish real documents faster than a sloppy 75 WPM run full of corrections.',
+  },
+  {
+    q: 'How is WPM calculated?',
+    a: 'One "word" in WPM is a unit of 5 characters, a convention that makes short and long words count fairly. The test totals your correctly typed characters, divides by 5 to get standardized words, then divides by the elapsed time in minutes. In the one minute format the math is as friendly as it gets: your correct characters divided by 5 is your WPM, no further conversion needed. Type 275 correct characters in the 60 seconds and you score 55 WPM. Only correct characters count, so errors reduce both your accuracy and your speed.',
+  },
+  {
+    q: 'What does accuracy percentage mean?',
+    a: 'Accuracy tells you what fraction of your keystrokes matched the target text: correct characters divided by everything you attempted, expressed as a percentage. Mistyped letters, letters skipped when you jump to the next word early, and extra letters typed past a word all land in the incorrect pile. In a one minute sprint, accuracy is where over-eager pacing shows up first. If your accuracy reads 90 percent or lower, you are spending your minute typing characters that do not count. Aim to keep it at 96 percent or above, even at full speed.',
+  },
+  {
+    q: 'What is touch typing?',
+    a: 'Touch typing means every finger has a job and your eyes never check the keyboard. Your fingers rest on the home row keys (ASDF and JKL;), reach out to their assigned keys, and return, guided entirely by feel and the raised bumps on F and J. Because key locations live in muscle memory instead of vision, you can read the next words while your hands type the current ones. In a 60 second test that read-ahead is decisive: touch typists lose almost no time between words, which is exactly where hunt-and-peck typists bleed their minute away.',
+  },
+  {
+    q: 'What typing speed do jobs require?',
+    a: 'Most listed requirements assume exactly this kind of short timed test. Office and admin roles generally ask for 40 to 50 WPM, call center and chat support roles want 50 to 60 WPM so agents can talk and type simultaneously, and data entry work usually starts at 60 WPM with accuracy standards attached. Transcription is the demanding end: 75 WPM is a common entry bar and specialized medical or legal transcription often expects 80 to 100 WPM. Hitting your target speed on repeated one minute runs here is realistic preparation for an employer screening.',
+  },
+  {
+    q: 'Does keyboard type affect typing speed?',
+    a: 'It does, and short tests amplify the effect. In just 60 seconds there is no time to adapt, so an unfamiliar keyboard immediately costs speed: different key spacing, travel, and resistance disrupt learned finger distances. Expect a 5 to 15 WPM penalty on a new board until muscle memory adjusts over a few days. Between board styles, laptop keyboards suit light rapid presses while mechanical boards give feedback that helps accuracy; neither is universally faster. For your true benchmark, run the one minute test on the keyboard you actually use every day.',
+  },
+  {
+    q: 'What is the fastest typing speed ever recorded?',
+    a: 'The historic records belong to Stella Pajunas, timed at 216 WPM on an IBM electric typewriter in 1946, and Barbara Blackburn, who sustained 150 WPM for 50 minutes and peaked near 212 WPM on a Dvorak layout. Modern competitive typing happens online, where verified elite performers have recorded bursts beyond 250 WPM on short passages and can hold 180 to 220 WPM over a full minute. For context, crossing 120 WPM on a one minute test already puts you ahead of about 99 percent of people who take typing tests.',
+  },
+  {
+    q: 'How can I improve my WPM fast?',
+    a: 'Use the one minute format as your daily measuring stick, not your only practice. Each day, do 10 minutes of accuracy-first typing slightly below your maximum speed, drill the specific letters and combinations that trip you, then finish with two or three timed 60 second runs to log a score. Keep accuracy at 97 percent or better during practice, learn full touch typing if you have not, and read one or two words ahead of your fingers during tests. Improvement compounds quickly: 10 to 20 WPM in a month is a normal result for consistent daily practice.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <nav class="text-xs text-muted" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-ink">Home</a>
+      <span aria-hidden="true"> / </span>
+      <a href="/typing-test" class="hover:text-ink">Typing Test</a>
+      <span aria-hidden="true"> / </span>
+      <span class="text-ink">1 Minute Typing Test</span>
+    </nav>
+    <h1 class="mt-2 font-display text-2xl font-bold sm:text-3xl">1 Minute Typing Test: Your WPM in 60 Seconds</h1>
+    <p class="mt-1 text-sm text-muted">
+      One minute, real words. The timer starts on your first keystroke.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="score-nums grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">60</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">WPM</p>
+          <p class="text-2xl font-bold text-accent" id="stat-wpm">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Accuracy</p>
+          <p class="text-2xl font-bold" id="stat-acc">100%</p>
+        </div>
+      </div>
+
+      <div
+        id="tt-stream"
+        class="relative mt-4 h-[4.875em] cursor-text overflow-hidden text-xl leading-relaxed sm:text-2xl"
+        aria-label="Typing area: type the words shown"
+      >
+        <input
+          id="tt-input"
+          class="absolute left-0 top-0 h-px w-px opacity-0"
+          type="text"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-label="Type here"
+        />
+        <div
+          id="tt-overlay"
+          class="absolute inset-0 z-10 flex cursor-pointer items-center justify-center rounded-xl bg-surface/85 px-4 text-center font-display text-sm font-medium backdrop-blur-[2px]"
+        >
+          Click or tap here to focus, then start typing
+        </div>
+      </div>
+
+      <div class="mt-4 flex justify-center">
+        <button type="button" id="tt-restart" class="btn btn-ghost tap-target">Restart</button>
+      </div>
+    </div>
+
+    <ResultCard unit="WPM" />
+
+    <StatsPanel historyTitle="Last 20 runs: WPM" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>Why One Minute Is the Most Popular Typing Test Length</h2>
+    <p>
+      The 1 minute typing test is the format almost everyone means when they say "typing test". It won that position
+      for practical reasons. Sixty seconds is long enough for the WPM formula to stabilize: you will type somewhere
+      between 40 and 90 words in that window, plenty of volume for one clumsy word or a slow first second to wash out
+      of the average. At the same time it is short enough to fit anywhere: a study break, the minute before a
+      meeting, a quick warm-up before work. Low commitment means people actually repeat it, and repetition is what
+      turns a test into a training tool.
+    </p>
+    <p>
+      The 60 second typing test is also the closest thing typing has to a common currency. Employer screenings, school
+      keyboarding classes, and typing certificates overwhelmingly report speeds from one minute samples, so a score
+      from this page maps directly onto the "minimum 50 WPM" line in a job posting. The math is friendlier too: over
+      exactly one minute, your correct characters divided by 5 simply is your WPM, no conversion required. Type 300
+      clean characters and you have typed 60 WPM, by definition.
+    </p>
+
+    <h2>Speed Versus Accuracy in a 60 Second Sprint</h2>
+    <p>
+      A short test changes the tradeoff between going fast and staying clean. Over ten minutes, a burst of sloppiness
+      gets diluted; in one minute, every error is a meaningful slice of your total output. The scoring here is net
+      WPM, meaning only correct characters count, so a mistyped word costs you twice: once for the wasted keystrokes
+      and again for the time spent fixing or abandoning them. A typist who forces 10 percent more speed but drops to
+      90 percent accuracy usually ends up with a lower score than they started with.
+    </p>
+    <p>
+      The winning strategy in a typing test one minute long is controlled aggression. Start at a pace you know you can
+      sustain cleanly, and let speed rise naturally as the words flow, rather than opening at maximum and unraveling
+      by second twenty. If you feel errors stacking up, ease off five percent for a few words; recovering rhythm is
+      worth far more than the raw keystrokes you sacrifice. Treat 96 to 98 percent accuracy as your operating floor.
+      When your accuracy holds there across several runs, that is your signal to push the pace on the next one.
+    </p>
+
+    <h2>What Counts as a Good One Minute Score?</h2>
+    <p>
+      Benchmarks for the quick typing test format are the same as for typing in general, since one minute is the
+      reference length. The average sits near 40 WPM, working professionals cluster between 65 and 75 WPM, and 100
+      plus is competitive typing. Here is the fuller picture:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>WPM in 60 seconds</th><th>Rating</th><th>Where it puts you</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 25</td><td>Beginner</td><td>Still finding keys by sight</td></tr>
+          <tr><td>25 to 40</td><td>Developing</td><td>Below to around the general average</td></tr>
+          <tr><td>40 to 60</td><td>Solid</td><td>Ahead of most people, smooth everyday typing</td></tr>
+          <tr><td>60 to 80</td><td>Professional</td><td>Meets nearly every workplace requirement</td></tr>
+          <tr><td>80 to 100</td><td>Fast</td><td>Roughly the top 10 percent</td></tr>
+          <tr><td>100+</td><td>Competitive</td><td>Top 1 to 2 percent of typists</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      One honest note about short tests: single runs are noisy. Your minute-to-minute score can swing several WPM with
+      focus, fatigue, and the luck of which words appear. Your personal best and history are saved in your browser, so
+      take three runs and treat the average as your real level, and the best as your ceiling.
+    </p>
+
+    <h2>A Two Minute Warm-Up Routine That Raises Your Score</h2>
+    <p>
+      Cold hands and a cold mind reliably cost 5 to 10 WPM on a first attempt, which matters a lot when the whole test
+      is one minute. Before a serious run, spend about two minutes warming up. Start with 20 seconds of physical prep:
+      stretch your fingers, roll your wrists, and shake out your hands, especially in a cold room. Then type a few
+      lines of anything at half speed, deliberately touching every finger to its home row keys, letting the feel of
+      the keyboard load into your hands.
+    </p>
+    <p>
+      Next, do one throwaway run of the test itself at about 80 percent effort with zero concern for the score. This
+      primes the exact skill you are about to use: reading unfamiliar words while typing. Finally, take ten seconds of
+      quiet before the real attempt, eyes on the word stream, hands resting on the home row. Players who warm up this
+      way typically match their usual second-run score on their first real attempt, which is exactly what you want
+      when preparing for an employer test where the first recorded run counts.
+    </p>
+
+    <h2>Tips Specific to Short Typing Tests</h2>
+    <ol>
+      <li><strong>Do not sprint the opening.</strong> The first five seconds set your rhythm. Start smooth and let the pace build; openings at maximum speed usually collapse into errors by mid-test.</li>
+      <li><strong>Read one or two words ahead.</strong> Micro-pauses between words are the biggest hidden time sink in a 60 second window. Keeping your eyes ahead of your fingers removes them.</li>
+      <li><strong>Skip the rescue mission.</strong> If a word goes badly wrong, correcting two characters is fine, but rebuilding a whole ruined word rarely pays in a short test. Take the accuracy hit once and move on cleanly.</li>
+      <li><strong>Keep your hands anchored.</strong> Under time pressure, hands drift off the home row and errors spike. The F and J bumps are your reset points; touch them between words if you feel lost.</li>
+      <li><strong>Breathe at the halfway mark.</strong> Around second thirty, tension creeps into shoulders and forearms and stiff hands type worse. One conscious breath costs half a word and often buys back several.</li>
+      <li><strong>Log every run.</strong> Because each attempt is only a minute, you can gather real data fast. Three runs a day for two weeks produces a trend line that tells you exactly whether your practice is working.</li>
+    </ol>
+
+    <h2>Burst Typing Versus Endurance Typing</h2>
+    <p>
+      A one minute score measures something subtly different from a ten minute transcription session. Sixty seconds
+      sits at the top of what you might call burst range: short enough that focus never lapses and hands never tire,
+      so it captures your near-peak mechanical speed. Longer sessions bring in endurance factors that a short test
+      never touches: sustained concentration, posture, hand fatigue, and the discipline to hold accuracy when your
+      attention dips. Most typists score 5 to 15 percent higher on a one minute test than their sustained pace over
+      fifteen minutes of real work.
+    </p>
+    <p>
+      That gap is not a flaw; it just means the two numbers answer different questions. Your 60 second WPM is your
+      engine's top speed, the right number for benchmarks, job screenings, and tracking technique gains. Your long-form
+      pace is your cruising speed. If you want to close the gap, mix in the 120 second mode on the main typing test,
+      which is long enough for early fatigue and attention drift to show up in the score. Training both keeps burst
+      speed and staying power growing together.
+    </p>
+
+    <h2>Who Uses the 1 Minute Typing Test?</h2>
+    <p>
+      Job applicants use it most seriously, because it mirrors the timed screenings used for admin, data entry, and
+      customer support roles; practicing the exact format removes the surprise on test day. Students and teachers like
+      it because a full class can measure, record, and repeat within a few minutes, and daily one minute scores make
+      progress visible week over week. Writers and programmers use it as a morning warm-up, loosening their hands
+      before real work the way a musician plays scales. Competitive typists treat the one minute leaderboard as the
+      standard arena, and plenty of people just want a quick, honest number for how fast they really type. Whatever
+      brings you here, it is a skill benchmark, not a medical or diagnostic tool: one minute of typing measures your
+      typing, nothing more. Run it today, save your best, and see where you stand against the 40 WPM average.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['typing', 'cps', 'reaction', 'stroop']} />
+
+</BaseLayout>
+
+<style is:global>
+  .tt-word {
+    display: inline-block;
+    margin-right: 0.4em;
+  }
+  .tt-pending {
+    color: var(--ink-muted);
+  }
+  .tt-correct {
+    color: var(--ok);
+  }
+  .tt-incorrect {
+    color: var(--bad);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .tt-caret {
+    position: relative;
+  }
+  .tt-caret::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 12%;
+    height: 76%;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--accent);
+    animation: tt-blink 1s steps(1) infinite;
+  }
+  .tt-caret-end::before {
+    left: auto;
+    right: -2px;
+  }
+  @keyframes tt-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tt-caret::before {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { TypingEngine } from '../../games/typingEngine';
+  import { ResultCard, type PercentilePoint } from '../../games/resultCard';
+  import { initStatsPanel } from '../../games/statsPanel';
+
+  const stream = document.getElementById('tt-stream') as HTMLElement;
+  const input = document.getElementById('tt-input') as HTMLInputElement;
+  const overlay = document.getElementById('tt-overlay') as HTMLElement;
+  const restart = document.getElementById('tt-restart') as HTMLButtonElement;
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statWpm = document.getElementById('stat-wpm') as HTMLElement;
+  const statAcc = document.getElementById('stat-acc') as HTMLElement;
+
+  // Distribution of WPM scores: "beats" is the share of people below the value.
+  const TABLE: PercentilePoint[] = [
+    { value: 20, beats: 12 },
+    { value: 30, beats: 30 },
+    { value: 40, beats: 50 },
+    { value: 50, beats: 66 },
+    { value: 60, beats: 78 },
+    { value: 70, beats: 87 },
+    { value: 80, beats: 93 },
+    { value: 100, beats: 98 },
+    { value: 120, beats: 99 },
+  ];
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'typing',
+    valueLabel: 'WPM',
+    columns: [
+      { key: 'a', label: 'Accuracy' },
+      { key: 'mode', label: 'Mode' },
+    ],
+  });
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'typing',
+    higherIsBetter: true,
+    format: (v) => `${Math.round(v)} WPM`,
+    onRestart: () => {
+      engine.reset();
+      input.focus();
+    },
+  });
+
+  const engine = new TypingEngine({
+    container: stream,
+    input,
+    duration: 60,
+    onTick: (remaining, wpm, accuracy) => {
+      statTime.textContent = String(Math.ceil(remaining));
+      statWpm.textContent = String(Math.round(wpm));
+      statAcc.textContent = `${Math.round(accuracy)}%`;
+    },
+    onFocusChange: (focused) => {
+      overlay.classList.toggle('hidden', focused || engine.isFinished());
+    },
+    onFinish: ({ wpm, accuracy, correctChars, duration }) => {
+      overlay.classList.add('hidden');
+      input.blur();
+      const rounded = Math.round(wpm);
+      const acc = Math.round(accuracy);
+      card.show({
+        score: rounded,
+        display: String(rounded),
+        detail: `${correctChars} correct chars, ${acc}% accuracy in ${duration} seconds`,
+        compare: 'The average typing speed is 40 WPM; professionals reach 65 to 75 WPM.',
+        percentileTable: TABLE,
+        shareText: `I typed ${rounded} WPM with ${acc}% accuracy on the 1 Minute Typing Test. Beat me: https://thereflexhub.com/typing-test/1-minute`,
+      });
+      stats.record(rounded, { a: `${acc}%`, mode: '60s' });
+    },
+  });
+
+  restart.addEventListener('click', () => {
+    card.hide();
+    engine.reset();
+    input.focus();
+  });
+</script>

@@ -1,0 +1,626 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResultCard from '../components/ResultCard.astro';
+import FaqSection from '../components/FaqSection.astro';
+import RelatedTests from '../components/RelatedTests.astro';
+import StatsPanel from '../components/StatsPanel.astro';
+import { webAppSchema, breadcrumbSchema, type Faq } from '../data/seo';
+
+const title = 'Aim Trainer - Free Online Aim Test | The Reflex Hub';
+const description =
+  'Sharpen your aim with this free online aim trainer. Hit shrinking targets for 30 seconds, track your accuracy and speed, and beat the average score.';
+const path = '/aim-trainer';
+
+const schema = [
+  webAppSchema('Aim Trainer', path, 'Free 30 second aim trainer with shrinking targets, accuracy tracking, and time per target stats.'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Aim Trainer', path },
+  ]),
+];
+
+const faqs: Faq[] = [
+  {
+    q: 'What is an aim trainer?',
+    a: 'An aim trainer is a practice tool that isolates the mechanical skill of pointing at targets, separate from the chaos of a real match. Targets appear at random positions, you click them as quickly and precisely as you can, and the tool measures your speed and accuracy. Because every rep is identical and instantly scored, you get far more aiming practice per minute than in an actual game, where you might only fire at an enemy a few times per round. This aim trainer runs 30 second rounds with shrinking targets and tracks hits, accuracy, and average time per target.',
+  },
+  {
+    q: 'Does aim training actually improve FPS performance?',
+    a: 'Yes, with realistic expectations. Research on motor learning and a mountain of player experience both show that focused, repeated practice on a pointing task improves speed and precision at that task, and much of the gain transfers to similar movements in games. Aim training will not teach you game sense, positioning, or recoil control, which decide many fights. What it reliably improves is the mechanical layer: faster target acquisition, cleaner flicks, and fewer whiffed shots. Most players see measurable improvement within two to three weeks of short daily sessions, especially if their aim was previously untrained.',
+  },
+  {
+    q: 'What is the difference between flicking and tracking?',
+    a: 'Flicking is a single fast movement from where your crosshair rests to where the target is, ending in a click. It suits weapons that reward one precise shot, like rifles in Valorant or the AWP in CS2. Tracking is the opposite skill: keeping your crosshair glued to a moving target continuously, which matters for automatic weapons and heroes like Soldier 76 in Overwatch. This trainer primarily builds flicking and target switching, since each target is stationary and a new one appears the instant you hit. Complete aim practice eventually includes both skills, but flicking is the best place to start.',
+  },
+  {
+    q: 'What mouse sensitivity should I use?',
+    a: 'Use a sensitivity where a comfortable arm movement of roughly 25 to 35 centimeters turns you a full 360 degrees in game, the range most professional FPS players occupy. If you keep overshooting targets, lower it; if you physically cannot turn fast enough, raise it slightly. The key is picking something reasonable and then leaving it alone, because consistency is what lets muscle memory form. On this aim test you can either use the default cursor mode with pointer acceleration disabled, or pick your game (Valorant, CS2, Apex, Call of Duty, Overwatch 2, Fortnite) in the sensitivity selector and enter your real sens, and the trainer will mirror your exact in-game feel.',
+  },
+  {
+    q: 'What is a good aim trainer score?',
+    a: 'On this 30 second aim test, most players land between 25 and 35 hits with 70 to 90 percent accuracy. Around 38 hits puts you ahead of roughly three quarters of players, 45 or more is excellent, and 55 plus with high accuracy is elite territory, usually experienced FPS players on good hardware. Average time per target is the third signal: under 700 ms is solid and under 550 ms is fast. Judge speed and accuracy together, because 40 hits at 60 percent accuracy means you are clicking wildly rather than actually aiming.',
+  },
+  {
+    q: 'How often should I practice aim?',
+    a: 'Short and regular beats long and occasional. Ten to fifteen minutes a day, five or so days a week, is the sweet spot most aim coaches recommend. Motor learning consolidates between sessions, largely during sleep, so seven short sessions build more skill than one two hour marathon that mostly trains fatigue and sloppy habits. Use a few 30 second runs here as a warm-up before playing, then one focused block where you deliberately push either speed or precision. Track your scores over weeks: a rising personal best is proof the practice is working.',
+  },
+  {
+    q: 'Does mouse DPI matter for aim?',
+    a: 'Less than most people think, within a sensible range. DPI is how many pixels your cursor moves per inch of physical mouse travel. Anything from 400 to 1600 DPI works fine on a modern sensor; what actually determines how your aim feels is eDPI, your DPI multiplied by in-game sensitivity. A player on 400 DPI at 2.0 sensitivity aims identically to one on 800 DPI at 1.0. Extremely low DPI can feel steppy on high resolution monitors, and extremely high DPI amplifies hand tremor, so most pros settle on 400 to 800 and tune sensitivity instead.',
+  },
+  {
+    q: 'Why do pros use low sensitivity?',
+    a: 'Low sensitivity trades turning speed for precision, and at the professional level precision wins. With a lower sensitivity, the same small hand tremor moves the crosshair a smaller distance on screen, so micro-adjustments onto a head-sized target become far easier. Pros compensate for the slower turns by aiming with the whole arm on large mousepads, saving the wrist for fine corrections. Low sensitivity also makes errors cheaper: an overshoot of one centimeter costs less angle. Typical pro eDPI in tactical shooters sits around 200 to 400, well below most casual default settings.',
+  },
+  {
+    q: 'Can aim training help on controller or mobile?',
+    a: 'The transfer is weaker but not zero. This trainer works with touch input, so you can tap targets on a phone or tablet, and that genuinely sharpens tap speed, hand-eye coordination, and reaction to new targets, all of which matter in mobile shooters. Controller aiming, though, uses different muscle groups and depends on stick response curves and aim assist, so mouse practice does not translate directly to thumbsticks. If you play on controller, practice in your game\'s own firing range. If you play mobile shooters, tapping practice here carries over reasonably well.',
+  },
+  {
+    q: 'How does this browser aim trainer compare to desktop apps?',
+    a: 'Desktop trainers like KovaaK\'s and Aim Lab offer 3D scenarios, hundreds of drills, tracking tasks, and engine-level input handling, which makes them the gold standard for serious FPS training. This browser aim trainer trades that depth for zero friction: no download, no GPU requirement, it works on any device, and a run takes 30 seconds. For measuring click accuracy, warming up before a session, or practicing on a laptop or phone where installing software is not an option, it is more than accurate enough. Many players use both: browser tests for quick benchmarks, desktop apps for structured drills.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} schema={schema}>
+  <section class="mx-auto max-w-6xl px-4 pt-6">
+    <h1 class="font-display text-2xl font-bold sm:text-3xl">Aim Trainer: Test Your Mouse Accuracy and Speed</h1>
+    <p class="mt-1 text-sm text-muted">
+      Hit as many targets as you can before time runs out. Pick 15, 30, or 60 seconds, then click the first target to
+      start.
+    </p>
+
+    <div class="card mt-4 p-4 sm:p-6">
+      <div class="score-nums grid grid-cols-3 gap-2 text-center">
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Time</p>
+          <p class="text-2xl font-bold" id="stat-time">30.0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Hits</p>
+          <p class="text-2xl font-bold" id="stat-hits">0</p>
+        </div>
+        <div class="rounded-xl bg-surface2 p-3">
+          <p class="text-xs uppercase tracking-widest text-muted">Accuracy</p>
+          <p class="text-2xl font-bold text-accent" id="stat-acc">0%</p>
+        </div>
+      </div>
+
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+        <div class="flex items-center gap-2" role="group" aria-label="Run duration">
+          <span class="text-sm font-medium text-muted">Time</span>
+          {[15, 30, 60].map((s) => (
+            <button
+              type="button"
+              class:list={['btn px-3 py-1.5 text-sm', s === 30 ? 'btn-primary' : 'btn-ghost']}
+              data-duration={s}
+            >
+              {s}s
+            </button>
+          ))}
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="sens-game" class="text-sm font-medium text-muted">Sensitivity</label>
+        <span class="relative inline-flex">
+          <select
+            id="sens-game"
+            class="tap-target appearance-none rounded-lg border border-line bg-surface2 py-2 pl-3 pr-9 text-sm text-ink transition-colors hover:border-accent/40 focus:border-accent"
+          >
+            <option value="cursor" selected>Your cursor (default)</option>
+            <option value="valorant">Valorant</option>
+            <option value="cs2">CS2 / CS:GO</option>
+            <option value="apex">Apex Legends</option>
+            <option value="cod">Call of Duty / Warzone</option>
+            <option value="ow2">Overwatch 2</option>
+            <option value="fortnite">Fortnite (%)</option>
+          </select>
+          <svg
+            class="pointer-events-none absolute right-3 top-1/2 size-3.5 -translate-y-1/2 text-accent"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </span>
+          <input
+            id="sens-value"
+            type="number"
+            min="0.01"
+            step="0.01"
+            inputmode="decimal"
+            aria-label="Your in-game sensitivity value"
+            class="tap-target score-nums hidden w-24 rounded-lg border border-line bg-surface2 px-3 py-2 text-sm text-ink"
+          />
+        </div>
+      </div>
+
+      <p id="sens-hint" class="mt-2 hidden text-xs text-muted">
+        Enter the exact sensitivity you use in game and play with the same mouse and DPI.
+        Click the arena to lock your mouse; press Esc to release it.
+      </p>
+
+      <div
+        id="aim-arena"
+        class="relative mt-4 h-[clamp(300px,52vh,500px)] w-full overflow-hidden rounded-xl border border-line bg-surface2"
+      >
+        <canvas
+          id="aim-canvas"
+          class="absolute inset-0 h-full w-full cursor-crosshair touch-none select-none"
+          aria-label="Aim trainer play area. Click the targets as they appear."
+        ></canvas>
+        <div
+          id="fs-hud"
+          class="score-nums pointer-events-none absolute left-3 top-3 z-10 hidden gap-2 text-sm font-bold"
+        >
+          <span class="rounded-lg bg-bg/70 px-2.5 py-1 backdrop-blur-sm" id="hud-time">30.0</span>
+          <span class="rounded-lg bg-bg/70 px-2.5 py-1 backdrop-blur-sm" id="hud-hits">0 hits</span>
+          <span class="rounded-lg bg-bg/70 px-2.5 py-1 text-accent backdrop-blur-sm" id="hud-acc">0%</span>
+        </div>
+        <button
+          type="button"
+          id="fs-btn"
+          class="tap-target absolute right-2 top-2 z-10 hidden items-center justify-center rounded-lg bg-bg/70 text-muted backdrop-blur-sm transition-colors hover:text-accent"
+          aria-label="Toggle fullscreen"
+        >
+          <svg id="fs-icon-expand" class="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5" />
+          </svg>
+          <svg id="fs-icon-compress" class="hidden size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <ResultCard unit="hits" />
+
+    <StatsPanel runChartTitle="This run: time per target" historyTitle="Last 20 runs: hits" />
+  </section>
+
+
+  <div class="mx-auto max-w-6xl px-4"><article class="copy mt-12">
+    <h2>What Is an Aim Trainer and How Scoring Works Here</h2>
+    <p>
+      An aim trainer is a target practice game with a purpose: it strips away everything about a shooter except the act
+      of moving your crosshair onto a target and clicking, then measures how fast and how precisely you do it. In a
+      real match you might take a handful of meaningful shots per round. In an aim trainer you take a meaningful shot
+      every second, each one scored, so an hour of aim practice contains more raw aiming repetitions than an evening of
+      matches.
+    </p>
+    <p>
+      This aim trainer online works like the classic desktop drills. One circular target appears at a random spot in
+      the arena. Click it and the next target spawns instantly somewhere else. The run lasts 15, 30, or 60 seconds
+      (30 is the benchmark standard that the percentile compares against) and starts the moment you click the first
+      center target, so you control exactly when the clock begins. Your score is the number
+      of targets you destroy, and two supporting stats tell the fuller story: accuracy, the percentage of your clicks
+      that landed on a target, and average time per target, the milliseconds between a target appearing and you hitting
+      it. To keep the test honest, targets start around 52 pixels across and shrink slightly as your score climbs, so a
+      hot run gets progressively harder instead of easier.
+    </p>
+    <p>
+      Misses matter. Any click that lands on empty space counts against your accuracy, which means the optimal
+      strategy is not frantic clicking but controlled speed: move, confirm, click. That balance between speed and
+      precision is the entire skill of aiming, and it is exactly what this mouse accuracy test measures.
+    </p>
+
+    <h2>Flicking vs Tracking vs Target Switching</h2>
+    <p>Aim is not one skill. Coaches and trainers break it into three core mechanics, and knowing which one you are training makes practice far more effective.</p>
+    <h3>Flicking</h3>
+    <p>
+      A flick is one fast, discrete movement from your current crosshair position to a new target, ending in a click.
+      Flicks dominate tactical shooters where the first accurate shot usually wins: an AWP pick in CS2, a Sheriff
+      headshot in Valorant, a Wingman shot in Apex Legends. Good flicking is really two movements, a fast ballistic
+      swing that covers most of the distance and a tiny correction at the end. This trainer is fundamentally a flicking
+      test, because every hit forces a fresh flick to a new random position.
+    </p>
+    <h3>Tracking</h3>
+    <p>
+      Tracking means keeping your crosshair continuously on a moving target, the skill behind spraying an R-301 in
+      Apex, playing Soldier 76 in Overwatch, or holding a Spectre spray on a strafing enemy. Tracking depends on
+      smooth, continuous mouse control rather than bursts, and it is the mechanic browser trainers cover least, since
+      it needs moving targets and sustained fire. If tracking is your weakness, dedicated desktop scenarios are the
+      right tool.
+    </p>
+    <h3>Target switching</h3>
+    <p>
+      Target switching chains flicks together: hit one enemy, immediately acquire the next, hit again. It taxes not
+      just your hand but your eyes, because between every shot you must find the new target before you can move to it.
+      Since this test spawns each new target at an unpredictable position the instant you hit the last one, your run
+      here is one long target switching drill, which is why average time per target is such a revealing stat.
+    </p>
+
+    <h2>What Is a Good Aim Trainer Score?</h2>
+    <p>
+      Most players hit 25 to 35 targets in 30 seconds on this test, with accuracy somewhere in the 70 to 90 percent
+      band. Here is how scores typically distribute:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Hits in 30 seconds</th><th>Rating</th><th>What it usually means</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 15</td><td>Warming up</td><td>Trackpad, touch input, or first attempts</td></tr>
+          <tr><td>15 to 25</td><td>Below average</td><td>Casual mouse user, little FPS experience</td></tr>
+          <tr><td>25 to 35</td><td>Average</td><td>The broad middle: occasional gamers</td></tr>
+          <tr><td>35 to 45</td><td>Good</td><td>Regular FPS players with settled sensitivity</td></tr>
+          <tr><td>45 to 55</td><td>Very good</td><td>Practiced aimers, low sens, arm aiming</td></tr>
+          <tr><td>55+</td><td>Elite</td><td>Serious aim training background</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Read your three stats together. High hits with low accuracy means you are gambling on speed; slow your hand ten
+      percent and your score usually goes up, not down, because misses cost time. High accuracy with low hits means you
+      are aiming carefully but moving timidly; commit to faster initial swings and accept a few misses while your speed
+      catches up. The best scores come from players who miss rarely and move fast, in that order.
+    </p>
+
+    <h2>Mouse Sensitivity, DPI, and eDPI Explained</h2>
+    <p>
+      Three numbers govern how your mouse translates to crosshair movement, and confusing them is the most common
+      beginner mistake. DPI (dots per inch) is a hardware setting: how many pixels of cursor travel one inch of
+      physical mouse travel produces. Sensitivity is a software multiplier applied by your game on top of DPI. eDPI,
+      or effective DPI, is simply DPI multiplied by in-game sensitivity, and it is the only number that lets two
+      players compare how their aim actually feels.
+    </p>
+    <p>
+      Professional players in tactical shooters cluster around 400 to 800 DPI with an eDPI between roughly 200 and
+      400, which translates to 25 to 35 centimeters of mousepad travel for a full 360 degree turn. That is much lower
+      than most default setups, and it is a deliberate choice: lower sensitivity shrinks the on-screen effect of hand
+      tremor and makes the final micro-correction onto a small target dramatically easier. The cost is that big turns
+      require big arm movements, which is why pro setups feature large mousepads and arm-based aiming.
+    </p>
+    <p>
+      By default this browser test aims with your operating system pointer, so your OS settings are your aim settings.
+      Turn off pointer acceleration (Windows calls it Enhance pointer precision), because acceleration changes how far
+      the cursor moves based on how fast you move the mouse, which sabotages muscle memory.
+    </p>
+    <p>
+      Better yet, use the sensitivity picker above the arena. Every game converts mouse movement to rotation with its
+      own multiplier, called yaw, which is why 0.4 in Valorant feels the same as roughly 1.27 in CS2 and about 4.24 in
+      Overwatch 2. Pick your game, enter the exact sensitivity you play with, and the trainer captures your mouse with
+      pointer lock and drives a virtual crosshair using that game's own degrees-per-count math, scaled through its
+      field of view. A flick here then covers the same mousepad distance as the same flick in a real match, which is
+      exactly what makes practice transfer. Use the same mouse and DPI you play with, and press Esc any time to release
+      the mouse. Once it feels right, stop tinkering: a settled, slightly imperfect sensitivity beats a perfectly
+      optimized one that changes every week.
+    </p>
+
+    <h2>How to Practice Aim Effectively</h2>
+    <ol>
+      <li><strong>Warm up before you benchmark.</strong> Two or three throwaway runs wake up your hand and eyes. Scores from a cold start are reliably 10 to 20 percent worse and will only discourage you.</li>
+      <li><strong>Experiment with lower sensitivity.</strong> If you overshoot targets constantly, drop your pointer speed or in-game sens one notch and give it three days. Most self-taught players aim faster than they can control.</li>
+      <li><strong>Train crosshair placement.</strong> In real games, keep your crosshair at head height near corners so the flick you need is short. In this test, returning your cursor toward the center after each hit shortens the average flick to the next random target.</li>
+      <li><strong>Aim with your arm, correct with your wrist.</strong> Big movements come from the elbow and shoulder, fine adjustments from the wrist and fingers. Wrist-only aiming caps your smoothness and invites strain.</li>
+      <li><strong>Fix your posture and desk.</strong> Sit square to the monitor, forearm supported, mouse at elbow height, and give the mouse room to travel. Cramped ergonomics show up directly as shaky aim.</li>
+      <li><strong>Practice in short, frequent sessions.</strong> Ten focused minutes daily beats an hour once a week. Motor skills consolidate between sessions, so frequency is the multiplier.</li>
+      <li><strong>Chase one variable at a time.</strong> Spend one session pushing speed and accepting misses, the next locking accuracy above 90 percent. Alternating stress on each side of the tradeoff raises both faster than grinding blindly.</li>
+    </ol>
+
+    <h2>The Science: Muscle Memory, Motor Learning, and Myelination</h2>
+    <p>
+      What gamers call muscle memory does not live in the muscles. It is motor learning, a process where the brain
+      builds and refines a movement program through repetition. Early in practice, your aim is managed consciously: you
+      watch the cursor, judge the distance, and steer. With repetition, control shifts to brain regions that automate
+      movement, chiefly the cerebellum and basal ganglia, and the movement becomes one smooth pre-planned action
+      instead of a guided correction. That is why an experienced aimer flicks to a target in a single motion while a
+      beginner makes three stuttering adjustments.
+    </p>
+    <p>
+      Repetition also changes the wiring physically. Neural pathways that fire repeatedly get wrapped in myelin, a
+      fatty insulating layer that makes signals travel faster and more reliably, a bit like upgrading a dirt path to a
+      paved road. This is one reason consistency matters so much: every rep with the same sensitivity strengthens the
+      same pathway, while constantly changing settings forces the brain to keep building new roads. Sleep matters too,
+      because the consolidation step where practice becomes durable skill happens largely overnight.
+    </p>
+    <p>
+      The practical takeaways are simple: practice often, keep your settings stable, stop before fatigue turns reps
+      sloppy, and be patient, because measurable gains arrive over weeks rather than hours. And to be clear about
+      scope: this is a game and a training benchmark, not a medical or psychological diagnostic tool. A slow day says
+      nothing about your neurological health.
+    </p>
+
+    <h2>Who Uses Aim Trainers</h2>
+    <p>
+      FPS players are the core audience. Valorant and CS2 players drill flicks because a single accurate headshot
+      decides duels in those games. Apex Legends players mix flicking with tracking practice to handle its
+      movement-heavy fights. Overwatch players on hitscan heroes lean on tracking, while projectile players train
+      prediction. Beyond those, aim trainers serve Fortnite, Call of Duty, Rainbow Six, and Destiny players, and
+      esports professionals treat aim routines the way athletes treat gym work: pros in Valorant and Counter-Strike
+      commonly run 15 to 60 minutes of structured aim practice before scrims, and coaches use benchmark scores to
+      track player form across a season.
+    </p>
+    <p>
+      There is also a wider audience with no shooter in sight. Designers, editors, and competitive clickers use mouse
+      accuracy tests to benchmark pointing speed, students of motor learning use them as a clean experimental task, and
+      plenty of visitors simply want a 30 second target practice game with a score to beat. Fast, precise pointing is a
+      general computer skill, and it responds to training whether or not you ever queue a ranked match.
+    </p>
+
+    <h2>Browser vs Desktop Aim Trainers</h2>
+    <p>
+      Dedicated desktop trainers such as KovaaK's and Aim Lab render true 3D scenarios with a first person camera, so
+      the movement you practice is geometrically identical to the game you play, including sensitivity matching to
+      specific titles. They offer hundreds of scenarios, moving targets for tracking, detailed analytics, and
+      leaderboards. If you are grinding toward competitive rank, they are worth the download.
+    </p>
+    <p>
+      A browser aim trainer wins on friction and portability. There is nothing to install, it runs on any laptop,
+      library computer, or phone, and a complete run takes 30 seconds, which makes it ideal for a quick warm-up, a
+      lunchtime benchmark, or settling an argument about who has better aim right now. The 2D format also makes scores
+      easy to compare, because every player faces identical targets on an identical plane. Treat the two as
+      complements: use this page to measure and warm up, and a desktop trainer when you want deep, scenario-specific
+      drilling. Your history and personal best are saved in your browser, so your improvement curve is always one
+      click away.
+    </p>
+  </article></div>
+
+  <FaqSection faqs={faqs} />
+
+  <RelatedTests ids={['reaction', 'cps', 'f1', 'tap']} />
+
+</BaseLayout>
+
+<script>
+  import { AimEngine } from '../games/aimEngine';
+  import { ResultCard, type PercentilePoint } from '../games/resultCard';
+  import { initStatsPanel } from '../games/statsPanel';
+  import { lockPageScroll } from '../games/scrollLock';
+
+  const canvas = document.getElementById('aim-canvas') as HTMLCanvasElement;
+  const statTime = document.getElementById('stat-time') as HTMLElement;
+  const statHits = document.getElementById('stat-hits') as HTMLElement;
+  const statAcc = document.getElementById('stat-acc') as HTMLElement;
+  const hudTime = document.getElementById('hud-time') as HTMLElement;
+  const hudHits = document.getElementById('hud-hits') as HTMLElement;
+  const hudAcc = document.getElementById('hud-acc') as HTMLElement;
+
+  // Distribution of hits in a 30 second run.
+  const TABLE: PercentilePoint[] = [
+    { value: 15, beats: 10 },
+    { value: 22, beats: 28 },
+    { value: 30, beats: 50 },
+    { value: 38, beats: 72 },
+    { value: 45, beats: 86 },
+    { value: 55, beats: 95 },
+    { value: 65, beats: 99 },
+  ];
+
+  let hits = 0;
+  let misses = 0;
+
+  function paintAccuracy(): void {
+    const clicks = hits + misses;
+    statAcc.textContent = clicks > 0 ? `${Math.round((hits / clicks) * 100)}%` : '0%';
+    hudAcc.textContent = statAcc.textContent;
+  }
+
+  const stats = initStatsPanel(document.getElementById('stats-panel') as HTMLElement, {
+    game: 'aim',
+    valueLabel: 'Hits',
+    columns: [
+      { key: 'mode', label: 'Mode' },
+      { key: 'a', label: 'Accuracy' },
+      { key: 'm', label: 'Avg per target' },
+    ],
+    runItemNoun: 'Target',
+    runItemUnit: 'ms',
+  });
+
+  // Page scroll is locked during a run so an overshot flick near the right
+  // edge cannot hit the browser scrollbar and jump the page.
+  let running = false;
+  function lockScroll(locked: boolean): void {
+    running = locked;
+    lockPageScroll('aim-run', locked);
+  }
+
+  const card = new ResultCard(document.getElementById('result-card') as HTMLElement, {
+    game: 'aim',
+    higherIsBetter: true,
+    format: (v) => `${Math.round(v)} hits`,
+    onRestart: () => {
+      hits = 0;
+      misses = 0;
+      paintAccuracy();
+      lockScroll(false);
+      engine.reset();
+    },
+  });
+
+  const engine = new AimEngine({
+    canvas,
+    duration: 30,
+    avoidElements: [
+      document.getElementById('fs-btn') as HTMLElement,
+      document.getElementById('fs-hud') as HTMLElement,
+    ],
+    onStart: () => lockScroll(true),
+    onTick: (remaining, h) => {
+      statTime.textContent = remaining.toFixed(1);
+      hudTime.textContent = statTime.textContent;
+      hits = h;
+      statHits.textContent = String(h);
+      hudHits.textContent = `${h} hits`;
+      if (h === 0 && remaining === engine.getDuration()) {
+        misses = 0;
+        paintAccuracy();
+      }
+    },
+    onHit: (h, _avgMs, accuracy) => {
+      hits = h;
+      statHits.textContent = String(h);
+      hudHits.textContent = `${h} hits`;
+      statAcc.textContent = `${accuracy}%`;
+      hudAcc.textContent = statAcc.textContent;
+    },
+    onMiss: () => {
+      misses++;
+      paintAccuracy();
+    },
+    onFinish: ({ hits: finalHits, accuracy, avgMs, clicks, hitTimes }) => {
+      lockScroll(false);
+      // Leave fullscreen first so the result modal (outside the arena) is visible.
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      const d = engine.getDuration();
+      card.show({
+        score: finalHits,
+        display: String(finalHits),
+        detail: `${finalHits} hits, ${accuracy}% accuracy, ${avgMs} ms per target (${clicks} clicks)`,
+        compare:
+          d === 30
+            ? 'Most players hit 25 to 35 targets in 30 seconds.'
+            : `Played the ${d} second mode.`,
+        percentileTable: d === 30 ? TABLE : undefined,
+        shareText: `I hit ${finalHits} targets in ${d} seconds with ${accuracy}% accuracy on the Aim Trainer. Beat me: https://thereflexhub.com/aim-trainer`,
+      });
+      stats.record(finalHits, { mode: `${d}s`, a: `${accuracy}%`, m: `${avgMs} ms` }, hitTimes);
+    },
+  });
+
+  const durationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-duration]'));
+  function selectDuration(d: number): void {
+    engine.setDuration(d);
+    card.setGame(d === 30 ? 'aim' : `aim-${d}`);
+    lockScroll(false);
+    hits = 0;
+    misses = 0;
+    paintAccuracy();
+    statTime.textContent = d.toFixed(1);
+    hudTime.textContent = statTime.textContent;
+    statHits.textContent = '0';
+    hudHits.textContent = '0 hits';
+    for (const b of durationBtns) {
+      const active = Number(b.dataset.duration) === d;
+      b.classList.toggle('btn-primary', active);
+      b.classList.toggle('btn-ghost', !active);
+    }
+  }
+  for (const b of durationBtns) {
+    b.addEventListener('click', () => selectDuration(Number(b.dataset.duration)));
+  }
+
+  // In-game sensitivity matching. yaw = degrees of rotation per mouse count at
+  // sensitivity 1 (Fortnite: per 1%). fov = the game's horizontal field of view.
+  const GAMES: Record<string, { yaw: number; fov: number; def: number }> = {
+    valorant: { yaw: 0.07, fov: 103, def: 0.4 },
+    cs2: { yaw: 0.022, fov: 106.26, def: 1.5 },
+    apex: { yaw: 0.022, fov: 110, def: 1.8 },
+    cod: { yaw: 0.0066, fov: 100, def: 6 },
+    ow2: { yaw: 0.0066, fov: 103, def: 5 },
+    fortnite: { yaw: 0.005566, fov: 90, def: 8 },
+  };
+
+  const gameSel = document.getElementById('sens-game') as HTMLSelectElement;
+  const sensInput = document.getElementById('sens-value') as HTMLInputElement;
+  const sensHint = document.getElementById('sens-hint') as HTMLElement;
+
+  function storedSens(game: string): number {
+    try {
+      const v = parseFloat(localStorage.getItem(`trh:aim:sens:${game}`) ?? '');
+      if (Number.isFinite(v) && v > 0) return v;
+    } catch {}
+    return GAMES[game]!.def;
+  }
+
+  function applySens(): void {
+    const game = gameSel.value;
+    const cfg = GAMES[game];
+    if (!cfg) {
+      sensInput.classList.add('hidden');
+      sensHint.classList.add('hidden');
+      engine.setAimMode('cursor');
+    } else {
+      sensInput.classList.remove('hidden');
+      sensHint.classList.remove('hidden');
+      const v = parseFloat(sensInput.value);
+      const sens = Number.isFinite(v) && v > 0 ? v : cfg.def;
+      sensInput.value = String(sens);
+      engine.setAimMode('locked', { degPerCount: cfg.yaw * sens, fovDeg: cfg.fov });
+      try {
+        localStorage.setItem(`trh:aim:sens:${game}`, String(sens));
+      } catch {}
+    }
+    try {
+      localStorage.setItem('trh:aim:game', game);
+    } catch {}
+  }
+
+  gameSel.addEventListener('change', () => {
+    if (GAMES[gameSel.value]) sensInput.value = String(storedSens(gameSel.value));
+    applySens();
+  });
+  sensInput.addEventListener('change', applySens);
+
+  try {
+    const savedGame = localStorage.getItem('trh:aim:game');
+    if (savedGame && GAMES[savedGame]) {
+      gameSel.value = savedGame;
+      sensInput.value = String(storedSens(savedGame));
+      applySens();
+    }
+  } catch {}
+
+  // Fullscreen arena toggle. Hidden where the Fullscreen API is unavailable
+  // (e.g. iPhone Safari). The HUD chips mirror the stats while fullscreen.
+  const arena = document.getElementById('aim-arena') as HTMLElement;
+  const fsBtn = document.getElementById('fs-btn') as HTMLButtonElement;
+
+  // The scrollbar also has to be out of reach between runs (aiming at the
+  // start target, spam clicks right after time is up): hide it whenever the
+  // mouse is over the arena. Wheel scrolling is re-dispatched manually so the
+  // page still scrolls normally while just hovering outside a run.
+  arena.addEventListener('pointerenter', (e) => {
+    if (e.pointerType !== 'touch') lockPageScroll('aim-hover', true);
+  });
+  arena.addEventListener('pointerleave', (e) => {
+    if (e.pointerType !== 'touch') lockPageScroll('aim-hover', false);
+  });
+  arena.addEventListener(
+    'wheel',
+    (e) => {
+      e.preventDefault();
+      if (running) return;
+      window.scrollBy(0, e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY);
+    },
+    { passive: false }
+  );
+  const fsExpand = document.getElementById('fs-icon-expand') as HTMLElement;
+  const fsCompress = document.getElementById('fs-icon-compress') as HTMLElement;
+  const fsHud = document.getElementById('fs-hud') as HTMLElement;
+
+  if (document.fullscreenEnabled) {
+    fsBtn.classList.remove('hidden');
+    fsBtn.classList.add('inline-flex');
+    fsBtn.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      } else {
+        arena.requestFullscreen().catch(() => {});
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      const fs = document.fullscreenElement === arena;
+      fsExpand.classList.toggle('hidden', fs);
+      fsCompress.classList.toggle('hidden', !fs);
+      fsHud.classList.toggle('hidden', !fs);
+      fsHud.classList.toggle('flex', fs);
+    });
+  }
+</script>
+
+<style is:global>
+  #aim-arena:fullscreen {
+    height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+</style>
