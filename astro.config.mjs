@@ -12,6 +12,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   build: {
+    format: 'file',
     inlineStylesheets: 'auto',
   },
 });

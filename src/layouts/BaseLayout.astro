@@ -114,8 +114,17 @@ const year = new Date().getFullYear();
       ))
     }
 
-    <!-- Plausible Analytics: paste the script tag for thereflexhub.com here -->
-    <!-- <script defer data-domain="thereflexhub.com" src="https://plausible.io/js/script.js"></script> -->
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-3D8KRQLBTD"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-3D8KRQLBTD');
+    </script>
   </head>
   <body class="bg-bg text-ink font-body flex min-h-dvh flex-col">
     <header class="sticky top-0 z-50 border-b border-line bg-bg/75 backdrop-blur-md">
